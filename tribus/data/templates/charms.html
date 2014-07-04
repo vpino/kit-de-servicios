@@ -2,5 +2,34 @@
 {% load i18n %}
 {% block title %}{% trans "About" %}{% endblock %}
 {% block content %}
-
+<div class="jumbotron">
+	<div class="container" ng-controller="CharmsController">
+        	<div class="row topRow">
+            	<h4 class="heading">
+               		Drag and drop between the two lists.
+            	</h4>
+        	</div>
+        
+        	<div class="row">
+            	<div class="col-xs-6">
+                	<ul ui-on-Drop="onDrop($event,$data,men)">
+                    	<li ui-draggable="true" drag="man" 
+                    	on-drop-success="dropSuccessHandler($event,$index,men)"
+                    	ng-repeat="man in men track by $index">
+                        	{% verbatim %}{{ man }}{% endverbatim %}
+                    	</li>
+                	</ul>
+            	</div>
+            	<div class="col-xs-6">
+                	<ul ui-on-Drop="onDrop($event,$data,women)">
+                    	<li ui-draggable="true" drag="woman" 
+                    	on-drop-success="dropSuccessHandler($event,$index,women)"
+                    	ng-repeat="woman in women track by $index">
+                        	{% verbatim %}{{ woman }}{% endverbatim %}
+                    	</li>
+                	</ul>
+            	</div>
+        	</div>
+	</div>
+</div>
 {% endblock %}

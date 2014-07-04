@@ -90,11 +90,11 @@ def charms_graphic(request):
 
     # Cargamos la librería AngujarJS junto con sus plugins
     render_js = ['angular', 'angular.sanitize', 'angular.resource',
-                 'angular.bootstrap']
+                 'angular.bootstrap', 'angular.draganddrop']
 
     # Cargamos las funciones de Tribus para AngularJS
     render_js += ['controllers.angular', 'services.angular',
-                  'elements.angular', 'search.angular',
+                  'elements.angular', 'charms.angular',
                   'navbar.angular']
 
     context["render_js"] = render_js

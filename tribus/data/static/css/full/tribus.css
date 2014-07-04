@@ -15519,3 +15519,20 @@ h2.ch-subtitle {
 .profile_info > h3 {
 	line-height: 0.8em;
 }
+
+.topRow{
+    margin-bottom : 30px;
+}
+
+
+.on-drag-enter{
+    background-color : #aaaaaa;
+}
+
+.on-drag-hover:before {
+  content: 'Drop him gently';
+  display: block;
+  color: white;
+  font-size: x-large;
+  font-weight: 800;
+}

@@ -16,7 +16,7 @@
                     	<li ui-draggable="true" drag="man" 
                     	on-drop-success="dropSuccessHandler($event,$index,men)"
                     	ng-repeat="man in men track by $index">
-                        	{% verbatim %}{{ man }}{% endverbatim %}
+                            <a>{% verbatim %}{{ man }}{% endverbatim %}</a>
                     	</li>
                 	</ul>
             	</div>
@@ -25,7 +25,7 @@
                     	<li ui-draggable="true" drag="woman" 
                     	on-drop-success="dropSuccessHandler($event,$index,women)"
                     	ng-repeat="woman in women track by $index">
-                        	{% verbatim %}{{ woman }}{% endverbatim %}
+                            <a>{% verbatim %}{{ woman }}{% endverbatim %}</a>
                     	</li>
                 	</ul>
             	</div>

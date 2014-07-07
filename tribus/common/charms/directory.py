@@ -26,7 +26,7 @@ import zipfile
 import tempfile
 
 from tribus.common.charms.base import CharmBase, get_revision
-from tribus.common.charms.bundle import CharmBundle
+
 from tribus.common.charms.config import ConfigOptions
 from tribus.common.charms.errors import InvalidCharmFile
 from tribus.common.charms.metadata import MetaData
@@ -154,6 +154,7 @@ class CharmDirectory(CharmBase):
             return True
 
     def as_bundle(self):
+        from tribus.common.charms.bundle import CharmBundle
         if self._temp_bundle is None:
             prefix = '%s-%d.charm.' % (self.metadata.name, self.get_revision())
             temp_file = tempfile.NamedTemporaryFile(prefix=prefix)

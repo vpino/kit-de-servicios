@@ -1,26 +1,5 @@
 #!/usr/bin/env bash
 
-debconf-set-selections ${PRESEED_DEBCONF}
-
-apt-get update
-apt-get install ${DEBIAN_RUN_DEPENDENCIES}
-apt-get install ${DEBIAN_BUILD_DEPENDENCIES}
-
-for i in ${CHANGE_PASSWD}; do
-	echo ${i} | chpasswd
-done
-
-for j in ${START_SERVICES}; do
-	service ${j} restart
-done
-
-easy_install pip
-pip install ${PYTHON_DEPENDENCIES}
-
-sudo -i -u postgres bash -c "psql -f ${PRESEED_DB}"
-ldapadd ${LDAP_ARGS} -f "${PRESEED_LDAP}"
-
-apt-get purge ${DEBIAN_BUILD_DEPENDENCIES}
 apt-get autoremove
 apt-get autoclean
 apt-get clean

@@ -10,7 +10,6 @@ from tribus.config.ldap import *
 
 djcelery.setup_loader()
 
-
 SITE_ID = 1
 
 DEBUG = True
@@ -156,6 +155,7 @@ INSTALLED_APPS = (
     'tribus.web.registration',
     'tribus.web.cloud',
     'tribus.web.profile',
+    'tribus.web.api',
     'tribus.web.admin',
 )
 

@@ -11,8 +11,8 @@
         	</div>
         
         	<div class="row">
-            	<div class="col-xs-6">
-                	<ul ui-on-Drop="onDrop($event,$data,men)">
+            	<div class="col-xs-1" ui-on-Drop="onDrop($event,$data,men)">
+                	<ul >
                     	<li ui-draggable="true" drag="man" 
                     	on-drop-success="dropSuccessHandler($event,$index,men)"
                     	ng-repeat="man in men track by $index">
@@ -20,8 +20,8 @@
                     	</li>
                 	</ul>
             	</div>
-            	<div class="col-xs-6">
-                	<ul ui-on-Drop="onDrop($event,$data,women)">
+            	<div class="col-xs-2" ui-on-Drop="onDrop($event,$data,women)">
+                	<ul >
                     	<li ui-draggable="true" drag="woman" 
                     	on-drop-success="dropSuccessHandler($event,$index,women)"
                     	ng-repeat="woman in women track by $index">

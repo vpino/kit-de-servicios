@@ -593,7 +593,7 @@ function CommentController($scope, $timeout, $modal, Comments){
     };
 };
 
-function CharmsController($scope, CharmsList){
+function CharmsController($scope, CharmsList, CharmMetadata ){
     $scope.men = [
         'John',
         'Jack',
@@ -609,7 +609,20 @@ function CharmsController($scope, CharmsList){
 
     var result = CharmsList.query({}, function (){
         $scope.servicio = result[0].charms;
-  
+
+        $scope.charms = [];
+
+        for(var i = 0; i < $scope.servicio.length; i++){
+            CharmMetadata.query({name: $scope.servicio[i]}, function(results){
+                console.log(results);
+                $scope.charms.push({
+                    name : results[0].name,
+                    desc : results[0].description,
+                    man : results[0].maintainer,
+                });
+                console.log($scope.charms);
+            });
+        }
     });
 
     $scope.addText = "";

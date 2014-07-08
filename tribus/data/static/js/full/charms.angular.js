@@ -3,8 +3,8 @@
 
 // Application -----------------------------------------------------------------
 
-var tribus = angular.module('tribus', ['ngDragDrop', 'ngSanitize', 'Search', 'ui.bootstrap']);
+var tribus = angular.module('tribus', ['ngDragDrop', 'ngSanitize', 'Search', 'ui.bootstrap','CharmsList']);
 
 // Controllers -----------------------------------------------------------------
 
-tribus.controller('CharmsController', ['$scope', CharmsController]);
+tribus.controller('CharmsController', ['$scope','CharmsList', CharmsController]);

@@ -9,9 +9,12 @@
                		Drag and drop between the two lists.
             	</h4>
         	</div>
-        
+
         	<div class="row">
             	<div class="col-xs-1" ui-on-Drop="onDrop($event,$data,men)">
+            	    <div ng-repeat= "charm in servicio">
+						<a>{% verbatim %}{{charm}}{% endverbatim %}</a>
+        			</div>
                 	<ul >
                     	<li ui-draggable="true" drag="man" 
                     	on-drop-success="dropSuccessHandler($event,$index,men)"

@@ -593,7 +593,7 @@ function CommentController($scope, $timeout, $modal, Comments){
     };
 };
 
-function CharmsController($scope){
+function CharmsController($scope, CharmsList){
     $scope.men = [
         'John',
         'Jack',
@@ -606,6 +606,11 @@ function CharmsController($scope){
         'Betty',
         'Mary'
     ];
+
+    var result = CharmsList.query({}, function (){
+        $scope.servicio = result[0].charms;
+  
+    });
 
     $scope.addText = "";
 

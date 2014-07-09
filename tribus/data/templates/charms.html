@@ -11,29 +11,36 @@
         	</div>
 
         	<div class="row">
-            	<div class="col-xs-1" ui-on-Drop="onDrop($event,$data,men)">
-            	    <div ng-repeat= "charm in charms">
-						<a>{% verbatim %}{{charm.name}}{% endverbatim %}</a> <br>
-						<a>{% verbatim %}{{charm.desc}}{% endverbatim %}</a> <br>
-						<a>{% verbatim %}{{charm.man}}{% endverbatim %}</a> <br>
-						<br> <br> <br> 
-        			</div>
-                	<ul >
-                    	<li ui-draggable="true" drag="man" 
-                    	on-drop-success="dropSuccessHandler($event,$index,men)"
-                    	ng-repeat="man in men track by $index">
-                            <a>{% verbatim %}{{ man }}{% endverbatim %}</a>
-                    	</li>
-                	</ul>
+
+            	<div class="col-xs-1">
+            	<!-- <div ui-draggable="true" drag="charm"
+                    	on-drop-success="dropSuccessHandler($event,$index,charm)"
+                    	ng-repeat= "charm in charms track by $index">
+					<a>{% verbatim %}{{charm.name}}{% endverbatim %}</a> <br>
+					<a>{% verbatim %}{{charm.desc}}{% endverbatim %}</a> <br>
+					<a>{% verbatim %}{{charm.man}}{% endverbatim %}</a> <br>
+					<br> <br> <br> <br> <br> <br>
+        		</div> -->
+                	<div>
+                    	<div ui-draggable="true" drag="man"
+                    	     ng-repeat="man in men track by $index">
+                            <div>
+                                {% verbatim %}{{ man }}{% endverbatim %}
+                            </div>
+                    	</div>
+                	</div>
             	</div>
-            	<div class="col-xs-2" ui-on-Drop="onDrop($event,$data,women)">
-                	<ul >
-                    	<li ui-draggable="true" drag="woman" 
-                    	on-drop-success="dropSuccessHandler($event,$index,women)"
-                    	ng-repeat="woman in women track by $index">
-                            <a>{% verbatim %}{{ woman }}{% endverbatim %}</a>
-                    	</li>
-                	</ul>
+            	<div class="col-xs-2" ui-on-Drop="onDrop($event,$data,service)">
+                	<div>
+                    	<div ui-draggable="true" drag="servicios"
+                    	     on-drop-success="dropSuccessHandler
+                                                    ($event,$index,service)"
+                    	     ng-repeat="servicios in service track by $index">
+                            <div>
+                                {% verbatim %}{{ servicios }}{% endverbatim %}
+                            <div/>
+                    	</div>
+                	</div>
             	</div>
         	</div>
 	</div>

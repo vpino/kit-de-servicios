@@ -118,7 +118,7 @@ function TypeaheadCtrl($scope, Search){
     $scope.getResults = function(inputvalue){
         Search.query({ q: inputvalue }, function(results){
             $scope.res = [];
-            	
+
             if (waffle.switch_is_active('cloud')){
                 if (results.objects[0].packages.length > 0) {
                     var packages = results.objects[0].packages;
@@ -132,7 +132,7 @@ function TypeaheadCtrl($scope, Search){
                     }
                 }
             }
-           	
+
             if (waffle.switch_is_active('profile')){
                 if (results.objects[0].users.length > 0) {
                     var users = results.objects[0].users;
@@ -600,12 +600,7 @@ function CharmsController($scope, CharmsList, CharmMetadata ){
         'Mark',
         'Ernie'
     ];
-    $scope.women = [
-        'Jane',
-        'Jill',
-        'Betty',
-        'Mary'
-    ];
+    $scope.service = [''];
 
     var result = CharmsList.query({}, function (){
         $scope.servicio = result[0].charms;

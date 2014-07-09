@@ -15531,7 +15531,7 @@ h2.ch-subtitle {
 .on-drag-hover:before {
   content: 'Drop him gently';
   display: block;
-  color: white;
+  color: black;
   font-size: x-large;
   font-weight: 800;
 }
@@ -15545,7 +15545,7 @@ h2.ch-subtitle {
     right: 0;
     z-index: 601;
     right: auto;
-    background: #ebecee url(/juju-ui/assets/images/non-sprites/paper-bg.jpg) repeat 0 0;
+    background: #f2f2e8 url(/juju-ui/assets/images/non-sprites/paper-bg.jpg) repeat 0 0;
     width: 290px;
     border-right: 1px solid #a5a5a5;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
@@ -15560,7 +15560,7 @@ h2.ch-subtitle {
     right: 0;
     z-index: 601;
     left: auto;
-    background: #ebecee url(/juju-ui/assets/images/non-sprites/paper-bg.jpg) repeat 0 0;
+    background: #f2f2e8 url(/juju-ui/assets/images/non-sprites/paper-bg.jpg) repeat 0 0;
     left: 290px;
     border-right: 1px solid #a5a5a5;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);

@@ -4,45 +4,38 @@
 {% block content %}
 <div class="jumbotron">
 	<div class="container" ng-controller="CharmsController">
-        	<div class="row topRow">
-            	<h4 class="heading">
-               		Drag and drop between the two lists.
-            	</h4>
-        	</div>
-
-        	<div class="row">
-
-            	<div class="col-xs-1">
+        <div class="row">
+            <div class="col-xs-1">
             	<!-- <div ui-draggable="true" drag="charm"
                     	on-drop-success="dropSuccessHandler($event,$index,charm)"
                     	ng-repeat= "charm in charms track by $index">
 					<a>{% verbatim %}{{charm.name}}{% endverbatim %}</a> <br>
-					<a>{% verbatim %}{{charm.desc}}{% endverbatim %}</a> <br>
-					<a>{% verbatim %}{{charm.man}}{% endverbatim %}</a> <br>
+					<a>{% verbatim %}{{charm.description}}{% endverbatim %}</a> <br>
+					<a>{% verbatim %}{{charm.maintainer}}{% endverbatim %}</a> <br>
 					<br> <br> <br> <br> <br> <br>
         		</div> -->
-                	<div>
-                    	<div ui-draggable="true" drag="man"
-                    	     ng-repeat="man in men track by $index">
-                            <div>
-                                <span>{% verbatim %}{{ man }}{% endverbatim %}</span>
-                            </div>
-                    	</div>
+                <img class="logo" src="/static/img/logo-min.svg"></img>
+                <div ui-draggable="true" drag="listservicio"
+                        ng-repeat="listservicio in serviciolist track by $index">
+                    <div>
+                        <span>
+                            {% verbatim %}{{ listservicio }}{% endverbatim %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <rect class="col-xs-2" ui-on-Drop="onDrop($event,$data,serviceinstall)">
+                <div ui-draggable="true" drag="serviciosinstall"
+                    	on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
+                    	ng-repeat="serviciosinstall in serviceinstall track by $index">
+                    <div>
+                        <span my-draggable>
+                            {% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                        </span>
                 	</div>
             	</div>
-            	<div class="col-xs-2" ui-on-Drop="onDrop($event,$data,serviceinstall)">
-                	<div>
-                    	<div ui-draggable="true" drag="servicios"
-                    	     on-drop-success="dropSuccessHandler
-                                                    ($event,$index,serviceinstall)"
-                    	     ng-repeat="servicios in serviceinstall track by $index">
-                            <div>
-                                <span my-draggable>{% verbatim %}{{ servicios }}{% endverbatim %}</span>
-                            <div/>
-                    	</div>
-                	</div>
-            	</div>
-        	</div>
-	</div>
+	        </rect>
+        </div>
+    </div>
 </div>
 {% endblock %}

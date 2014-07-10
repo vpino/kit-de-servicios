@@ -603,19 +603,20 @@ function CharmsController($scope, CharmsList, CharmMetadata ){
     $scope.serviceinstall = [''];
 
     var result = CharmsList.query({}, function (){
-        $scope.servicio = result[0].charms;
-
+        //  var ruta_base = 'tribus/tribus/data/charms/'
+        $scope.serviciolist = result[0].charms;
         $scope.charms = [];
 
-        for(var i = 0; i < $scope.servicio.length; i++){
-            CharmMetadata.query({name: $scope.servicio[i]}, function(results){
+        for(var i = 0; i < $scope.serviciolist.length; i++){
+            CharmMetadata.query({name: $scope.serviciolist[i]}, function(results){
                 console.log(results);
                 $scope.charms.push({
                     name : results[0].name,
-                    desc : results[0].description,
-                    man : results[0].maintainer,
+                    description : results[0].description,
+                    maintainer : results[0].maintainer,
+                    //icon : ruta_base + results[0].name + '/icon.svg'
                 });
-                console.log($scope.charms);
+                // console.log($scope.charms);
             });
         }
     });

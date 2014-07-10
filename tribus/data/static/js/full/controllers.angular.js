@@ -600,7 +600,7 @@ function CharmsController($scope, CharmsList, CharmMetadata ){
         'Mark',
         'Ernie'
     ];
-    $scope.service = [''];
+    $scope.serviceinstall = [''];
 
     var result = CharmsList.query({}, function (){
         $scope.servicio = result[0].charms;

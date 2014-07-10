@@ -25,19 +25,19 @@
                     	<div ui-draggable="true" drag="man"
                     	     ng-repeat="man in men track by $index">
                             <div>
-                                {% verbatim %}{{ man }}{% endverbatim %}
+                                <span>{% verbatim %}{{ man }}{% endverbatim %}</span>
                             </div>
                     	</div>
                 	</div>
             	</div>
-            	<div class="col-xs-2" ui-on-Drop="onDrop($event,$data,service)">
+            	<div class="col-xs-2" ui-on-Drop="onDrop($event,$data,serviceinstall)">
                 	<div>
                     	<div ui-draggable="true" drag="servicios"
                     	     on-drop-success="dropSuccessHandler
-                                                    ($event,$index,service)"
-                    	     ng-repeat="servicios in service track by $index">
+                                                    ($event,$index,serviceinstall)"
+                    	     ng-repeat="servicios in serviceinstall track by $index">
                             <div>
-                                {% verbatim %}{{ servicios }}{% endverbatim %}
+                                <span my-draggable>{% verbatim %}{{ servicios }}{% endverbatim %}</span>
                             <div/>
                     	</div>
                 	</div>

@@ -15567,6 +15567,7 @@ h2.ch-subtitle {
     fill-opacity: 0;
     cursor: move;
     pointer-events: all;
+    overflow: hidden;
 }
 
 .row {

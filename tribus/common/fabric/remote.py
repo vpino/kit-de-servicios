@@ -105,9 +105,22 @@ def install_docker():
 
 def get_charm_base_image():
     env.baseimage = 'phusion/baseimage'
+    env.tmpcntname = 'tmpcntname'
     with nested(hide('warnings', 'stderr', 'running'),
         settings(warn_only=True)):
         sudo('bash -c ' '"docker.io pull %(baseimage)s"' % env)
+
+        # Para propositos de pruebas durante el desarrollo
+
+        sudo(command='docker.io run -it --name %(tmpcntname)s '
+                     '%(baseimage)s bash -c "apt-get update"' % env)
+
+        # Hacer commit en una imagen
+        sudo(command='docker.io commit %(tmpcntname)s '
+                     '%(baseimage)s' % env)
+
+        # Borrar el contenedor
+        sudo(command='docker.io rm %(tmpcntname)s' % env)
 
 
 def docker_kill_all_remote_containers():
@@ -235,8 +248,8 @@ def create_service_image():
     env.install_place = os.path.join('/tmp', env.charm_name, 'install')
     env.start_place = os.path.join('/tmp', env.charm_name, 'start')
     env.stop_place = os.path.join('/tmp', env.charm_name, 'stop')
-    env.baseimage = 'phusion/baseimage'
-    env.charm_apt_deps = 'python-apt python-yaml python-yaml'
+    env.baseimage = 'phusion/baseimage:latest'
+    env.charm_apt_deps = 'python-apt python-yaml python-pip python-dev libffi-dev libssl-dev libzookeeper-st-dev libzookeeper-mt2'
     env.charm_py_deps = 'charmhelpers'
 
     with hide('warnings', 'stderr', 'running'):
@@ -245,7 +258,7 @@ def create_service_image():
             # Instalar python en el contenedor y ejecutar script de instalacion
             sudo(command='docker.io run -it --name %(charm_name)s-base '
                  '--volume %(mount_place)s '
-                 '%(baseimage)s bash -c "apt-get update && apt-get install -y '
+                 '%(baseimage)s bash -c "apt-get install -y '
                  '%(charm_apt_deps)s && pip install %(charm_py_deps)s && '
                  'cd %(charm_place)s && ./install "' % env)
 

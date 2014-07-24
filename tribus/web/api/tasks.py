@@ -79,6 +79,7 @@ def queue_charm_deploy(*args):
 
     if docker_exists == 0:
         execute(put_charm_install)
+        #execute(get_charm_base_image)
         execute(create_service_image)
 
     elif docker_exists == 1:

@@ -108,18 +108,21 @@ def get_charm_base_image():
     env.tmpcntname = 'tmpcntname'
     with nested(hide('warnings', 'stderr', 'running'),
         settings(warn_only=True)):
-        sudo('bash -c ' '"docker.io pull %(baseimage)s"' % env)
+        log.info("Obteniendo imagen base")
+        sudo('bash -c "docker.io pull %(baseimage)s"' % env)
 
         # Para propositos de pruebas durante el desarrollo
-
+        log.info("Actualizando repositorio de la imagen base")
         sudo(command='docker.io run -it --name %(tmpcntname)s '
                      '%(baseimage)s bash -c "apt-get update"' % env)
 
         # Hacer commit en una imagen
+        log.info("Guardando cambios")
         sudo(command='docker.io commit %(tmpcntname)s '
                      '%(baseimage)s' % env)
 
         # Borrar el contenedor
+        log.info("Borrando contenedor temporal")
         sudo(command='docker.io rm %(tmpcntname)s' % env)
 
 
@@ -248,13 +251,14 @@ def create_service_image():
     env.install_place = os.path.join('/tmp', env.charm_name, 'install')
     env.start_place = os.path.join('/tmp', env.charm_name, 'start')
     env.stop_place = os.path.join('/tmp', env.charm_name, 'stop')
-    env.baseimage = 'phusion/baseimage:latest'
-    env.charm_apt_deps = 'python-apt python-yaml python-pip python-dev libffi-dev libssl-dev libzookeeper-st-dev libzookeeper-mt2'
-    env.charm_py_deps = 'charmhelpers'
+    #env.baseimage = 'phusion/baseimage:latest'
+    env.baseimage = 'postgresql-base:base'
+    env.charm_apt_deps = 'python-apt python-yaml python-pip python-dev libffi-dev libssl-dev libzookeeper-mt2 python-zookeeper libzookeeper-mt-dev '
+    env.charm_py_deps = 'charmhelpers juju'
 
     with hide('warnings', 'stderr', 'running'):
-        base_exists = sudo('%(docker)s inspect %(charm_name)s-base:base' % env)
-        if base_exists.return_code == 1:
+        #base_exists = sudo('%(docker)s inspect %(charm_name)s-base:base' % env)
+        #if base_exists.return_code == 1:
             # Instalar python en el contenedor y ejecutar script de instalacion
             sudo(command='docker.io run -it --name %(charm_name)s-base '
                  '--volume %(mount_place)s '
@@ -269,17 +273,17 @@ def create_service_image():
             # Borrar el contenedor
             sudo(command='docker.io rm %(charm_name)s-base ' % env)
 
-        env.service_base_image = env.charm_name + '-base:base'
-        env.instance = 0
+        # env.service_base_image = env.charm_name + '-base:base'
+        # env.instance = 0
 
-        # Asignar numero de instancia correcto
-        while sudo('%(docker)s inspect '
-                   '%(charm_name)s-%(instance)s' % env).return_code == 0:
-            env.instance += 1
+        # # Asignar numero de instancia correcto
+        # while sudo('%(docker)s inspect '
+        #            '%(charm_name)s-%(instance)s' % env).return_code == 0:
+        #     env.instance += 1
 
-        # Hacer correr el contenedor
-        with cd(env.charm_place):
-            sudo('docker.io run -it --name %(charm_name)s-%(instance)s '
-                 '--volume %(mount_place)s '
-                 '%(service_base_image)s bash -c "cd %(charm_place)s '
-                 '&& ./start && tail -f /dev/null"' % env)
+        # # Hacer correr el contenedor
+        # with cd(env.charm_place):
+        #     sudo('docker.io run -it --name %(charm_name)s-%(instance)s '
+        #          '--volume %(mount_place)s '
+        #          '%(service_base_image)s bash -c "cd %(charm_place)s '
+        #          '&& ./start && tail -f /dev/null"' % env)

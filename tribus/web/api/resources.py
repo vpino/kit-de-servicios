@@ -362,8 +362,15 @@ class CharmConfigResource(Resource):
 
         CHARM = CharmDirectory(get_path([CHARMSDIR, charm_name]))
 
+        config = {}
+
+        for k, v in CHARM.config._data.iteritems():
+            default = v.get('default', None)
+            if default:
+                config[k] = default
+
         return [CharmObject({
-                    'config': CHARM.config._data,
+                    'config': config
                 })]
 
     def obj_get_list(self, bundle, **kwargs):

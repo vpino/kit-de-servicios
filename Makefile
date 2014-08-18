@@ -70,6 +70,17 @@ kill_tribus_images: dependencies
 	@$(FAB) docker_kill_tribus_images
 
 
+# DEVEL TASKS ------------------------------------------------------------------
+
+kill_dev_containers: dependencies
+
+	@$(FAB) docker_kill_dev_containers
+
+kill_dev_images: dependencies
+
+	@$(FAB) docker_kill_dev_images
+
+
 # COMMON TASKS -----------------------------------------------------------------
 # ------------------------------------------------------------------------------
 

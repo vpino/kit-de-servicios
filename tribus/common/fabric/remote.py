@@ -135,27 +135,9 @@ def docker_kill_all_remote_containers():
     with hide('warnings', 'stderr', 'running'):
 
         log.info('Listing available containers ...')
-
         containers = sudo(('bash -c "%(docker)s ps -aq"') % env).split('\n')
-
         for container in containers:
-
             if container:
-
-                # log.info('Checking if container "%s" exists ...' % container)
-
-
-                # var = sudo(('bash -c "%s inspect %s"') % (env.docker, container))
-
-                # print var, type(var)
-                # print dir(var)
-
-                # inspect = json.loads(sudo(('bash -c '
-                #                             '"%s inspect %s"') % (env.docker,
-                #                                                   container)))
-                
-                # if inspect:
-
                     log.info('Destroying container "%s" ...' % container)
 
                     sudo(('bash -c '
@@ -171,24 +153,11 @@ def docker_kill_all_remote_images():
     .. versionadded:: 0.2
     """
     with hide('warnings', 'stderr', 'running'):
-
         log.info('Listing available images ...')
-
         images = sudo(('sudo bash -c "%(docker)s images -aq"') % env,
                        ).split('\n')
-
         for image in images:
-
             if image:
-
-                # log.info('Checking if image "%s" exists ...' % image)
-
-                # inspect = json.loads(sudo(('sudo bash -c '
-                #                             '"%s inspect %s"') % (env.docker,
-                #                                                   image),
-                #                            ))
-                # if inspect:
-
                     log.info('Destroying image "%s" ...' % image)
 
                     sudo(('sudo bash -c '

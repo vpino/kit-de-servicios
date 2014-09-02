@@ -80,6 +80,10 @@ kill_dev_images: dependencies
 
 	@$(FAB) docker_kill_dev_images
 
+generate_consul_image: dependencies
+
+	@$(FAB) docker_create_service_cluster
+
 
 # COMMON TASKS -----------------------------------------------------------------
 # ------------------------------------------------------------------------------

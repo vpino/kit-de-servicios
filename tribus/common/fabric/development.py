@@ -20,7 +20,9 @@
 
 import os
 import json
+from tribus import BASEDIR
 from contextlib import nested
+from tribus.common.utils import get_path
 from tribus.common.logger import get_logger
 from fabric.api import run, env, settings, sudo, hide, put, cd
 
@@ -78,3 +80,29 @@ def docker_kill_dev_images():
                     if tag == "dev":
                         log.info('Deleting image %s ...' % image)
                         sudo('%s rmi -f %s' % (env.docker, image))
+
+
+def docker_create_service_cluster():
+    """
+    Crea un cluster de consul para un servicio.
+
+    .. versionadded:: 0.2
+    """
+
+    env.port = 22
+    env.target_img = "consul:test"
+    env.build_dockerfile = get_path([BASEDIR, 'tribus', 'data', 'consul'])
+
+    with hide('warnings', 'stderr', 'running'):
+        # Deben agregarse algunas verificaciones previas
+        # por ejemplo, debe existir la imagen base para los 
+        # nodos, de lo contrario debe crearse
+
+        # - Necesito asignar un nombre a la imagen
+        # - Necesito especificar de donde se construye la imagen
+
+        # Para no ralentizar mas el desarrollo, generare la imagen a partir
+        # de un Dockerfile a pesar de que pueden existir otras tecnicas 
+        # mas eficientes para generar las imagenes.
+
+        bimage = sudo('%(docker)s build -t %(target_img)s %(build_dockerfile)s' % env)

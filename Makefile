@@ -84,6 +84,13 @@ generate_consul_image: dependencies
 
 	@$(FAB) docker_create_service_cluster
 
+generate_comp_image: dependencies
+
+	@$(FAB) create_component_image
+
+start_service: dependencies
+
+	@$(FAB) start_service	
 
 # COMMON TASKS -----------------------------------------------------------------
 # ------------------------------------------------------------------------------

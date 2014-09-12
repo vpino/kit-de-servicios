@@ -5,16 +5,16 @@
 <div class="jumbotron">
 	<div class="container" ng-controller="CharmsController">
         <div class="row">
-            <div class="col-xs-1">
-            	<!-- <div ui-draggable="true" drag="charm"
+            <!-- <div class="col-xs-1">
+            	<div ui-draggable="true" drag="charm"
                     	on-drop-success="dropSuccessHandler($event,$index,charm)"
                     	ng-repeat= "charm in charms track by $index">
 					<a>{% verbatim %}{{charm.name}}{% endverbatim %}</a> <br>
 					<a>{% verbatim %}{{charm.description}}{% endverbatim %}</a> <br>
 					<a>{% verbatim %}{{charm.maintainer}}{% endverbatim %}</a> <br>
 					<br> <br> <br> <br> <br> <br>
-        		</div> -->
-                <img class="logo" src="/static/img/logo-min.svg"></img>
+        		</div> 
+                    <img class="logo" src="/static/img/logo-min.svg"></img>
                 <div ui-draggable="true" drag="listservicio"
                         ng-repeat="listservicio in serviciolist track by $index">
                     <div>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <rect class="col-xs-2" ui-on-Drop="onDrop($event,$data,serviceinstall)">
+            <div class="col-xs-2" ui-on-Drop="onDrop($event,$data,serviceinstall)">
                 <div ui-draggable="true" drag="serviciosinstall"
                     	on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
                     	ng-repeat="serviciosinstall in serviceinstall track by $index">
@@ -34,7 +34,20 @@
                         </span>
                 	</div>
             	</div>
-	        </rect>
+	        </div> -->
+            <panzoomwidget config="panzoomConfig" model="panzoomModel" style="position:absolute;top:10px;left:10px;z-index:1"></panzoomwidget>
+
+            <panzoom config="panzoomConfig" model="panzoomModel" style="width:800px; height: 600px;" ui-on-Drop="onDrop($event,$data,women)">
+         
+        
+         <h1 my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()">hola:S</h1>
+
+         <svg style="position:absolute" width="800px" height="600px">
+            <rect ng-repeat="rect in rects" ng-attr-x="{{rect.x}}" ng-attr-y="{{rect.y}}" ng-attr-width="{{rect.width}}" ng-attr-height="{{rect.height}}" rx="10" ry="10" style="fill:none;stroke-width:2;stroke:rgb(255,0,0)"/>
+        </svg>
+             
+       </panzoom>
+
         </div>
     </div>
 </div>

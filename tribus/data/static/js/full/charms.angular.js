@@ -3,12 +3,14 @@
 
 // Application -----------------------------------------------------------------
 
-var tribus = angular.module('tribus', ['ngDragDrop', 'ngSanitize', 'Search',
-									   'ui.bootstrap','CharmsList','CharmMetadata']);
+var tribus = angular.module('tribus', ['ngDragDrop', 'ngPanzoom', 'ngPanzoomwidget', 'ngSanitize', 'Search',
+									   'ui.bootstrap', 'CharmsList', 
+                     'CharmMetadata']);
 
 // Controllers -----------------------------------------------------------------
 
-tribus.controller('CharmsController', ['$scope','CharmsList','CharmMetadata', CharmsController]);
+tribus.controller('CharmsController', ['$scope','CharmsList','CharmMetadata',
+                                       CharmsController]);
 
 tribus.directive('myDraggable', ['$document', function($document) {
       return function(scope, element, attr) {

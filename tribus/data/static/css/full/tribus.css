@@ -15538,7 +15538,7 @@ h2.ch-subtitle {
 
 .col-xs-1 {
     margin-top: 40px;
-    
+    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
@@ -15581,8 +15581,14 @@ h2.ch-subtitle {
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none; }
-  .panzoomwidget .zoom-button {
+  user-select: none;
+  position:absolute;
+  top:10%;
+  left:95%;
+  z-index:1;
+}
+
+.panzoomwidget .zoom-button{
     text-align: center;
     height: 20px;
     width: 100%;
@@ -15593,17 +15599,25 @@ h2.ch-subtitle {
     -moz-border-radius: 2px;
     border-radius: 2px;
     -webkit-box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
-    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2); }
-  .panzoomwidget .zoom-button:hover {
-    background-color: #ccc; }
-  .panzoomwidget .zoom-level {
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.panzoomwidget .zoom-button:hover{
+    background-color: #ccc;
+}
+
+.panzoomwidget .zoom-level{
     width: 100%;
     border-left: 2px solid black;
-    margin-left: 10px; }
-  .panzoomwidget .zoom-slider {
+    margin-left: 10px;
+}
+
+.panzoomwidget .zoom-slider{
     position: relative;
-    cursor: hand; }
-  .panzoomwidget .zoom-slider-widget {
+    cursor: hand;
+}
+
+.panzoomwidget .zoom-slider-widget{
     position: absolute;
     width: 20px;
     background-color: white;
@@ -15611,8 +15625,18 @@ h2.ch-subtitle {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
-    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2); }
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
 
 .pan-zoom-frame {
     border: 2px solid black;
+}
+
+.panzoom{
+    background-image: url('/static/img/pattern_tile.svg');
+    width:100%; 
+    height: 500px;
+    left:16%;
+    position: absolute;
+    display: inline-block;
 }

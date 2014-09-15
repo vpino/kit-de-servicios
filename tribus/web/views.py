@@ -94,9 +94,8 @@ def charms_graphic(request):
                  ]
 
     # Cargamos las funciones de Tribus para AngularJS
-    render_js += ['controllers.angular', 'services.angular',
-                  'elements.angular', 
-                  'charms.angular','panzoom.angular','panzoomwidget.angular',  'navbar.angular'
+    render_js += ['controllers.angular', 'services.angular', 'elements.angular',
+                  'charms.angular', 'panzoom.angular', 'panzoomwidget.angular', 'navbar.angular'
                   ]
 
     context["render_js"] = render_js

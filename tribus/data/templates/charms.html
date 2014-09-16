@@ -20,9 +20,13 @@
                 <div ui-draggable="true" drag="listservicio"
                         ng-repeat="listservicio in serviciolist track by $index">
                     <div>
-                        <h1>
+
+                        <div class="container-charms">
+                            <div class="contentx" back-img='/static/img/charms-icon/{% verbatim %}{{ listservicio }}{% endverbatim %}.svg'>
                             {% verbatim %}{{ listservicio }}{% endverbatim %}
-                        </h1>
+                            </div>
+                        </div>
+                    
                     </div>
                 </div>
             </div>
@@ -47,7 +51,12 @@
                         <div ui-draggable="true" drag="serviciosinstall" 
                         on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
                         ng-repeat="serviciosinstall in serviceinstall track by $index">
-                            <h1 my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()">{% verbatim %}{{ serviciosinstall }}{% endverbatim %}</h1>
+
+                            <div class="container-charms">
+                                <div class="contentx" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                                </div>
+                            </div>
+                        
                         </div>
                     </div>
                 </div>

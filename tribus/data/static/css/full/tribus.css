@@ -15640,3 +15640,16 @@ h2.ch-subtitle {
     position: absolute;
     display: inline-block;
 }
+
+.container-charms {
+    display: inline-block;
+    margin: 10px 10px;
+    /*width: 100px;
+    left: 100px;*/
+    text-align: center;
+}
+
+.contentx{
+    width: 95px;
+    height: 95px;
+}

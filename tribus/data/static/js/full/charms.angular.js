@@ -12,6 +12,15 @@ var tribus = angular.module('tribus', ['ngDragDrop', 'ngPanzoom', 'ngPanzoomwidg
 tribus.controller('CharmsController', ['$scope','CharmsList','CharmMetadata',
                                        CharmsController]);
 
+tribus.directive('backImg', function(){
+    return function(scope, element, attrs){
+        var url = attrs.backImg;
+        element.css({
+            'background-image': 'url(' + url +')'
+        });
+    };
+});
+
 tribus.directive('myDraggable', ['$document', function($document) {
       return function(scope, element, attr) {
         var startX = 0, startY = 0, x = 0, y = 0;

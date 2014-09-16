@@ -604,20 +604,24 @@ function CharmsController($scope, CharmsList, CharmMetadata ){
     $scope.serviceinstall = [''];
 
     var result = CharmsList.query({}, function (){
-        //  var ruta_base = 'tribus/tribus/data/charms/'
+        
+        var ruta_base = 'tribus/tribus/data/charms/';
+        var icon = '/icon.svg'
+        
         $scope.serviciolist = result[0].charms;
         $scope.charms = [];
 
         for(var i = 0; i < $scope.serviciolist.length; i++){
             CharmMetadata.query({name: $scope.serviciolist[i]}, function(results){
-                //console.log(results);
+                console.log(results);
                 $scope.charms.push({
                     name : results[0].name,
                     description : results[0].description,
                     maintainer : results[0].maintainer,
-                    //icon : ruta_base + results[0].name + '/icon.svg'
+                    icon : ruta_base + results[0].name + icon,
+                    summary : results[0].summary
                 });
-                // console.log($scope.charms);
+                //console.log($scope.charms);
             });
         }
     });

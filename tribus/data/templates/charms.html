@@ -10,6 +10,8 @@
                     	on-drop-success="dropSuccessHandler($event,$index,charm)"
                     	ng-repeat= "charm in charms track by $index">
 					<a>{% verbatim %}{{charm.name}}{% endverbatim %}</a> <br>
+                    <a>{% verbatim %}{{charm.summary}}{% endverbatim %}</a> <br>
+                    <a>{% verbatim %}{{charm.icon}}{% endverbatim %}</a> <br>
 					<a>{% verbatim %}{{charm.description}}{% endverbatim %}</a> <br>
 					<a>{% verbatim %}{{charm.maintainer}}{% endverbatim %}</a> <br>
 					<br> <br> <br> <br> <br> <br>

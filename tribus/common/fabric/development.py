@@ -20,66 +20,17 @@
 
 import os
 import json
+import requests
+import nmap
+import time
 from tribus import BASEDIR
 from contextlib import nested
 from tribus.common.utils import get_path
 from tribus.common.logger import get_logger
 from fabric.api import run, env, settings, sudo, hide, put, cd
 
+
 log = get_logger()
-
-
-def docker_kill_dev_containers():
-    """
-    Destroy all devel containers listed with ``docker ps -aq``.
-
-    .. versionadded:: 0.2
-    """
-
-    env.port = 22
-
-    with hide('warnings', 'stderr', 'running', 'stdout'):
-
-        log.info('Listing development containers ...')
-        # Elimino los caracteres \r \n para dejar 
-        # solo los hash de los contendores
-        # Hay que hacer un test de lo que bota docker.io ps -aq
-        containers = sudo('%(docker)s ps -aq' % env).split("\r\n")
-
-        for container in containers:
-            cont = sudo('%s inspect %s' % (env.docker, container))
-            if cont.return_code == 0:
-                jcont = json.loads(cont)
-                if 'dev' in jcont[0]['Name']:
-                    log.info('Deleting containers %s ...' % container)
-                    sudo('%s stop --time 1 %s' % (env.docker, container))
-                    sudo('%s rm -fv %s' % (env.docker, container))
-
-
-def docker_kill_dev_images():
-    """
-    Destroy all devel images listed with ``docker images -q``.
-
-    .. versionadded:: 0.2
-    """
-
-    env.port = 22
-
-    with hide('warnings', 'stderr', 'running', 'stdout'):
-
-        log.info('Listing development images ...')
-        
-        images = sudo('%(docker)s images -q' % env).split("\r\n")
-        
-        for image in images:
-            cont = sudo('%s inspect %s' % (env.docker, image))
-            if cont.return_code == 0:
-                jimg = json.loads(cont)
-                if ":" in jimg[0]['ContainerConfig']['Image']:
-                    img_name, tag = jimg[0]['ContainerConfig']['Image'].split(":")
-                    if tag == "dev":
-                        log.info('Deleting image %s ...' % image)
-                        sudo('%s rmi -f %s' % (env.docker, image))
 
 
 def docker_create_service_cluster():
@@ -108,77 +59,105 @@ def docker_create_service_cluster():
         bimage = sudo('%(docker)s build -t %(target_img)s %(build_dockerfile)s' % env)
 
 
-def create_component_image():
+def deploy_test_service():
     """
-    Crea una imagen de un componente de un servicio.
+    Este metodo despliega un servicio.
 
-    Para crear un componente necesito el nombre del componente.
+    Premisa #1: Por cada componente se crea la imagen y se
+    inicia el contenedor.
+    
+    Secuencia de despliegue para mediawiki:
 
-    Para construir la imagen de los componentes utilizare dockerfiles
-    ubicados en el directorio correspondiente a cada charm.
+    - Construir imagen del servidor de consul
+    - Arrancar imagen del servidor de consul
+    - Construir la imagen de mysql
+    - Arrancar la imagen de mysql
+    - Crear la imagen de mediawiki
+    - Arrancar la imagen de mediawiki
 
     .. versionadded:: 0.2
     """
 
     env.port = 22
-    #env.comp_name = 'mysql'
-    env.comp_name = 'mediawiki'
-    env.df_path = get_path([BASEDIR, 'tribus', 'data', 'charms', env.comp_name])
-
-    with hide('warnings', 'stderr', 'running'):
-
-        base_exists = sudo('%(docker)s inspect consul:test' % env)
-
-        if base_exists.return_code == 0:
-            cimage = sudo('%(docker)s build -t %(comp_name)s:test %(df_path)s' % env)
-
-
-def deploy_service():
-    """
-    Crea la infraestructura necesaria para un servicio.
-    En esta funcion debe estar la secuencia a seguir para conectar
-    los componentes de un servicio entre si e iniciarlo.
-
-    Aqui necesito una lista de los componentes que integran este servicio.
+    env.short_name = 'wiki'
+    env.long_name = 'Wiki MPPAT'
     
-    .. versionadded:: 0.2
-    """
+    components = {
+        1 : {'name' : 'mysql',
+             'role' : 'db',
+             'imgname' : 'mysql:test',
+             'ports' : '-p 3306:3306',
+             'dockerfile' : get_path([BASEDIR, 'tribus', 'data', 'charms', 'mysql'])
+        },
+
+        2 : {'name' : 'mediawiki',
+             'imgname' : 'mediawiki:test',
+             'ports' : '-p 80:80',
+             'dockerfile' : get_path([BASEDIR, 'tribus', 'data', 'charms', 'mediawiki'])
+        },
+    }
+
+    consul_server = {
+        'name' : 'consul-server',
+        'imgname' : 'consul-server:test',
+        'ports': '-p 8300:8300 -p 8301:8301 -p 8301:8301/udp '\
+                 '-p 8302:8302 -p 8302:8302/udp -p 8400:8400 '\
+                 '-p 8500:8500 -p 8600:53/udp',
+        'dockerfile' : get_path([BASEDIR, 'tribus', 'data', 'consul'])
+    }
 
     with hide('warnings', 'stderr', 'running'):
+        # Verificar si existe una imagen de consul en la mauqina 
+        # donde se hara el despliegue
+        consul_exists = sudo('docker.io inspect %(imgname)s ' % consul_server)
 
-        base_exists = sudo('%(docker)s inspect %(charm_name)s-base:base' % env)
-
-
-def start_service():
-    """
-    Inicia los componentes de un servicio.
-    
-    .. versionadded:: 0.2
-    """
-
-    env.port = 22
-    env.serv_name = 'servicioA'
-    env.comp_list = ['mysql']
-    env.cluster_ports = '-p 8300:8300 -p 8301:8301 -p 8301:8301/udp '\
-    '-p 8302:8302 -p 8302:8302/udp -p 8400:8400 -p 8500:8500 -p 8600:53/udp'
-
-    # Los puertos que utiliza el servicio se deben obtener a traves de
-    # alguna configuracion externa
-
-    with hide('warnings', 'stderr', 'running'):
-
-        rc = sudo('%(docker)s run -d %(cluster_ports)s '
-                  '-h %(serv_name)s-server --name %(serv_name)s-server ' # -v /data:/data
-                  'consul:test -server -bootstrap' % env)
-
-        if rc.return_code == 0:
-            env.join_ip = sudo('%(docker)s inspect -f '
-                     '"{{.NetworkSettings.IPAddress}}" '
-                     '%(serv_name)s-server ' % env)
-
-            for comp in env.comp_list:
-                env.comp = comp
-                sudo('%(docker)s run -d -p 3306:3306 '
-                     '-h %(comp)s --name %(comp)s ' # -v /data:/data
-                     '%(comp)s:test -join %(join_ip)s' % env)
+        if consul_exists.return_code == 1:
+            # No existe la imagen, procedemos a crearla
+            sudo('docker.io build -t %(imgname)s '\
+                 '%(dockerfile)s' % consul_server)
+        elif consul_exists.return_code > 1:
+            print "No se ha podido iniciar consul"
+            print consul_exists.return_code
+            return
         
+        # Si la imagen existe, arrancamos el contenedor
+        sudo('docker.io run -d %(ports)s '
+             '-h %(name)s --name %(name)s '
+             '%(imgname)s -server -bootstrap' % consul_server)
+        
+        # Obtener la IP del servidor de consul
+        consul_addr = sudo('%(docker)s inspect -f '
+                           '"{{.NetworkSettings.IPAddress}}" '
+                           'consul-server ' % env)
+
+        # Aqui se publican los datos de la relacion en consul
+        service_url = "http://%s:8500/v1/kv/%s/" % (consul_addr, env.short_name)
+
+        service_key_reg = False
+
+        while service_key_reg != True:
+            try:
+                time.sleep(2)
+                # flags=1 indica que es un nuevo servicio que se configurara
+                service_key_reg = requests.put(service_url + "?flags=1").json()
+            except:
+                print "Aun no es posible escribir en la api, espere un poco..."
+
+        # Aparentemente siempre salen en orden
+        for n, component in components.items():
+            comp_exists = sudo('docker.io inspect %(imgname)s ' % component)
+
+            if comp_exists.return_code == 1:
+                if component.get('role') == 'db':
+                    requests.put(service_url + "db_node_name", component['name'])
+                sudo('docker.io build -t %(imgname)s '
+                    '%(dockerfile)s' % component)
+
+            component['join_addr'] = consul_addr
+            
+            sudo('docker.io run -d %(ports)s '
+                 '-h %(name)s --name %(name)s '
+                 '%(imgname)s -join %(join_addr)s ' % component)
+
+        # Esto indica que el servicio ya fue instalado y configurado correctamente
+        requests.put(service_url + "?flags=2")

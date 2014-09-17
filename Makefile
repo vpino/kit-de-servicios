@@ -92,6 +92,10 @@ start_service: dependencies
 
 	@$(FAB) start_service	
 
+deploy_test_service: dependencies
+
+	@$(FAB) deploy_test_service	
+
 # COMMON TASKS -----------------------------------------------------------------
 # ------------------------------------------------------------------------------
 

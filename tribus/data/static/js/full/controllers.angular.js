@@ -613,7 +613,7 @@ function CharmsController($scope, CharmsList, CharmMetadata ){
 
         for(var i = 0; i < $scope.serviciolist.length; i++){
             CharmMetadata.query({name: $scope.serviciolist[i]}, function(results){
-                console.log(results);
+                //console.log(results);
                 $scope.charms.push({
                     name : results[0].name,
                     description : results[0].description,

@@ -15543,7 +15543,7 @@ h2.ch-subtitle {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 601;
+    z-index: 2;
     right: auto;
     background: #f2f2e8 repeat 0 0;
     width: 290px;
@@ -15583,9 +15583,9 @@ h2.ch-subtitle {
   -ms-user-select: none;
   user-select: none;
   position:absolute;
-  top:10%;
+  top:5%;
   left:95%;
-  z-index:1;
+  z-index:2;
 }
 
 .panzoomwidget .zoom-button{
@@ -15629,16 +15629,18 @@ h2.ch-subtitle {
 }
 
 .pan-zoom-frame {
-    border: 2px solid black;
+    /*border: 2px solid black;*/
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
 .panzoom{
     background-image: url('/static/img/pattern_tile.svg');
-    width:100%; 
-    height: 500px;
-    left:16%;
+    width:150%; 
+    height: 1200px;   
     position: absolute;
     display: inline-block;
+    cursor: move;
+    z-index:1;
 }
 
 .container-charms {
@@ -15652,4 +15654,9 @@ h2.ch-subtitle {
 .contentx{
     width: 95px;
     height: 95px;
+}
+
+.body-charms{
+    overflow-x:hidden; 
+    overflow-y:hidden; 
 }

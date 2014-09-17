@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block title %}{% trans "About" %}{% endblock %}
 {% block content %}
-<div class="jumbotron">
+<body class="body-charms">
 	<div class="container" ng-controller="CharmsController">
         <div class="row">
             <div class="col-xs-1">
@@ -16,7 +16,7 @@
 					<a>{% verbatim %}{{charm.maintainer}}{% endverbatim %}</a> <br>
 					<br> <br> <br> <br> <br> <br>
         		</div>  -->
-                    <img class="logo" src="/static/img/logo-min.svg"></img>
+                    <!-- <img class="logo" src="/static/img/logo-min.svg"></img> -->
                 <div ui-draggable="true" drag="listservicio"
                         ng-repeat="listservicio in serviciolist track by $index">
                     <div>
@@ -53,7 +53,7 @@
                         ng-repeat="serviciosinstall in serviceinstall track by $index">
 
                             <div class="container-charms">
-                                <div class="contentx" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                                <div class="contentx" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.png'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
                                 </div>
                             </div>
                         
@@ -68,5 +68,5 @@
 
         </div>
     </div>
-</div>
+</body>
 {% endblock %}

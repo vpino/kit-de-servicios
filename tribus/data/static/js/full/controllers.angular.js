@@ -621,7 +621,7 @@ function CharmsController($scope, CharmsList, CharmMetadata ){
                     icon : ruta_base + results[0].name + icon,
                     summary : results[0].summary
                 });
-                //console.log($scope.serviceinstall);
+                //console.log($scope.charms);
             });
         }
     });

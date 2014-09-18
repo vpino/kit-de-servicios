@@ -621,7 +621,7 @@ function CharmsController($scope, CharmsList, CharmMetadata ){
                     icon : ruta_base + results[0].name + icon,
                     summary : results[0].summary
                 });
-                //console.log($scope.charms);
+                //console.log($scope.serviceinstall);
             });
         }
     });
@@ -638,7 +638,7 @@ function CharmsController($scope, CharmsList, CharmMetadata ){
 
     //PAN ZOOM Controller
     var shark = { x : 391, y: 371, width: 206, height: 136 };
-    var chopper = { x : 88, y: 213, width: 660, height: 144 };
+    var chopper = { x : -200, y: 180, width: 660, height: 144 };
     var ladder = { x : 333, y: 325, width: 75, height: 200 };
 
     $scope.rects = [ chopper, shark, ladder ];

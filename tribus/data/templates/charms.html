@@ -17,18 +17,35 @@
 					<br> <br> <br> <br> <br> <br>
         		</div>  -->
                     <!-- <img class="logo" src="/static/img/logo-min.svg"></img> -->
+                
                 <div ui-draggable="true" drag="listservicio"
                         ng-repeat="listservicio in serviciolist track by $index">
-                    <div>
-
+                    
+                    <div class="container-list">
                         <div class="container-charms">
-                            <div class="contentx" back-img='/static/img/charms-icon/{% verbatim %}{{ listservicio }}{% endverbatim %}.svg'>
+                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ listservicio }}{% endverbatim %}.svg'>
                             {% verbatim %}{{ listservicio }}{% endverbatim %}
                             </div>
-                        </div>
-                    
+                            <div class="">{% verbatim %}{{ listservicio }}{% endverbatim %}</div>
+                        </div>                   
                     </div>
+                
                 </div>
+
+                <!-- <div ui-draggable="true" drag="charm"
+                        ng-repeat= "charm in charms track by $index">
+                    
+                    <div class="container-list">
+                        <div class="container-charms">
+                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ charm.name }}{% endverbatim %}.svg'>
+                            {% verbatim %}{{ charm.name }}{% endverbatim %}
+                            </div>
+                            <div class="">{% verbatim %}{{ charm.name }}{% endverbatim %}</div>
+                            <div class="">{% verbatim %}{{ charm.summary }}{% endverbatim %}</div>
+                        </div>                   
+                    </div>
+                
+                </div> -->
             </div>
             <!-- 
             <div class="col-xs-2" ui-on-Drop="onDrop($event,$data,serviceinstall)">
@@ -53,7 +70,7 @@
                         ng-repeat="serviciosinstall in serviceinstall track by $index">
 
                             <div class="container-charms">
-                                <div class="contentx" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.png'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                                <div class="container-service" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.png'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
                                 </div>
                             </div>
                         

@@ -131,25 +131,21 @@ def deploy_test_service():
                            'consul-server ' % env)
 
         # Aqui se publican los datos de la relacion en consul
-        service_url = "http://%s:8500/v1/kv/%s/" % (consul_addr, env.short_name)
+        # service_url = "http://%s:8500/v1/kv/%s/" % (consul_addr, env.short_name)
 
-        service_key_reg = False
+        # service_key_reg = False
 
-        while service_key_reg != True:
-            try:
-                time.sleep(2)
-                # flags=1 indica que es un nuevo servicio que se configurara
-                service_key_reg = requests.put(service_url + "?flags=1").json()
-            except:
-                print "Aun no es posible escribir en la api, espere un poco..."
+        # while service_key_reg != True:
+        #     try:
+        #         time.sleep(2)
+        #         service_key_reg = requests.put(service_url + "?flags=1").json()
+        #     except:
+        #         print "Aun no es posible escribir en la api, espere un poco..."
 
-        # Aparentemente siempre salen en orden
         for n, component in components.items():
             comp_exists = sudo('docker.io inspect %(imgname)s ' % component)
 
             if comp_exists.return_code == 1:
-                if component.get('role') == 'db':
-                    requests.put(service_url + "db_node_name", component['name'])
                 sudo('docker.io build -t %(imgname)s '
                     '%(dockerfile)s' % component)
 
@@ -158,6 +154,3 @@ def deploy_test_service():
             sudo('docker.io run -d %(ports)s '
                  '-h %(name)s --name %(name)s '
                  '%(imgname)s -join %(join_addr)s ' % component)
-
-        # Esto indica que el servicio ya fue instalado y configurado correctamente
-        requests.put(service_url + "?flags=2")

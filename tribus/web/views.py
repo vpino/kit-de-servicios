@@ -84,3 +84,20 @@ def search(request):
             context['filter'] = None
 
     return render(request, 'search/search.html', context)
+
+def charms_graphic(request):
+    context = {}
+
+    # Cargamos la librería AngujarJS junto con sus plugins
+    render_js = ['jquery', 'hamster', 'angular', 'angular.sanitize', 'angular.resource',
+                 'angular.bootstrap', 'angular.draganddrop', 'angular.mousewheel'
+                 ]
+
+    # Cargamos las funciones de Tribus para AngularJS
+    render_js += ['controllers.angular', 'services.angular', 'elements.angular',
+                  'charms.angular', 'panzoom.angular', 'panzoomwidget.angular', 'navbar.angular'
+                  ]
+
+    context["render_js"] = render_js
+
+    return render(request, 'charms.html', context)

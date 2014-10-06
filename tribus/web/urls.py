@@ -29,6 +29,7 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     url(regex=r'^$', view='tribus.web.views.index'),
+    url(regex=r'^charms/$', view='tribus.web.views.charms_graphic'),
     url(regex=r'^about/$',
         view=TemplateView.as_view(template_name='about.html')),
     url(regex=r'^about/privacy/$',

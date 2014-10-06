@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "About" %}{% endblock %}
+{% block content %}
+<body class="body-charms">
+	<div class="container" ng-controller="CharmsController">
+        <div class="row">
+            <div class="col-xs-1">
+            	<!-- <div ui-draggable="true" drag="charm"
+                    	on-drop-success="dropSuccessHandler($event,$index,charm)"
+                    	ng-repeat= "charm in charms track by $index">
+					<a>{% verbatim %}{{charm.name}}{% endverbatim %}</a> <br>
+                    <a>{% verbatim %}{{charm.summary}}{% endverbatim %}</a> <br>
+                    <a>{% verbatim %}{{charm.icon}}{% endverbatim %}</a> <br>
+					<a>{% verbatim %}{{charm.description}}{% endverbatim %}</a> <br>
+					<a>{% verbatim %}{{charm.maintainer}}{% endverbatim %}</a> <br>
+					<br> <br> <br> <br> <br> <br>
+        		</div>  -->
+                    <!-- <img class="logo" src="/static/img/logo-min.svg"></img> -->
+                
+                <div ui-draggable="true" drag="listservicio"
+                        ng-repeat="listservicio in serviciolist track by $index">
+                    
+                    <div class="container-list">
+                        <div class="container-charms">
+                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ listservicio }}{% endverbatim %}.svg'>
+                            {% verbatim %}{{ listservicio }}{% endverbatim %}
+                            </div>
+                            <div class="">{% verbatim %}{{ listservicio }}{% endverbatim %}</div>
+                        </div>                   
+                    </div>
+                
+                </div>
+
+                <!-- <div ui-draggable="true" drag="charm"
+                        ng-repeat= "charm in charms track by $index">
+                    
+                    <div class="container-list">
+                        <div class="container-charms">
+                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ charm.name }}{% endverbatim %}.svg'>
+                            {% verbatim %}{{ charm.name }}{% endverbatim %}
+                            </div>
+                            <div class="">{% verbatim %}{{ charm.name }}{% endverbatim %}</div>
+                            <div class="">{% verbatim %}{{ charm.summary }}{% endverbatim %}</div>
+                        </div>                   
+                    </div>
+                
+                </div> -->
+            </div>
+            <!-- 
+            <div class="col-xs-2" ui-on-Drop="onDrop($event,$data,serviceinstall)">
+                <div ui-draggable="true" drag="serviciosinstall"
+                    	on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
+                    	ng-repeat="serviciosinstall in serviceinstall track by $index">
+                    <div>
+                        <span my-draggable>
+                            {% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                        </span>
+                	</div>
+            	</div>
+	        </div> -->
+            <panzoomwidget config="panzoomConfig" model="panzoomModel"></panzoomwidget>
+
+            <panzoom class="panzoom" config="panzoomConfig" model="panzoomModel" ui-on-Drop="onDrop($event,$data,serviceinstall)">
+                
+                <div>
+                    <div >
+                        <div ui-draggable="true" drag="serviciosinstall" 
+                        on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
+                        ng-repeat="serviciosinstall in serviceinstall track by $index">
+
+                            <div class="container-charms">
+                                <div class="container-service" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.png'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+
+                <h1 my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()">hola:S</h1>
+                <h1 my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()">hola:ddS</h1>
+             
+            </panzoom>
+
+        </div>
+    </div>
+</body>
+{% endblock %}

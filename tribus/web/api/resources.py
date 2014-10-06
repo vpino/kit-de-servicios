@@ -280,7 +280,7 @@ class SearchResource(Resource):
 class CharmObject(object):
     def __init__(self, initial=None):
         self.__dict__['_data'] = {}
-
+        
         if hasattr(initial, 'items'):
             self.__dict__['_data'] = initial
 
@@ -295,7 +295,7 @@ class CharmObject(object):
 
 
 class CharmListResource(Resource):
-    charms = fields.CharField(attribute='charms')
+    charms = fields.ListField(attribute='charms')
 
     class Meta:
         resource_name = 'charms/list'

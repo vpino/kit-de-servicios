@@ -1,21 +1,83 @@
 ======
-Tribus
+Canaima Instituciones
 ======
 
 .. include:: readme.rst
 
-Esta sección describe todos los procedimientos necesarios para entender cómo instalar y publicar una instancia funcional de Tribus, así como también personalizar la configuración dependiendo de las necesidades del usuario. No es necesario ser un operador de plataforma para instalar una instancia de Tribus, pero si debe estar familiarizado con los comandos básicos de consola bajo ambiente GNU/Linux.
+Para ello se plantea el siguiente plan de trabajo:
+
+* Diseño y planificación preliminar.
+* Documentación de procesos iniciales.
+* Captación de colaboradores.
+* Organización del trabajo colaborativo.
+* Ejecución de la planificación.
+* Entrega del producto.
+
+Diseño y Planificación Preliminar
+===============
+
+Paradigmas de trabajo
+---------------
+
+Se plantea un proceso de desarrollo colaborativo, basado en los preceptos del Software Libre y la metodología de desarrollo de sistemas basados en Canaima GNU/Linux. Para ello se sugerirán herramientas para la gestión de proyectos, versionamiento de código, generación de documentación, empaquetamiento, compilación de paquetes e integración continua.
+
+Necesidades
+---------------
+
+Con base en las inquietudes formuladas por los usuarios en los mecanismos de Soporte Técnico de la distribución Canaima Popular, información recopilada desde la base de datos de la Oficina de Consultoría al Estado, entre otros instrumentos de recolección de datos, se han recopilado las siguientes necesidades, las cuales deben servir como insumo para la generación de los objetivos que deben guiar el desarrollo de Canaima Instituciones:
+
+* Asistente para instalación remota de imágenes para escritorio del Sistema Operativo Canaima Instituciones desde una estación central de trabajo.
+* Gestor de configuraciones que permita agrupar las aplicaciones y comportamiento deseado por Oficina/Gerencia, permitiendo agilizar la puesta en marcha de estaciones de trabajo desde una estación central de trabajo.
+* Asistente para la instalación y configuración de servicios comunes en servidores de aplicaciones.
+* Configuración de las estaciones de trabajo que requieran conectar aplicaciones cliente a los servicios de la institución.
+
+Propuestas
+---------------
+
+Para atender las necesidades planteadas, se realizan las siguientes propuestas:
+
+* Asistente para instalación remota de imágenes para escritorio del Sistema Operativo Canaima Instituciones desde una estación central de trabajo.
+
+
+    * Realización de una imagen de Sistema Operativo base que contenga los elementos básicos para el arranque del sistema. Se propone una metodología de trabajo similar a la utilizada en Canaima Popular con Canaima Semilla.
+
+    * Generación de una interfaz web accesible a través de una dirección IP interna, que permita ejecutar los pasos de instalación desde una estación central de trabajo. La interfaz debe poder permitir seleccionar de una lista los equipos encendidos que se encuentran en las redes internas de la institución. Se propone reutilizar la aplicación en desarrollo “Tribus”, que implementa el gestor de instalaciones remotas `FAI <http://fai-project.org/>`_.
+
+* Gestor de configuraciones que permita agrupar las aplicaciones y comportamiento deseado por Oficina/Gerencia, permitiendo agilizar la puesta en marcha de estaciones de trabajo desde una estación central de trabajo.
+
+    * Generación de una interfaz web que permita manejar remotamente las configuraciones y paquetes de las estaciones de trabajo, basándose en perfiles según Oficina/Gerencia. Se propone reutilizar la aplicación en desarrollo “Tribus”, que implementa el gestor de operaciones remotas `Fabric <http://docs.fabfile.org/en/1.7/>`_.
+
+* Asistente para la instalación y configuración de servicios comunes en servidores de aplicaciones.
+* Configuración de las estaciones de trabajo que requieran conectar aplicaciones cliente a los servicios de la institución.
+* Generación de una interfaz web que permita listar, remover y/o añadir servicios en un servidor de trabajo. También debe permitir instalar los clientes de aplicación que se conectan a los servidores de trabajo, según Oficina/Gerencia.
+
+.. _ideas:
+
+Ideas para la presentación 
+---------------
+
+Se recuerda, por principios de 2009, a un CNTI destinando todos sus recursos institucionales a la tarea de migración a Software Libre en la APN que le había sido encomendado, primero por el ministerio  Ciencia por el . Por falta de información, no se puede asegurar bien cómo se construye esa estrategia, pero si se interpretan los indicadores tomados en cuenta desde ese entonces, se puede decir que la migración tenía tres aspectos fundamentales:
+
+#. La parte de servicios, servidores y todo lo que tiene que ver con plataforma e infraestructura.
+#. La parte de clientes, es decir, estaciones de trabajo, en base a la cual se desarrolla tácitamente la distribución nacional de Software Libre.
+#. La parte que tiene que ver con la formación de los trabajadores de la APN.
+
+`Aquí <http://www.softwarelibre.gob.ve/index.php?option=com_content&view=article&id=104&Itemid=80>`_ se puede revisar la información a la cual se hace referencia: 
+
+En cuanto a (1), una táctica fue desarrollar una guía documentada de implementación de servicios. A ese proyecto se le denominó Kit de servicios, el cual puede revisarse `aquí <http://wiki.canaima.softwarelibre.gob.ve/wiki/Kit_de_Servicios>`_
+
+Kit de Servicios fue un proyecto llevado a cabo por diversos talentos de la Gerencia de Plataforma Tecnológica, pero con el trabajo de investigación base de Jesús Lara, quien para ese entonces trabajaba en la Cooperativa Venezolana de Tecnologías Libres (COVETEL).
+
+Un primer ensayo del Kit de Servicios se desplegó en los servidores del CNTI. Esta dinámica de ensayos se gestó de la misma manera cuando se desarrolló la primera versión de la distribución de Software Libre para el Estado.
+
+Una segunda versión de Kit de Servicios era pensada para llevarla a la reciente distribución estable de aquel entonces: squeeze. Este trabajo nunca se desarrolló.
 
 .. _installation:
 
 Instalación
 ===========
 
-La forma más fácil de instalar Tribus es a través de los paquetes de instalación hechos especialmente para tu distribución GNU/Linux. Estos paquetes permiten manejar las dependencias y la gestión de servicios de una manera más automatizada, sin que tengas que preocuparte de realizar configuraciones a mano. Para mayor información sobre las instrucciones de instalación y descarga de paquetes, consulta la página de :doc:`instalación <installation>`.
-
-Aunque recomendamos el uso de los paquetes para tu distribución, existen otros métodos de instalación. Tribus puede instalarse a través de un gestor de paquetes python como ``setuptools``, ``pip`` o ``easy_install`` desde el repositorio de paquetes python `pypi <http://pypi.python.org/>`_. También puede instalarse de la misma forma a través de su código fuente, que puede obtenerse a clonando el repositorio git o descargando un archivo comprimido.
-
-Para mayor información, consulte las :doc:`instrucciones detalladas de instalación <installation>`.
+TODO
 
 .. toctree::
     :hidden:
@@ -37,61 +99,43 @@ TODO
 Documentación para desarrolladores
 ==================================
 
-Esta sección describe cuales son las herramientas y normas para colaborar con el desarrollo de Tribus.
-
-Generalmente se recomienda empezar leyendo sobre la :doc:`estructura del proyecto <development/where>`, permitiendo así encontrar las cosas más rápido y/o saber donde colocar ciertos elementos. También es indispensable leer el :doc:`protocolo de contribuciones <development/contributing>`, el cual contiene los pasos más importantes para agregar una contribución en Tribus. Seguidamente, las :doc:`herramientas de mantenimiento y desarrollo <development/maintaining>` describen un conjunto de rutinas que han sido escritas para asistir al desarrollador en sus tareas. También están disponibles los :doc:`estilos de programación <development/style>` sugeridos.
-
-Para pasar directamente a una tarea, lee las :doc:`hojas de ruta <development/roadmap>` que están en desarrollo y sigue las instrucciones del :doc:`protocolo de contribuciones <development/contributing>`. También están disponibles las :doc:`listas de cambios <development/changelog>` para versiones pasadas.
+TODO
 
 .. toctree::
     :maxdepth: 2
-
-    development/concepts
-    development/where
-    development/contributing
-    development/maintaining
-    development/style
-    development/reusable
-    development/roadmap
-    development/changelog
 
 .. _api_docs:
 
 Documentación de la API
 -----------------------
 
-Incompleto
+TODO
 
 .. toctree::
     :maxdepth: 1
     :glob:
 
-    development/api/*
-
+    
 .. _roadmap:
 
 Hojas de ruta
 -------------
 
-Las hojas de ruta contienen la planificación establecida para las próximas versiones Tribus.
-
-Para mayor información, consulte :doc:`el Roadmap <development/roadmap>`.
+TODO
 
 .. _changelog:
 
 Lista de cambios
 ----------------
 
-La lista de cambios contiene información acerca de la lista de cambios que han sido introducidos para las diferentes versiones de Tribus.
-
-Para mayor información, consulte :doc:`el Changelog <development/changelog>`.
+TODO
 
 .. _license:
 
 Licencia de distribución
 ------------------------
 
-Tribus está licenciado bajo **GPL-3**. Todas las contribuciones hechas por otros desarrolladores serán redistribuídas dentro de Tribus bajo la misma licencia, a menos que se especifique lo contrario. Es necesario hacer notar que las porciones de código que estén licenciadas bajo términos incompatibles con los de la licencia GPL-3 y deseen ser incorporados a Tribus, serán objeto de rechazo.
+Canaima Instituciones está licenciado bajo **GPL-3**. Todas las contribuciones hechas por otros desarrolladores serán redistribuídas dentro de Tribus bajo la misma licencia, a menos que se especifique lo contrario. Es necesario hacer notar que las porciones de código que estén licenciadas bajo términos incompatibles con los de la licencia GPL-3 y deseen ser incorporados a Tribus, serán objeto de rechazo.
 
 .. toctree::
     :maxdepth: 1
@@ -112,26 +156,32 @@ Si ya has leído el :ref:`tutorial`, la :ref:`usage_docs`, las :ref:`faq` y la :
 Foro
 ----
 
-La manera más expedita de conseguir ayuda con Tribus es a través del `foro <https://groups.google.com/forum/#!forum/tribusdev>`_. Los desarrolladores de Tribus hacen su mejor esfuerzo para contestar rápidamente, ten un poco de paciencia si no te responden inmediatamente.
+TODO
 
 Bugs/ticket tracker
 -------------------
 
-Puedes revisar si ya se ha reportado un error relacionado con el problema que estás presentando en el gestor de `tickets <https://github.com/tribusdev/tribus/issues>`_.
+Puedes revisar si ya se ha reportado un error relacionado con el problema que estás presentando en el gestor de `tickets <https://github.com/tribusdev/canaima-instituciones/issues>`_.
 
 Twitter
 -------
 
-Tribus tiene una cuenta de twitter `@tribusdev <http://twitter.com/tribusdev>`_, la cual es utilizada para anuncios, información acerca del desarrollo, soporte e información relacionada.
+TODO
 
 Grupo en Facebook
 -----------------
 
-Diversas cosas pueden compartirse en el `Grupo de Facebook <https://www.facebook.com/groups/tribusdev>`_.
+TODO
 
 IRC
 ---
 
-Existe un canal IRC, en donde los desarrolladores comúnmente se reúnen: `tribus en FreeNode <http://webchat.freenode.net/?channels=tribus&uio=MTE9NTE3a>`_.
+TODO
+
+Colaboradores
+---------------
+
+* Luis Martínez como principal redactor del documento en su primera versión.
+* Joaquin Muñoz Lucavechi, en la sección :ref:`Ideas para la presentación <ideas>`.
 
 

@@ -5,12 +5,12 @@ from tribus import BASEDIR
 from tribus.common.utils import get_path
 # from tribus.common.version import get_version
 
-NAME = u'Tribus'
+NAME = u'Canaima Instituciones'
 VERSION = (0, 1, 0, 'alpha', 1)
-URL = u'http://github.com/tribusdev/tribus'
+URL = u'http://github.com/tribusdev/canaima-instituciones'
 AUTHOR = u'Desarrolladores de Tribus'
 AUTHOR_EMAIL = u'tribusdev@googlegroups.com'
-DESCRIPTION = (u'Red social para la gestión de comunidades de Software Libre.')
+DESCRIPTION = (u'Automatización y despliegue de servicios para la AP.')
 LICENSE = u'GPL'
 
 if BASEDIR == '/usr/share/pyshared':

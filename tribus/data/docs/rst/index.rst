@@ -83,6 +83,8 @@ TODO
     :hidden:
 
     installation
+    services
+    technology
 
 Configuración
 -------------
@@ -183,5 +185,3 @@ Colaboradores
 
 * Luis Martínez como principal redactor del documento en su primera versión.
 * Joaquin Muñoz Lucavechi, en la sección :ref:`Ideas para la presentación <ideas>`.
-
-

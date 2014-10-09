@@ -42,7 +42,7 @@ from tribus.config.pkg import (python_dependencies, debian_run_dependencies,
 from tribus.common.utils import get_path
 from tribus.common.system import get_local_arch
 from tribus.common.fabric.docker import *
-#from tribus.common.fabric.development import *
+from tribus.common.fabric.development import *
 from tribus.common.fabric.django import *
 from tribus.common.fabric.setup import *
 

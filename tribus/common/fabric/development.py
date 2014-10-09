@@ -20,8 +20,6 @@
 
 import os
 import json
-import requests
-import nmap
 import time
 from tribus import BASEDIR
 from contextlib import nested

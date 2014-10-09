@@ -158,8 +158,8 @@ def docker_generate_debian_base_image():
         log.info('Creating a new Debian base image ...')
 
         local(('sudo bash %(debian_base_image_script)s '
-               'luisalejandro/debian-%(arch)s '
-               'wheezy %(arch)s') % env, capture=False)
+               'franj/debian-%(arch)s '
+               'jessie %(arch)s') % env, capture=False)
 
     docker_stop_container()
 
@@ -252,7 +252,6 @@ def generate_debian_base_image_amd64():
     """
     env.arch = 'amd64'
     docker_generate_debian_base_image()
-
 
 def generate_tribus_base_image_i386():
     """

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo 'Acquire::http { Proxy "http://10.16.106.152:3142"; };' > /etc/apt/apt.conf.d/02proxy
+
 debconf-set-selections ${PRESEED_DEBCONF}
 
 apt-get update

@@ -63,8 +63,8 @@ env.arch = get_local_arch()
 env.docker_maintainer = '%s <%s>' % (AUTHOR, AUTHOR_EMAIL)
 
 env.debian_base_image = 'franj/debian-%(arch)s:jessie' % env
-env.tribus_base_image = 'luisalejandro/tribus-%(arch)s:wheezy' % env
-env.tribus_runtime_image = 'luisalejandro/tribus-run-%(arch)s:wheezy' % env
+env.tribus_base_image = 'franj/tribus-%(arch)s:jessie' % env
+env.tribus_runtime_image = 'franj/tribus-run-%(arch)s:jessie' % env
 env.tribus_runtime_container = 'tribus-run-container'
 
 env.debian_base_image_script = get_path([BASEDIR, 'tribus',

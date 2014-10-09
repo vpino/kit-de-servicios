@@ -174,9 +174,10 @@ def docker_generate_tribus_base_image():
     """
     docker_stop_container()
 
-    with hide('warnings', 'stderr', 'running'):
+    #with hide('warnings', 'stderr', 'running'):
+    with hide():
 
-        log.info('Creating a new Tribus base image ...')
+        log.info('Creating a new Tribus trib base image ...')
 
         local(('sudo bash -c '
                '"%(docker)s run -it --name %(tribus_runtime_container)s '
@@ -260,8 +261,8 @@ def generate_tribus_base_image_i386():
     .. versionadded:: 0.2
     """
     env.arch = 'i386'
-    env.debian_base_image = 'luisalejandro/debian-i386:wheezy'
-    env.tribus_base_image = 'luisalejandro/tribus-i386:wheezy'
+    env.debian_base_image = 'franj/debian-i386:jessie'
+    env.tribus_base_image = 'franj/tribus-i386:jessie'
     docker_pull_debian_base_image()
     docker_generate_tribus_base_image()
 
@@ -273,8 +274,8 @@ def generate_tribus_base_image_amd64():
     .. versionadded:: 0.2
     """
     env.arch = 'amd64'
-    env.debian_base_image = 'luisalejandro/debian-amd64:wheezy'
-    env.tribus_base_image = 'luisalejandro/tribus-amd64:wheezy'
+    env.debian_base_image = 'franj/debian-amd64:jessie'
+    env.tribus_base_image = 'franj/tribus-amd64:jessie'
     docker_pull_debian_base_image()
     docker_generate_tribus_base_image()
 

@@ -1,8 +1,12 @@
-.. _docker:
+.. _tecnologias:
 
 ===========
 Tecnologias
 ===========
+
+TODO 
+
+¿Que tecnologia de virtualización es mas conveniente utilizar? (Docker/Xen/Algo más)
 
 .. _docker:
 

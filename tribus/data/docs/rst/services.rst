@@ -21,9 +21,38 @@ En el ambito de Canaima Instituciones los componentes de un Servicio son:
 Requisitos para crear un servicio
 =================================
 
-* Docker.io debe estar instalado en el servidor fisico.
-* Se necesita un usuario con privilegios de administrador para ejecutar los comandos de docker.
-* El servidor fisico debe tener acceso a internet o a un repositorio (para descargar paquetes durante la instalacion).
+* La plataforma de virtualización (Xen/Docker) debe estar instalada en el servidor fisico
+* Servidor de consul
+* Se necesita un usuario con privilegios de administrador para ejecutar los comandos
+* El servidor fisico debe tener acceso a internet o a un repositorio (para descargar paquetes durante la instalacion)
+
+.. _procedimiento:
+
+Procedimiento de despliegue
+===========================
+
+- Se instalan los paquetes de software necesarios en el host (plataforma de virtualización, consul como servidor)
+- Se copia a traves de SSH la receta correspondiente
+- Se ejecuta la receta: Crea el contenedor de virtualizacion, instala el software del servicio, lo configura e inicia el servicio
+
+.. _recetas:
+
+Recetas
+=======
+
+TODO
+
+¿Que es una receta?
+
+¿Como se usan las recetas?
+
+¿Como se hace una receta?
+
+¿Que compone una receta? 
+
+¿Porque no usar Charms o Dockerfiles en lugar de recetas?
+
+¿Como es el esquema de distribución de los servicios?
 
 .. _componentes:
 

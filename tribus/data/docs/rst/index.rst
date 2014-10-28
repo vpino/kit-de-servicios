@@ -1,5 +1,5 @@
 ======
-Canaima Instituciones
+Kit de servicios
 ======
 
 .. include:: readme.rst
@@ -85,6 +85,9 @@ TODO
     installation
     services
     technology
+    planificacion
+
+.. _configuracion:
 
 Configuración
 -------------
@@ -96,7 +99,6 @@ TODO
     :glob:
 
     configuration/*
-
 
 Documentación para desarrolladores
 ==================================

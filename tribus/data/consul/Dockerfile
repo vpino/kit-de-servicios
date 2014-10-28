@@ -1,4 +1,4 @@
-FROM franj/debian-amd64
+FROM franj/debian-amd64:jessie
 
 # Proxy de paquetes porque ya estoy cansado de descargar paquetes
 # Para probar fuera de la oficina, comente esta linea

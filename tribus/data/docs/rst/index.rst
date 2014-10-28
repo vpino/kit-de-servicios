@@ -80,7 +80,7 @@ Instalación
 TODO
 
 .. toctree::
-    :hidden:
+    :maxdepth: 1
 
     installation
     services
@@ -92,7 +92,7 @@ Configuración
 TODO
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :glob:
 
     configuration/*
@@ -104,7 +104,7 @@ Documentación para desarrolladores
 TODO
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
 .. _api_docs:
 

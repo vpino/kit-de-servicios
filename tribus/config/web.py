@@ -142,7 +142,6 @@ INSTALLED_APPS = (
     'haystack',
     'celery_haystack',
     'registration',
-    'waffle',
     'kombu.transport.django',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -153,8 +152,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'tribus.web',
     'tribus.web.registration',
-    'tribus.web.cloud',
-    'tribus.web.profile',
     'tribus.web.api',
     'tribus.web.admin',
 )

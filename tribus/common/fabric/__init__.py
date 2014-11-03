@@ -36,7 +36,6 @@ from tribus import BASEDIR
 from tribus.config.base import CONFDIR, AUTHOR, AUTHOR_EMAIL
 from tribus.config.ldap import (AUTH_LDAP_SERVER_URI,
                                 AUTH_LDAP_BIND_DN, AUTH_LDAP_BIND_PASSWORD)
-from tribus.config.switches import SWITCHES_CONFIGURATION
 from tribus.config.pkg import (python_dependencies, debian_run_dependencies,
                                debian_build_dependencies)
 from tribus.common.utils import get_path
@@ -83,7 +82,7 @@ env.tribus_start_container_script = get_path([BASEDIR, 'tribus',
                                               'data', 'scripts',
                                               'start-container.sh'])
 
-waffle_switches = SWITCHES_CONFIGURATION.keys()
+# waffle_switches = SWITCHES_CONFIGURATION.keys()
 mounts = ['%(basedir)s:%(basedir)s:rw' % env, '/tmp:/tmp:rw']
 start_services = ['ssh', 'postgresql', 'slapd']
 change_passwd = ['root:tribus', 'postgres:tribus', 'openldap:tribus']
@@ -106,7 +105,7 @@ env.fvars = {
                                             AUTH_LDAP_SERVER_URI)),
     'START_SERVICES': ' '.join(start_services),
     'CHANGE_PASSWD': ' '.join(change_passwd),
-    'WAFFLE_SWITCHES': ' '.join(waffle_switches),
+    # 'WAFFLE_SWITCHES': ' '.join(waffle_switches),
     'HOST_USER': env.user,
     'HOST_USER_ID': env.user_id
 }

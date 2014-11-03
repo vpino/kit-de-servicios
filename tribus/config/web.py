@@ -141,7 +141,7 @@ INSTALLED_APPS = (
     'tastypie',
     'haystack',
     'celery_haystack',
-    'registration',
+    #'registration',
     'kombu.transport.django',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -151,7 +151,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tribus.web',
-    'tribus.web.registration',
+    #'tribus.web.registration',
     'tribus.web.api',
     'tribus.web.admin',
 )

@@ -40,8 +40,8 @@ def django_syncdb():
     """
     Synchronize the configuration of the container with current codebase.
 
-    This function executes Django's syncdb, configures admin users, registers
-    Waffle's switches, among other operations.
+    This function executes Django's syncdb, 
+    configures admin users among other operations.
 
     .. versionadded:: 0.2
     """

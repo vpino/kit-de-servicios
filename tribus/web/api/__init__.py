@@ -21,22 +21,20 @@
 
 from tastypie.api import Api
 
-from tribus.web.api.resources import (TribResource, TimeLineResource,
-    CommentResource, UserResource, SearchResource, UserProfileResource,
-    UserFollowsResource, UserFollowersResource, CharmMetadataResource,
+from tribus.web.api.resources import (CharmMetadataResource,
     CharmConfigResource, CharmListResource, CharmDeployResource,
     CharmWipeContainers)
 
 
 api_01 = Api(api_name='0.1')
-api_01.register(UserFollowsResource())
-api_01.register(UserFollowersResource())
-api_01.register(TribResource())
-api_01.register(CommentResource())
-api_01.register(TimeLineResource())
-api_01.register(UserResource())
-api_01.register(UserProfileResource())
-api_01.register(SearchResource())
+#api_01.register(UserFollowsResource())
+#api_01.register(UserFollowersResource())
+#api_01.register(TribResource())
+#api_01.register(CommentResource())
+#api_01.register(TimeLineResource())
+#api_01.register(UserResource())
+#api_01.register(UserProfileResource())
+#api_01.register(SearchResource())
 api_01.register(CharmMetadataResource())
 api_01.register(CharmConfigResource())
 api_01.register(CharmListResource())

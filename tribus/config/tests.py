@@ -29,7 +29,7 @@ INSTALLED_APPS = (
     'tribus.web.cloud',
     'south',
     'haystack',
-    'waffle',
+    #'waffle',
 )
 
 ROOT_URLCONF = 'tribus.web.urls'

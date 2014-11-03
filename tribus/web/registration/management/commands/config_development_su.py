@@ -24,16 +24,16 @@ from django.core.management.base import BaseCommand
 from tribus.web.registration.ldap.utils import create_ldap_user
 
 
-class Command(BaseCommand):
+# class Command(BaseCommand):
 
-    def handle(self, *args, **options):
+#     def handle(self, *args, **options):
 
-        try:
-            u = User.objects.get(username__exact='tribus')
-        except User.DoesNotExist:
-            u = User(username='tribus')
-            u.set_password('tribus')
-            u.is_superuser = True
-            u.is_staff = True
-            u.save()
-            create_ldap_user(u)
+#         try:
+#             u = User.objects.get(username__exact='tribus')
+#         except User.DoesNotExist:
+#             u = User(username='tribus')
+#             u.set_password('tribus')
+#             u.is_superuser = True
+#             u.is_staff = True
+#             u.save()
+#             create_ldap_user(u)

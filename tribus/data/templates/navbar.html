@@ -1,5 +1,4 @@
 {% load i18n %}
-{% load waffle_tags %}
 <div class="navbar navbar-fixed-top">
     <div class="container-fluid">
         <div class="row-fluid">
@@ -37,7 +36,6 @@
             <ul class="nav span2 pull-right">
                 <li class="home"></li>
                 
-                {% switch profile %}
                 <li class="home">
                     <a href="/"><span class="bigger-150 fa fa-home"></span></a>
                 </li>
@@ -46,7 +44,6 @@
                     <a href="/profile/"><span class="bigger-150 fa fa-user"></span></a>
                 </li>
                 <li class="divider-vertical"></li>
-                {% endswitch%}
                 
                 <li class="dropdown settings">
                     <a id="drop-settings" href="#" class="dropdown-toggle" role="button">

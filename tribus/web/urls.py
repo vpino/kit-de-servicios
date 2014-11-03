@@ -39,7 +39,7 @@ urlpatterns = patterns(
     url(regex=r'^charms/$', view='tribus.web.views.charms_graphic'),
     # urls adicionales para el admin aqui
     url(regex=r'^admin/tribus-config/$', view='tribus.web.admin.views.tribus_config'),
-    url(regex=r'^admin/tribus-config/active-modules/$', view='tribus.web.admin.views.active_modules'),
+    # url(regex=r'^admin/tribus-config/active-modules/$', view='tribus.web.admin.views.active_modules'),
     url(regex=r'^admin/tribus-config/logger-levels/$', view='tribus.web.admin.views.logger_levels'),
     url(regex=r'^admin/', view=include(admin.site.urls)),
 )

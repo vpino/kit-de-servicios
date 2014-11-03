@@ -97,7 +97,6 @@ deploy_test_service: dependencies
 	@$(FAB) deploy_test_service	
 
 # COMMON TASKS -----------------------------------------------------------------
-# ------------------------------------------------------------------------------
 
 environment: dependencies
 
@@ -131,52 +130,6 @@ shell: dependencies
 
 	@$(FAB) django_shell
 
-
-# REPOSITORY TASKS ------------------------------------------------------
-
-create_test_repository: dependencies
-
-	@$(FAB) install_repository
-	@$(FAB) select_sample_packages
-	@$(FAB) get_sample_packages
-	@$(FAB) index_sample_packages
-
-
-install_repository: dependencies
-
-	@$(FAB) install_repository
-
-select_samples: dependencies
-
-	@$(FAB) select_sample_packages
-
-get_samples: dependencies
-
-	@$(FAB) get_sample_packages
-
-get_selected: dependencies
-
-	@$(FAB) get_selected
-
-index_selected: dependencies
-
-	@$(FAB) index_selected
-
-index_samples: dependencies
-
-	@$(FAB) index_sample_packages
-
-# -----------------------------------------------------------------------------
-
-filldb_from_local: dependencies
-
-	@$(FAB) filldb_from_local
-
-filldb_from_remote: dependencies
-
-	@$(FAB) filldb_from_remote
-
-
 # INDEX TASKS -----------------------------------------------------------------
 
 rebuild_index: dependencies
@@ -186,14 +139,6 @@ rebuild_index: dependencies
 purge_tasks: dependencies
 
 	@$(FAB) celery_purge_tasks
-
-# -----------------------------------------------------------------------------
-
-# TESTS TASKS -----------------------------------------------------------------
-
-wipe_repo: dependencies
-
-	@$(FAB) wipe_repo
 
 # -----------------------------------------------------------------------------
 

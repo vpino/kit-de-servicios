@@ -147,7 +147,7 @@ def docker_generate_debian_base_image():
     """
     Generate a Debian base (Docker) image.
 
-    This function generates a minimal Debian (stable) chroot using debootstrap.
+    This function generates a minimal Debian (testing) chroot using debootstrap.
 
     .. versionadded:: 0.2
     """
@@ -168,15 +168,14 @@ def docker_generate_tribus_base_image():
     """
     Generate a Tribus environment (Docker) image.
 
-    This function generates a minimal Debian (stable) chroot using debootstrap.
+    This function generates a minimal Debian (testing) chroot using debootstrap.
 
     .. versionadded:: 0.2
     """
     docker_stop_container()
 
-    #with hide('warnings', 'stderr', 'running'):
-    with hide():
-
+    with hide('warnings', 'stderr', 'running'):
+    
         log.info('Creating a new Tribus trib base image ...')
 
         local(('sudo bash -c '

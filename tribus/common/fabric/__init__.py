@@ -61,6 +61,8 @@ env.docker = 'docker.io'
 env.arch = get_local_arch()
 env.docker_maintainer = '%s <%s>' % (AUTHOR, AUTHOR_EMAIL)
 
+
+# hacer usuario para canaima y subirlo al indice de docker
 env.debian_base_image = 'franj/debian-%(arch)s:jessie' % env
 env.tribus_base_image = 'franj/tribus-%(arch)s:jessie' % env
 env.tribus_runtime_image = 'franj/tribus-run-%(arch)s:jessie' % env
@@ -82,7 +84,6 @@ env.tribus_start_container_script = get_path([BASEDIR, 'tribus',
                                               'data', 'scripts',
                                               'start-container.sh'])
 
-# waffle_switches = SWITCHES_CONFIGURATION.keys()
 mounts = ['%(basedir)s:%(basedir)s:rw' % env, '/tmp:/tmp:rw']
 start_services = ['ssh', 'postgresql', 'slapd']
 change_passwd = ['root:tribus', 'postgres:tribus', 'openldap:tribus']
@@ -105,7 +106,6 @@ env.fvars = {
                                             AUTH_LDAP_SERVER_URI)),
     'START_SERVICES': ' '.join(start_services),
     'CHANGE_PASSWD': ' '.join(change_passwd),
-    # 'WAFFLE_SWITCHES': ' '.join(waffle_switches),
     'HOST_USER': env.user,
     'HOST_USER_ID': env.user_id
 }

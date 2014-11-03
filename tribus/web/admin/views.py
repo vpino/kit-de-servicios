@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from tribus.web.admin.forms import ActiveModulesForm
+# from tribus.web.admin.forms import ActiveModulesForm
 from django.http.response import HttpResponseRedirect
 # from tribus.config.switches import SWITCHES_CONFIGURATION
 

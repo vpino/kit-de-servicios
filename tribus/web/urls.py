@@ -28,18 +28,5 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     url(regex=r'^$', view='tribus.web.views.index'),
-    url(regex=r'^about/$',
-        view=TemplateView.as_view(template_name='about.html')),
-    url(regex=r'^about/privacy/$',
-        view=TemplateView.as_view(template_name='privacy.html')),
-    url(regex=r'^about/terms/$',
-        view=TemplateView.as_view(template_name='terms.html')),
-    url(regex=r'', view=include('tribus.web.registration.urls')),
-    url(regex=r'^api/', view=include(api_01.urls)),
-    url(regex=r'^charms/$', view='tribus.web.views.charms_graphic'),
-    # urls adicionales para el admin aqui
-    url(regex=r'^admin/tribus-config/$', view='tribus.web.admin.views.tribus_config'),
-    # url(regex=r'^admin/tribus-config/active-modules/$', view='tribus.web.admin.views.active_modules'),
-    url(regex=r'^admin/tribus-config/logger-levels/$', view='tribus.web.admin.views.logger_levels'),
-    url(regex=r'^admin/', view=include(admin.site.urls)),
+    url(regex=r'^prueba/$', view='tribus.web.views.prueba'),
 )

@@ -24,12 +24,10 @@ from tribus.config.web import DEBUG
 
 def default_context(request):
     return {
-        'render_css': ['normalize', 'bootstrap', 'fonts', 'font-awesome',
-                       'tribus', 'tribus-responsive'],
-        'render_js': ['angular', 'angular.sanitize', 'angular.bootstrap',
-                      'angular.resource', 'elements.angular',
-                      'controllers.angular', 'services.angular',
-                      'search.angular'],
+        'render_css': ['bootstrap', 'bootstrap-theme', 'kit', 'fonts', 'font-awesome'],
+        
+        'render_js': ['angular', 'jQuery', 'bootstrap'],
+        
         'tribus_distro': TRIBUS_DISTRO,
         'tribus_role_1': TRIBUS_ROLE_1,
         'tribus_role_2': TRIBUS_ROLE_2,

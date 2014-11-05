@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, InvalidPage
 from django.contrib.contenttypes.models import ContentType
 
 
-def prueba(request):
+def kit(request):
 
     # Cargamos la librería AngujarJS junto con sus plugins
     # render_js = ['angular', 'angular.sanitize', 'angular.resource',
@@ -23,4 +23,4 @@ def prueba(request):
     # context["render_js"] = render_js
     context = {}
 
-    return render(request, 'index.html', context)
+    return render(request, 'kit/base-kit.html', context)

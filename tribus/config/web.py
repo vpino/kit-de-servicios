@@ -151,6 +151,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tribus.web',
+    'tribus.web.kit',
     #'tribus.web.registration',
     'tribus.web.api',
     'tribus.web.admin',

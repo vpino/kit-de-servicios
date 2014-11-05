@@ -18,16 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.views.generic.base import TemplateView
-from django.conf.urls import patterns, include, url
-from django.contrib import admin
-from tribus.web.api import api_01
+"""
 
-admin.autodiscover()
+tribus.web
+==========
 
-urlpatterns = patterns(
-    '',
-    #url(regex=r'^$', view='tribus.web.views.index'),
-    url(regex=r'^prueba/$', view='tribus.web.views.prueba'),
-    url(regex=r'^kit/$', view='tribus.web.kit.views.kit'),
-)
+
+
+"""

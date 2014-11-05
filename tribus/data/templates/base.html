@@ -18,6 +18,7 @@
         {% endstaticall %}
     </head>
     <body>
+        {% block content %} {% endblock %}
         {% staticall %}
             {% for js in render_js %}
                 {% if DEBUG %}

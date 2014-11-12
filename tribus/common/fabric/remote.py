@@ -28,7 +28,7 @@ log = get_logger()
 
 
 def check_docker():
-    with settings(command='which docker.io', warn_only=True):
+    with settings(command='which docker', warn_only=True):
         exit_status = run('%(command)s' % env)
     return exit_status.return_code
 
@@ -87,7 +87,7 @@ def generate_docker_install():
         'wheezy-backports init-system-helpers fabric \n'
         'echo \'deb %(DEBIAN_MIRROR)s jessie main\' > /etc/apt/sources.list \n'
         'apt-get update \n'
-        'apt-get %(APTGETOPTS)s install -t jessie docker.io \n'
+        'apt-get %(APTGETOPTS)s install -t jessie docker \n'
         'mv /etc/apt/sources.list.bk /etc/apt/sources.list \n'
         'mv /etc/apt/sources.list.d.bk /etc/apt/sources.list.d \n'
         'apt-get %(APTGETOPTS)s update \n'
@@ -109,21 +109,21 @@ def get_charm_base_image():
     with nested(hide('warnings', 'stderr', 'running'),
         settings(warn_only=True)):
         log.info("Obteniendo imagen base")
-        sudo('bash -c "docker.io pull %(baseimage)s"' % env)
+        sudo('bash -c "docker pull %(baseimage)s"' % env)
 
         # Para propositos de pruebas durante el desarrollo
         log.info("Actualizando repositorio de la imagen base")
-        sudo(command='docker.io run -it --name %(tmpcntname)s '
+        sudo(command='docker run -it --name %(tmpcntname)s '
                      '%(baseimage)s bash -c "apt-get update"' % env)
 
         # Hacer commit en una imagen
         log.info("Guardando cambios")
-        sudo(command='docker.io commit %(tmpcntname)s '
+        sudo(command='docker commit %(tmpcntname)s '
                      '%(baseimage)s' % env)
 
         # Borrar el contenedor
         log.info("Borrando contenedor temporal")
-        sudo(command='docker.io rm %(tmpcntname)s' % env)
+        sudo(command='docker rm %(tmpcntname)s' % env)
 
 
 def docker_kill_all_remote_containers():
@@ -195,23 +195,23 @@ def query_host_images():
 
 def start_service():
     # Iniciar servcio
-    sudo('docker.io run -it --name %(charm_name)s-%(service_instance)s '
+    sudo('docker run -it --name %(charm_name)s-%(service_instance)s '
          '--volume %(mount_place)s %(charm_name)s-%(service_instance)s '
          'bash %(start_place)s && tail -f /dev/null' % env)
 
 
 def stop_service():
     # Detener servicio
-    sudo('docker.io run -it --name %(charm_name)s-%(service_instance)s '
+    sudo('docker run -it --name %(charm_name)s-%(service_instance)s '
          '--volume %(mount_place)s '
          '%(charm_name)s-%(service_instance)s bash %(stop_place)s' % env)
 
     # Hacer commit en una imagen
-    sudo(command='docker.io commit %(charm_name)s-%(instance)s '
+    sudo(command='docker commit %(charm_name)s-%(instance)s '
                  '%(charm_name)s-%(service_instance)s' % env)
 
     # Borrar el contenedor
-    sudo(command='docker.io rm %(charm_name)s-%(service_instance)s ' % env)
+    sudo(command='docker rm %(charm_name)s-%(service_instance)s ' % env)
 
 
 def create_service_image():
@@ -229,18 +229,18 @@ def create_service_image():
         #base_exists = sudo('%(docker)s inspect %(charm_name)s-base:base' % env)
         #if base_exists.return_code == 1:
             # Instalar python en el contenedor y ejecutar script de instalacion
-            sudo(command='docker.io run -it --name %(charm_name)s-base '
+            sudo(command='docker run -it --name %(charm_name)s-base '
                  '--volume %(mount_place)s '
                  '%(baseimage)s bash -c "apt-get install -y '
                  '%(charm_apt_deps)s && pip install %(charm_py_deps)s && '
                  'cd %(charm_place)s && ./install "' % env)
 
             # Hacer commit en una imagen
-            sudo(command='docker.io commit %(charm_name)s-base '
+            sudo(command='docker commit %(charm_name)s-base '
                          '%(charm_name)s-base:base' % env)
 
             # Borrar el contenedor
-            sudo(command='docker.io rm %(charm_name)s-base ' % env)
+            sudo(command='docker rm %(charm_name)s-base ' % env)
 
         # env.service_base_image = env.charm_name + '-base:base'
         # env.instance = 0
@@ -252,7 +252,7 @@ def create_service_image():
 
         # # Hacer correr el contenedor
         # with cd(env.charm_place):
-        #     sudo('docker.io run -it --name %(charm_name)s-%(instance)s '
+        #     sudo('docker run -it --name %(charm_name)s-%(instance)s '
         #          '--volume %(mount_place)s '
         #          '%(service_base_image)s bash -c "cd %(charm_place)s '
         #          '&& ./start && tail -f /dev/null"' % env)

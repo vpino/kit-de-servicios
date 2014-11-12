@@ -68,7 +68,7 @@ find var/tmp -type f -print0 | xargs -0r sudo rm -rfv
 find tmp -type f -print0 | xargs -0r sudo rm -rfv
 
 # create the image (and tag ${REPO}:${SUITE})
-sudo tar --numeric-owner -c . | sudo docker.io import - ${REPO}:${SUITE}
+sudo tar --numeric-owner -c . | sudo docker import - ${REPO}:${SUITE}
 
 # cleanup
 cd "${RETURNTO}"

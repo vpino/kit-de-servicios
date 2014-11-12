@@ -37,7 +37,7 @@ PACMAN_BASED="arch"
 EMERGE_BASED="gentoo"
 
 # Tribus dependencies listed by Package Manager
-DPKG_DEPENDS="docker.io fabric"
+DPKG_DEPENDS="docker fabric"
 YUM_DEPENDS="docker-io fabric"
 PACMAN_DEPENDS="docker fabric"
 EMERGE_DEPENDS="dev-python/fabric app-emulation/docker"
@@ -162,7 +162,7 @@ if [ -z "${DISTRO}" ] || [ -z "${CODENAME}" ]; then
     ${ECHO} 1>&2 " the following dependencies manually:"
     ${ECHO} 1>&2
     ${ECHO} 1>&2 "  - fabric (http://fabfile.org)"
-    ${ECHO} 1>&2 "  - docker (http://docker.io)"
+    ${ECHO} 1>&2 "  - docker (http://docker)"
     ${ECHO} 1>&2
 
     exit 1
@@ -173,7 +173,7 @@ fi
 if [ "${DPKG_BASED}" != "${DPKG_BASED/${DISTRO}}" ]; then
 
     # If our dependencies are met, let's exit early
-    if [ -n "$( which fab )" ] && [ -n "$( which docker.io )" ]; then
+    if [ -n "$( which fab )" ] && [ -n "$( which docker )" ]; then
 
         exit 0
 
@@ -205,7 +205,7 @@ if [ "${DPKG_BASED}" != "${DPKG_BASED/${DISTRO}}" ]; then
             > /etc/apt/sources.list"
 
         ${SUDO} ${BASH} -c "${APTGETCMD} ${APTGETOPTS} update"
-        ${SUDO} ${BASH} -c "${APTGETCMD} ${APTGETOPTS} install -t jessie docker.io"
+        ${SUDO} ${BASH} -c "${APTGETCMD} ${APTGETOPTS} install -t jessie docker"
 
         ${SUDO} ${BASH} -c "${MV} /etc/apt/sources.list.bk /etc/apt/sources.list"
         ${SUDO} ${BASH} -c "${MV} /etc/apt/sources.list.d.bk /etc/apt/sources.list.d"
@@ -259,7 +259,7 @@ if [ "${DPKG_BASED}" != "${DPKG_BASED/${DISTRO}}" ]; then
             > /etc/apt/sources.list"
 
         ${SUDO} ${BASH} -c "${APTGETCMD} ${APTGETOPTS} update"
-        ${SUDO} ${BASH} -c "${APTGETCMD} ${APTGETOPTS} install -t jessie docker.io"
+        ${SUDO} ${BASH} -c "${APTGETCMD} ${APTGETOPTS} install -t jessie docker"
 
         ${SUDO} ${BASH} -c "${MV} /etc/apt/sources.list.bk /etc/apt/sources.list"
         ${SUDO} ${BASH} -c "${MV} /etc/apt/sources.list.d.bk /etc/apt/sources.list.d"
@@ -294,7 +294,7 @@ if [ "${DPKG_BASED}" != "${DPKG_BASED/${DISTRO}}" ]; then
         ${ECHO} 1>&2 " manually:"
         ${ECHO} 1>&2
         ${ECHO} 1>&2 "  - fabric (http://fabfile.org)"
-        ${ECHO} 1>&2 "  - docker (http://docker.io)"
+        ${ECHO} 1>&2 "  - docker (http://docker)"
         ${ECHO} 1>&2
         ${ECHO} 1>&2 " Please open a ticket requesting support for your distribution:"
         ${ECHO} 1>&2 " http://github.com/tribusdev/tribus/issues"
@@ -327,7 +327,7 @@ elif [ "${YUM_BASED}" != "${YUM_BASED/${DISTRO}}" ]; then
         ${ECHO} 1>&2 " manually:"
         ${ECHO} 1>&2
         ${ECHO} 1>&2 "  - fabric (http://fabfile.org)"
-        ${ECHO} 1>&2 "  - docker (http://docker.io)"
+        ${ECHO} 1>&2 "  - docker (http://docker)"
         ${ECHO} 1>&2
         ${ECHO} 1>&2 " Please open a ticket requesting support for your distribution:"
         ${ECHO} 1>&2 " http://github.com/tribusdev/tribus/issues"
@@ -359,7 +359,7 @@ elif [ "${PACMAN_BASED}" != "${PACMAN_BASED/${DISTRO}}" ]; then
         ${ECHO} 1>&2 " manually:"
         ${ECHO} 1>&2
         ${ECHO} 1>&2 "  - fabric (http://fabfile.org)"
-        ${ECHO} 1>&2 "  - docker (http://docker.io)"
+        ${ECHO} 1>&2 "  - docker (http://docker)"
         ${ECHO} 1>&2
         ${ECHO} 1>&2 " Please open a ticket requesting support for your distribution:"
         ${ECHO} 1>&2 " http://github.com/tribusdev/tribus/issues"
@@ -392,7 +392,7 @@ elif [ "${EMERGE_BASED}" != "${EMERGE_BASED/${DISTRO}}" ]; then
         ${ECHO} 1>&2 " manually:"
         ${ECHO} 1>&2
         ${ECHO} 1>&2 "  - fabric (http://fabfile.org)"
-        ${ECHO} 1>&2 "  - docker (http://docker.io)"
+        ${ECHO} 1>&2 "  - docker (http://docker)"
         ${ECHO} 1>&2
         ${ECHO} 1>&2 " Please open a ticket requesting support for your distribution:"
         ${ECHO} 1>&2 " http://github.com/tribusdev/tribus/issues"
@@ -412,7 +412,7 @@ else
     ${ECHO} 1>&2 " manually:"
     ${ECHO} 1>&2
     ${ECHO} 1>&2 "  - fabric (http://fabfile.org)"
-    ${ECHO} 1>&2 "  - docker (http://docker.io)"
+    ${ECHO} 1>&2 "  - docker (http://docker)"
     ${ECHO} 1>&2
     ${ECHO} 1>&2 " Please open a ticket requesting support for your distribution:"
     ${ECHO} 1>&2 " http://github.com/tribusdev/tribus/issues"

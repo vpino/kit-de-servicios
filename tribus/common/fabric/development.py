@@ -107,11 +107,11 @@ def deploy_test_service():
     with hide('warnings', 'stderr', 'running'):
         # Verificar si existe una imagen de consul en la mauqina 
         # donde se hara el despliegue
-        consul_exists = sudo('docker.io inspect %(imgname)s ' % consul_server)
+        consul_exists = sudo('docker inspect %(imgname)s ' % consul_server)
 
         if consul_exists.return_code == 1:
             # No existe la imagen, procedemos a crearla
-            sudo('docker.io build -t %(imgname)s '\
+            sudo('docker build -t %(imgname)s '\
                  '%(dockerfile)s' % consul_server)
         elif consul_exists.return_code > 1:
             print "No se ha podido iniciar consul"
@@ -119,7 +119,7 @@ def deploy_test_service():
             return
         
         # Si la imagen existe, arrancamos el contenedor
-        sudo('docker.io run -d %(ports)s '
+        sudo('docker run -d %(ports)s '
              '-h %(name)s --name %(name)s '
              '%(imgname)s -server -bootstrap' % consul_server)
         
@@ -141,14 +141,14 @@ def deploy_test_service():
         #         print "Aun no es posible escribir en la api, espere un poco..."
 
         for n, component in components.items():
-            comp_exists = sudo('docker.io inspect %(imgname)s ' % component)
+            comp_exists = sudo('docker inspect %(imgname)s ' % component)
 
             if comp_exists.return_code == 1:
-                sudo('docker.io build -t %(imgname)s '
+                sudo('docker build -t %(imgname)s '
                     '%(dockerfile)s' % component)
 
             component['join_addr'] = consul_addr
             
-            sudo('docker.io run -d %(ports)s '
+            sudo('docker run -d %(ports)s '
                  '-h %(name)s --name %(name)s '
                  '%(imgname)s -join %(join_addr)s ' % component)

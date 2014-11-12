@@ -57,7 +57,7 @@ env.warn_only = True
 env.output_prefix = False
 
 # Docker config
-env.docker = 'docker.io'
+env.docker = 'docker'
 env.arch = get_local_arch()
 env.docker_maintainer = '%s <%s>' % (AUTHOR, AUTHOR_EMAIL)
 

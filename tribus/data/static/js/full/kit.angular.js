@@ -3,7 +3,22 @@
 
 // Application -----------------------------------------------------------------
 
-var tribus = angular.module('tribus', []);
+var tribus = angular.module('tribus', ['ngDragDrop']);
+
+// Controllers -----------------------------------------------------------------
+
+tribus.controller('kitController', ['$scope', kitController]);
+
+// Directive -------------------------------------------------------------------
+
+tribus.directive('backImg', function(){
+    return function(scope, element, attrs){
+        var url = attrs.backImg;
+        element.css({
+            'background-image': 'url(' + url +')'
+        });
+    };
+});
 
 tribus.directive('myDraggable', ['$document', function($document) {
       return function(scope, element, attr) {

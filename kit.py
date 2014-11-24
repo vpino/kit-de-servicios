@@ -18,29 +18,31 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""
-
-This is the Tribus module where all command line functions reside.
-
-This module contains funtions to provide the same functionality of the web
-interface but through the console.
-
-"""
-
-import json
-from tribus import BASEDIR
-from fabric.api import run, env, settings, sudo, hide, put, cd, local, quiet
-from tribus.common.utils import get_path
-from tribus.common.fabric.development import docker_create_service_cluster
-from tribus.common.logger import get_logger
-
-log = get_logger()
-
-env.host = 'localhost'
-env.port = '22'
-
-def servicios():
-	"""Lista los servicios disponibles en kit de servicios"""
-	return "Lista de servicios"
+import optparse
+from tribus.common.fabric.consul import docker_start_consul
 
 
+def main():
+    """Runs program and handles command line options"""
+
+    p = optparse.OptionParser(description='Interfaz para el kit de servicios',
+                              prog='kitservicios',
+                              version='kitservicios 0.1',
+                              usage='%prog [servicios or equipos]')
+    options, arguments = p.parse_args()
+
+    if len(arguments) == 1:
+
+    	if arguments[0] == 'init':
+            docker_start_consul()
+ 		
+    	elif arguments[0] == 'servicios':
+    		values = servicios()
+    		print values
+    	else:
+    		p.print_help()
+    else:
+    		p.print_help()
+
+if __name__ == '__main__':
+	main()

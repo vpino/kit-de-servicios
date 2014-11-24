@@ -30,33 +30,6 @@ from fabric.api import run, env, settings, sudo, hide, put, cd
 
 log = get_logger()
 
-
-def docker_create_service_cluster():
-    """
-    Crea un cluster de consul para un servicio.
-
-    .. versionadded:: 0.2
-    """
-
-    env.port = 22
-    env.target_img = "consul:test"
-    env.build_dockerfile = get_path([BASEDIR, 'tribus', 'data', 'consul'])
-
-    with hide('warnings', 'stderr', 'running'):
-        # Deben agregarse algunas verificaciones previas
-        # por ejemplo, debe existir la imagen base para los 
-        # nodos, de lo contrario debe crearse
-
-        # - Necesito asignar un nombre a la imagen
-        # - Necesito especificar de donde se construye la imagen
-
-        # Para no ralentizar mas el desarrollo, generare la imagen a partir
-        # de un Dockerfile a pesar de que pueden existir otras tecnicas 
-        # mas eficientes para generar las imagenes.
-
-        bimage = sudo('%(docker)s build -t %(target_img)s %(build_dockerfile)s' % env)
-
-
 def deploy_test_service():
     """
     Este metodo despliega un servicio.
@@ -85,13 +58,15 @@ def deploy_test_service():
              'role' : 'db',
              'imgname' : 'mysql:test',
              'ports' : '-p 3306:3306',
-             'dockerfile' : get_path([BASEDIR, 'tribus', 'data', 'charms', 'mysql'])
+             'dockerfile' : get_path([BASEDIR, 'tribus', 'data',
+             'charms', 'mysql'])
         },
 
         2 : {'name' : 'mediawiki',
              'imgname' : 'mediawiki:test',
              'ports' : '-p 80:80',
-             'dockerfile' : get_path([BASEDIR, 'tribus', 'data', 'charms', 'mediawiki'])
+             'dockerfile' : get_path([BASEDIR, 'tribus', 'data',
+             'charms', 'mediawiki'])
         },
     }
 
@@ -127,18 +102,6 @@ def deploy_test_service():
         consul_addr = sudo('%(docker)s inspect -f '
                            '"{{.NetworkSettings.IPAddress}}" '
                            'consul-server ' % env)
-
-        # Aqui se publican los datos de la relacion en consul
-        # service_url = "http://%s:8500/v1/kv/%s/" % (consul_addr, env.short_name)
-
-        # service_key_reg = False
-
-        # while service_key_reg != True:
-        #     try:
-        #         time.sleep(2)
-        #         service_key_reg = requests.put(service_url + "?flags=1").json()
-        #     except:
-        #         print "Aun no es posible escribir en la api, espere un poco..."
 
         for n, component in components.items():
             comp_exists = sudo('docker inspect %(imgname)s ' % component)

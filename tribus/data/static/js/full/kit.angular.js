@@ -3,7 +3,7 @@
 
 // Application -----------------------------------------------------------------
 
-var tribus = angular.module('tribus', ['ngDragDrop']);
+var tribus = angular.module('tribus', ['ngDragDrop','ngPanzoom', 'ngPanzoomwidget',]);
 
 // Controllers -----------------------------------------------------------------
 

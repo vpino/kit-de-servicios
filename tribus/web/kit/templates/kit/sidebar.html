@@ -39,6 +39,30 @@
                             </div>
                         </div>
 
+                        <panzoomwidget config="panzoomConfig" model="panzoomModel"></panzoomwidget>
+
+                        <panzoom class="panzoom" config="panzoomConfig" model="panzoomModel" ui-on-Drop="onDrop($event,$data,serviceinstall)">
+                            
+                            <div>
+                                <div >
+                                    <div ui-draggable="true" drag="serviciosinstall" 
+                                    on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
+                                    ng-repeat="serviciosinstall in serviceinstall track by $index">
+
+                                        <div class="container-charms">
+                                            <div class="container-service" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.png'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h1 my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()">hola:S</h1>
+                            <h1 my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()">hola:ddS</h1>
+                         
+                        </panzoom>
+
                     </div>
                 </div>
             </div>

@@ -25,4 +25,10 @@ function kitController($scope){
     $scope.onDrop = function($event,$data,array){
         array.push($data);
     };
+
+    // Menu Toggle Script -->
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
 }

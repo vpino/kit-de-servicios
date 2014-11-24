@@ -1,7 +1,7 @@
 // Declare use of strict javascript
 'use strict';
 
-function kitController($scope){
+function kitController($scope, $modal){
 	//Drag Drop
 	$scope.men = [
     	'John',

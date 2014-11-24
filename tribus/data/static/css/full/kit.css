@@ -45,7 +45,7 @@
 
 #page-content-wrapper {
     width: 100%;
-    padding: 15px;
+    /*padding: 15px;*/
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -119,7 +119,7 @@
     }
 
     #page-content-wrapper {
-        padding: 20px;
+        /*padding: 20px;*/
     }
 
     #wrapper.toggled #page-content-wrapper {
@@ -189,10 +189,33 @@
 
 .panzoom{
     background-image: url('/static/img/pattern_tile.svg');
-    width:600px; 
-    height: 600px;   
+    width:150%; 
+    height: 1200px;  
     position: absolute;
     display: inline-block;
     cursor: move;
     z-index:1;
+}
+
+.kit-service{
+    overflow-x:hidden; 
+    overflow-y:hidden; 
+}
+
+.buton-toggle{
+    width: 20px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position:absolute;
+    top:48%;
+    left:88%;
+    z-index:2;   
+}
+
+.col-lg-12{
+    padding-left: 0px;
 }

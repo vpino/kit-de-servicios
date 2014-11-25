@@ -224,6 +224,11 @@
 }
 
 .container-list{
-    background: #edede0;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+    background: #111111;
+    /*box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);*/
+    box-shadow: 0 0 2px #000;
+}
+.name-charms{
+    font-size: 18px;
+    color:#fff;
 }

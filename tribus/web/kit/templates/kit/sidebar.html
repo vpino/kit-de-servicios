@@ -2,7 +2,7 @@
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
-            <div class="sidebar-nav" ui-on-Drop="onDrop($event,$data,men)">
+            <div class="sidebar-nav">
                 <li class="sidebar-brand">
                     <a href="#">
                         Kit Servicios
@@ -14,9 +14,9 @@
                     <div class="container-list">
                         <div class="container-charms">
                             <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ listservicio }}{% endverbatim %}.svg'>
-                            {% verbatim %}{{ listservicio }}{% endverbatim %}
+                            
                             </div>
-                            <div class="">{% verbatim %}{{ listservicio }}{% endverbatim %}</div>
+                            <div class="name-charms">{% verbatim %}{{ listservicio }}{% endverbatim %}</div>
                         </div>                   
                     </div>
                 

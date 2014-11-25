@@ -31,6 +31,9 @@ This module define funtions to accomplish the following tasks:
 .. versionadded:: 0.2
 """
 
+# Importante considerar este planteamiento a futuro
+# http://www.pythian.com/blog/loose-coupling-and-discovery-of-services-with-consul-part-1/
+
 import os
 import json
 from tribus import BASEDIR
@@ -92,15 +95,20 @@ def docker_start_consul():
 		state = sudo('%(docker)s inspect %(consul_container)s' % env)
 
 		if state.return_code == 0:
-
 			output = json.loads(state.stdout)
 
 			if not output[0]['State']['Running']:
-				sudo('%(docker)s start %(consul_container)s' % env)
-				
+				sudo('%(docker)s rm -f %(consul_container)s' %  env)
+			 	sudo('%(docker)s run -d %(consul_ports)s '
+		     	 '-h %(consul_container)s --name %(consul_container)s '
+		     	 '%(consul_image)s -server -bootstrap ' % env)
+			 	log.info('Consul esta corriendo en http://localhost:8500')
+			else:
+				log.info('Consul ya esta corriendo en http://localhost:8500')			 	
+
 		elif state.return_code == 1:
 			sudo('%(docker)s run -d %(consul_ports)s '
 		     	 '-h %(consul_container)s --name %(consul_container)s '
-		     	 '%(consul_image)s -server -bootstrap' % env)
+		     	 '%(consul_image)s -server -bootstrap ' % env)
 
-		log.info('Consul esta corriendo en http://localhost:8500')
+			log.info('Consul esta corriendo en http://localhost:8500')

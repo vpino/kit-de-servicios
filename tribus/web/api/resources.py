@@ -47,10 +47,27 @@ from tribus.web.api.authorization import (
 from tribus.common.charms.repository import LocalCharmRepository
 from tribus.common.charms.directory import CharmDirectory
 from tribus.common.utils import get_path
-from tribus.config.base import CHARMSDIR
+from tribus.config.base import CHARMSDIR, SERVICEDIR
 
 
 class CharmObject(object):
+    def __init__(self, initial=None):
+        self.__dict__['_data'] = {}
+        
+        if hasattr(initial, 'items'):
+            self.__dict__['_data'] = initial
+
+    def __getattr__(self, name):
+        return self._data.get(name, None)
+
+    def __setattr__(self, name, value):
+        self.__dict__['_data'][name] = value
+
+    def to_dict(self):
+        return self._data
+
+
+class ServiceObject(object):
     def __init__(self, initial=None):
         self.__dict__['_data'] = {}
         
@@ -87,6 +104,60 @@ class CharmListResource(Resource):
 
         return [CharmObject({
                     'charms': l
+                })]
+
+    def obj_get_list(self, bundle, **kwargs):
+        return self.get_object_list(bundle)
+
+
+class ServiceListResource(Resource):
+    services = fields.ListField(attribute='services')
+
+    class Meta:
+        resource_name = 'services/list'
+        object_class = ServiceObject
+
+    def get_object_list(self, bundle):
+
+        SERVICES = LocalCharmRepository(SERVICEDIR)
+        
+        charms = SERVICES.list()
+
+        l = []
+
+        for ch in charms:
+            l.append(ch.metadata.name)
+
+        return [ServiceObject({
+                    'services': l
+                })]
+
+    def obj_get_list(self, bundle, **kwargs):
+        return self.get_object_list(bundle)
+
+
+class ServiceMetadataResource(Resource):
+    name = fields.CharField(attribute='name')
+    summary = fields.CharField(attribute='summary')
+    maintainer = fields.CharField(attribute='maintainer')
+    description = fields.CharField(attribute='description')
+
+    class Meta:
+        resource_name = 'services/metadata'
+        object_class = ServiceObject
+
+    def get_object_list(self, bundle):
+
+        if hasattr(bundle.request, 'GET'):
+            charm_name = bundle.request.GET.get('name', None)
+
+        CHARM = CharmDirectory(get_path([SERVICEDIR, charm_name]))
+
+        return [ServiceObject({
+                    'name': CHARM.metadata.name,
+                    'summary': CHARM.metadata.summary,
+                    'maintainer': CHARM.metadata.maintainer,
+                    'description': CHARM.metadata.description
                 })]
 
     def obj_get_list(self, bundle, **kwargs):

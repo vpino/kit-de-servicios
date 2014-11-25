@@ -6,15 +6,3 @@
 	path = tribus/data/charms/mediawiki
 	url = git@github.com:tribusdev/mediawiki.git
 	branch = generic
-[submodule "tribus/data/charms/mailman"]
-	path = tribus/data/charms/mailman
-	url = git@github.com:tribusdev/mailman.git
-	branch = generic
-[submodule "tribus/data/charms/postfix"]
-	path = tribus/data/charms/postfix
-	url = git@github.com:tribusdev/postfix.git
-	branch = generic
-[submodule "tribus/data/charms/roundcube"]
-	path = tribus/data/charms/roundcube
-	url = git@github.com:tribusdev/roundcube.git
-	branch = generic

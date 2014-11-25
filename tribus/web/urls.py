@@ -27,6 +27,7 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(regex=r'^$', view='tribus.web.views.index'),
+    # url(regex=r'^$', view='tribus.web.views.index'),
     url(regex=r'^prueba/$', view='tribus.web.views.prueba'),
+    url(regex=r'^api/', view=include(api_01.urls))
 )

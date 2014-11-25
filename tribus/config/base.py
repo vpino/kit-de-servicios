@@ -21,6 +21,7 @@ if BASEDIR == '/usr/share/pyshared':
     LOCALEDIR = '/usr/share/locale'
     PACKAGECACHE = '/var/cache/tribus'
     CHARMSDIR = BASEDIR + '/tribus/data/charms'
+    SERVICEDIR = BASEDIR + '/tribus/data/services'
 
 else:
     CONFDIR = BASEDIR + '/tribus/config'
@@ -31,3 +32,5 @@ else:
     ICONDIR = BASEDIR + '/tribus/data/icons'
     PACKAGECACHE = BASEDIR + '/packagecache'
     CHARMSDIR = BASEDIR + '/tribus/data/charms'
+    SERVICEDIR = BASEDIR + '/tribus/data/services'
+

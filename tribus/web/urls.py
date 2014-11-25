@@ -30,4 +30,5 @@ urlpatterns = patterns(
     #url(regex=r'^$', view='tribus.web.views.index'),
     url(regex=r'^prueba/$', view='tribus.web.views.prueba'),
     url(regex=r'^kit/$', view='tribus.web.kit.views.kit'),
+    url(regex=r'^api/', view=include(api_01.urls)),
 )

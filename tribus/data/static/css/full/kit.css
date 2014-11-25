@@ -8,7 +8,7 @@
 
 /*navbar*/
 .navbar-kit{
-    z-index: 1;
+    z-index: 3;
 }
 
 /*sidebar*/
@@ -203,19 +203,27 @@
 }
 
 .buton-toggle{
-    width: 20px;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    position:absolute;
-    top:48%;
-    left:88%;
-    z-index:2;   
+    margin: 7.5px;
 }
 
 .col-lg-12{
     padding-left: 0px;
+}
+
+.container-charms {
+    display: inline-block;
+    margin: 10px 10px;
+    /*width: 100px;
+    left: 100px;*/
+    text-align: center;
+}
+
+.container-service{
+    width: 95px;
+    height: 95px;
+}
+
+.container-list{
+    background: #edede0;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }

@@ -12,12 +12,12 @@ from django.contrib.contenttypes.models import ContentType
 def kit(request):
     context = {}
     #Cargamos la librería AngujarJS junto con sus plugins
-    render_js = ['jQuery', 'angular', 'hamster', 'angular.bootstrap', 'bootstrap','angular.draganddrop',
-                 'angular.mousewheel'
+    render_js = ['jQuery', 'angular', 'hamster', 'angular.resource', 'angular.bootstrap', 
+                 'bootstrap','angular.draganddrop', 'angular.mousewheel'
                 ]
 
     #Cargamos las funciones de Tribus para AngularJS
-    render_js += ['controllers.angular', 'kit.angular','panzoom.angular',
+    render_js += ['controllers.angular', 'services.angular', 'kit.angular','panzoom.angular',
                   'panzoomwidget.angular'
                  ]
 

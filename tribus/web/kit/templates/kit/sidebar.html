@@ -1,0 +1,65 @@
+<div id="wrapper" ng-controller="kitController">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        Kit Servicios
+                    </a>
+                </li>
+                
+                <div ui-draggable="true" drag="listservicio"
+                        ng-repeat="listservicio in serviciolist track by $index"> 
+                    <div class="container-list">
+                        <div class="container-charms">
+                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ listservicio }}{% endverbatim %}.svg'>
+                            
+                            </div>
+                            <div class="name-charms">{% verbatim %}{{ listservicio }}{% endverbatim %}</div>
+                        </div>                   
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        
+                        <panzoomwidget config="panzoomConfig" model="panzoomModel"></panzoomwidget>
+
+                        <panzoom class="panzoom" config="panzoomConfig" model="panzoomModel" ui-on-Drop="onDrop($event,$data,serviceinstall)">
+                            
+                            <div>
+                                <div >
+                                    <div ui-draggable="true" drag="serviciosinstall" 
+                                    on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
+                                    ng-repeat="serviciosinstall in serviceinstall track by $index">
+
+                                        <div class="container-charms">
+                                            <div class="container-service" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h1 my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()">hola:S</h1>
+                            <h1 my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()">hola:ddS</h1>
+                         
+                        </panzoom>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->

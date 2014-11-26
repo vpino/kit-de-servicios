@@ -1,7 +1,7 @@
 // Declare use of strict javascript
 'use strict';
 
-function kitController($scope, CharmsList, CharmMetadata ,$modal){
+function kitController($scope, CharmsList, CharmMetadata, $modal, $log){
 	//Drag Drop         
     $scope.addText = "";
 
@@ -94,4 +94,47 @@ function kitController($scope, CharmsList, CharmMetadata ,$modal){
         //console.log($cookieStore);
         //console.log($cookieStore.get('over'));
     };
+
+    
+    $scope.items = ['item1', 'item2', 'item3'];
+  	
+  	$scope.open = function (size) {
+
+	    var modalInstance = $modal.open({ 
+	      	templateUrl: 'myModalContent.html',
+	      	controller: 'ModalController',   
+	      	size: size,
+	      	resolve: {
+	        	items: function () {
+	          		return $scope.items;
+	        	}
+	      	}
+	    });
+
+    // modalInstance.result.then(function (selectedItem) {
+    //   $scope.selected = selectedItem;
+    // }, function () {
+    //   $log.info('Modal dismissed at: ' + new Date());
+    // 	});
+  	};
+
+  	 	
+}
+
+function ModalController($scope, $modalInstance, items){
+
+	$scope.items = items;
+
+	// $scope.selected = {
+ //    item: $scope.items[0]
+ //  	};
+
+	$scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  	};
+
+  	// $scope.ok = function () {
+   //  $modalInstance.close($scope.selected.item);
+  	// };
+
 }

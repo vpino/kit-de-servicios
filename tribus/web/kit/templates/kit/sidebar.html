@@ -8,15 +8,38 @@
                         Kit Servicios
                     </a>
                 </li>
+                <script type="text/ng-template" id="myModalContent.html">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Im a modal!</h3>
+                    </div>
+                    <div class="modal-body">
+
+                        {% verbatim %}{{ items }}{% endverbatim %}
+                        <ul>
+                            <li ng-repeat="item in items">
+                                <a ng-click="selected.item = item">{% verbatim %}{{ item }}{% endverbatim %}</a>
+                                <p> Viva chiabe </p>
+                            </li>
+                        </ul>
+
+                        Selected: <b>{% verbatim %}{{ selected.item }}{% endverbatim %}</b>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" ng-click="ok()">OK</button>
+                        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                    </div>
+                </script>
+
+                <div ng-show="selected">Selection from a modal: {% verbatim %}{{ selected }}{% endverbatim %}</div>
                 
                 <div ui-draggable="true" drag="charm.name"
                         ng-repeat="charm in charms track by $index"> 
                     <div class="container-list">
                         <div class="container-charms">
-                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ charm.name }}{% endverbatim %}.svg'></div>
+                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ charm.name }}{% endverbatim %}.svg' ng-click="open()"></div>
                             <div class="name-charms">{% verbatim %}{{ charm.name }}{% endverbatim %}</div>
                             <div class="name-summary">{% verbatim %}{{charm.summary}}{% endverbatim %}</div>
-                        </div>                   
+                        </div>
                     </div>
                 
                 </div>

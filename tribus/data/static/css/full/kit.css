@@ -219,16 +219,24 @@
 }
 
 .container-service{
-    width: 95px;
-    height: 95px;
+    width: 96px;
+    height: 96px;
+    text-align: center;
+    margin-left: 65px;
 }
 
 .container-list{
     background: #111111;
     /*box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);*/
     box-shadow: 0 0 2px #000;
+    text-align: center;
 }
 .name-charms{
     font-size: 18px;
     color:#fff;
+    text-align: center;
+}
+.name-summary{
+    color:#a6a6a6;
+    text-align: center;
 }

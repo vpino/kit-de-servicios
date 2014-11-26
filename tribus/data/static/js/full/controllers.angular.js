@@ -2,21 +2,7 @@
 'use strict';
 
 function kitController($scope, CharmsList, CharmMetadata ,$modal){
-	//Drag Drop
-	$scope.men = [
-    	'John',
-      	'Jack',
-      	'Mark',
-      	'Ernie'
-    ];
-      
-    $scope.women = [
-    	'Jane',
-      	'Jill',
-      	'Betty',
-      	'Mary'
-    ];
-          
+	//Drag Drop         
     $scope.addText = "";
 
     $scope.serviceinstall = [''];
@@ -27,6 +13,7 @@ function kitController($scope, CharmsList, CharmMetadata ,$modal){
         var icon = '/icon.svg'
         
         $scope.serviciolist = result[0].charms;
+        //$scope.serviciolist = result[0].services;
         $scope.charms = [];
 
         for(var i = 0; i < $scope.serviciolist.length; i++){
@@ -40,7 +27,7 @@ function kitController($scope, CharmsList, CharmMetadata ,$modal){
                     summary : results[0].summary
                 });
                 //console.log($scope.charms);
-            });
+            }); 
         }
     });
             

@@ -9,14 +9,13 @@
                     </a>
                 </li>
                 
-                <div ui-draggable="true" drag="listservicio"
-                        ng-repeat="listservicio in serviciolist track by $index"> 
+                <div ui-draggable="true" drag="charm.name"
+                        ng-repeat="charm in charms track by $index"> 
                     <div class="container-list">
                         <div class="container-charms">
-                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ listservicio }}{% endverbatim %}.svg'>
-                            
-                            </div>
-                            <div class="name-charms">{% verbatim %}{{ listservicio }}{% endverbatim %}</div>
+                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ charm.name }}{% endverbatim %}.svg'></div>
+                            <div class="name-charms">{% verbatim %}{{ charm.name }}{% endverbatim %}</div>
+                            <div class="name-summary">{% verbatim %}{{charm.summary}}{% endverbatim %}</div>
                         </div>                   
                     </div>
                 

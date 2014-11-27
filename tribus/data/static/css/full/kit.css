@@ -224,12 +224,20 @@
     text-align: center;
     margin-left: 65px;
 }
+.container-service-pan{
+    width: 96px;
+    height: 96px;
+    text-align: center;
+}
 
 .container-list{
     background: #111111;
     /*box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);*/
     box-shadow: 0 0 2px #000;
     text-align: center;
+}
+.container-list div:hover {
+    background:#141414;
 }
 .name-charms{
     font-size: 18px;

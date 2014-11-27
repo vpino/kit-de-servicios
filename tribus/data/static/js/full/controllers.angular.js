@@ -30,7 +30,11 @@ function kitController($scope, CharmsList, CharmMetadata, $modal, $log){
             }); 
         }
     });
-            
+
+    console.log(result);
+	console.log($scope.serviciolist);
+	console.log($scope.charms);
+	           
     $scope.dropSuccessHandler = function($event,index,array){
         array.splice(index,1);
     };

@@ -86,13 +86,13 @@
                             }
                             </script>
                             <div>
-                                <div >
+                                <div>
                                     <div ui-draggable="true" drag="serviciosinstall" 
                                     on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
                                     ng-repeat="serviciosinstall in serviceinstall track by $index">
 
-                                        <div id="service" class="container-charms">
-                                            <div ng-click="open()" class="container-service-pan" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                                        <div  id="service" class="container-charms">
+                                            <div id="service" ng-dblclick="open()" class="container-service-pan" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
                                             <a id="eliminar-service" href='javascript:eliminarElemento("service","eliminar-service");'>Eliminar</a>
                                             </div>
                                             

@@ -122,6 +122,7 @@ function kitController($scope, CharmsList, CharmMetadata, $modal, $log){
     // 	});
   	};
 
+  	$scope.service = Math.floor(Math.random() * 51) + 25;
   	 	
 }
 

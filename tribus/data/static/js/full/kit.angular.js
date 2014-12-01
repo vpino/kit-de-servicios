@@ -3,12 +3,13 @@
 
 // Application -----------------------------------------------------------------
 
-var tribus = angular.module('tribus', ['ngDragDrop','ngPanzoom', 'ngPanzoomwidget', 'CharmsList',
+var tribus = angular.module('tribus', ['ui.bootstrap', 'ngDragDrop', 'ngPanzoom', 'ngPanzoomwidget', 'CharmsList',
                                        'CharmMetadata']);
 
 // Controllers -----------------------------------------------------------------
 
-tribus.controller('kitController', ['$scope', 'CharmsList', 'CharmMetadata', kitController]);
+tribus.controller('kitController', ['$scope', 'CharmsList', 'CharmMetadata', '$modal', '$log',
+                                    kitController]);
 
 // Directive -------------------------------------------------------------------
 

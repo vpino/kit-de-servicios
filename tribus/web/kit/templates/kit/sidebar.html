@@ -8,19 +8,41 @@
                         Kit Servicios
                     </a>
                 </li>
-                
-                <div ui-draggable="true" drag="listservicio"
-                        ng-repeat="listservicio in serviciolist track by $index"> 
+                <div ui-draggable="true" drag="charm.name"
+                        ng-repeat="charm in charms track by $index">
+
+                            <script type="text/ng-template" id="myModalContent.html">
+                                <div class="modal-header" ng-repeat="charm in charms track by $index">
+                                    <h3 class="modal-title">{% verbatim %}{{ charm.name }}{% endverbatim %}</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <ul>
+                                        <li ng-repeat="item in items">
+                                            <a ng-click="selected.item = item">{% verbatim %}{{ item }}{% endverbatim %}</a>                                           
+                                        </li>
+                                    </ul>
+
+                                    Selected: <b>{% verbatim %}{{ selected.item }}{% endverbatim %}</b>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" ng-click="ok()">OK</button>
+                                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                                </div>
+                            </script>
+ 
+                 
                     <div class="container-list">
                         <div class="container-charms">
-                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ listservicio }}{% endverbatim %}.svg'>
-                            
-                            </div>
-                            <div class="name-charms">{% verbatim %}{{ listservicio }}{% endverbatim %}</div>
-                        </div>                   
+                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ charm.name }}{% endverbatim %}.svg' ng-click="open('lg')"></div>
+                            <div class="name-charms">{% verbatim %}{{ charm.name }}{% endverbatim %}</div>
+                            <div class="name-summary">{% verbatim %}{{charm.summary}}{% endverbatim %}</div>
+                        </div>
                     </div>
                 
                 </div>
+
+                <div ng-show="selected">Selection from a modal: {% verbatim %}{{ selected }}{% endverbatim %}</div>
+
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -34,25 +56,52 @@
                         <panzoomwidget config="panzoomConfig" model="panzoomModel"></panzoomwidget>
 
                         <panzoom class="panzoom" config="panzoomConfig" model="panzoomModel" ui-on-Drop="onDrop($event,$data,serviceinstall)">
-                            
+                            <script type="text/javascript">
+                                var id ="", id_link="", div="";
+                                
+                                function crearLinkEliminar(div_append, id_elemento){
+                                    id_link = "id_link_"+div_append;            
+                                    var crear_enlace = document.createElement('a');
+                                    crear_enlace.setAttribute('id',id_link);
+                                    crear_enlace.setAttribute('href','javascript:eliminarElemento("'+id_elemento+'","'+id_link+'");');
+                                    texto_enlace = document.createTextNode('Eliminar');
+                                    crear_enlace.appendChild(texto_enlace);
+                                    document.getElementById(div_append).appendChild(crear_enlace);
+                                }
+                                 
+                                /*---------------------------------------------------------------------------------------------------------------------*/       
+                            function eliminarElemento(id_elemento, id_link){
+                                elementoEliminar = document.getElementById(id_elemento);
+                                link_eliminar = document.getElementById(id_link);
+                                if (elementoEliminar && id_link){
+                                    elementoPadre = elementoEliminar.parentNode;
+                                    elementoPadre.removeChild(elementoEliminar);
+                                    
+                                    elementoPadreLink = link_eliminar.parentNode;
+                                    elementoPadreLink.removeChild(link_eliminar);
+                                    alert("Eliminado correctamente.");
+                                } else {
+                                    alert("El elemento selecionado no existe, \nno se pudo eliminar.");
+                                }
+                            }
+                            </script>
                             <div>
-                                <div >
+                                <div>
                                     <div ui-draggable="true" drag="serviciosinstall" 
                                     on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
                                     ng-repeat="serviciosinstall in serviceinstall track by $index">
 
-                                        <div class="container-charms">
-                                            <div class="container-service" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                                        <div  id="service" class="container-charms">
+                                            <div id="service" ng-dblclick="open()" class="container-service-pan" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                                            <a id="eliminar-service" href='javascript:eliminarElemento("service","eliminar-service");'>Eliminar</a>
                                             </div>
+                                            
                                         </div>
                                     
                                     </div>
                                 </div>
                             </div>
-
-                            <h1 my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()">hola:S</h1>
-                            <h1 my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()">hola:ddS</h1>
-                         
+                   
                         </panzoom>
 
                     </div>

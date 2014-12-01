@@ -12,17 +12,18 @@
                         ng-repeat="charm in charms track by $index">
 
                             <script type="text/ng-template" id="myModalContent.html">
-                                <div class="modal-header" ng-repeat="charm in charms track by $index">
-                                    <h3 class="modal-title">{% verbatim %}{{ charm.name }}{% endverbatim %}</h3>
+                                <div class="modal-header">
+                                    <h3 class="modal-title">{% verbatim %}{{ data[0].name }}{% endverbatim %}</h3>
                                 </div>
                                 <div class="modal-body">
                                     <ul>
-                                        <li ng-repeat="item in items">
-                                            <a ng-click="selected.item = item">{% verbatim %}{{ item }}{% endverbatim %}</a>                                           
-                                        </li>
+                                        <p ng-click="selected.item = item">Description : {% verbatim %}{{ data[0].description }}{% endverbatim %}</p>     
                                     </ul>
-
-                                    Selected: <b>{% verbatim %}{{ selected.item }}{% endverbatim %}</b>
+                                    <br>
+                                    <ul>                
+                                        <p ng-click="selected.item = item">Maintainer : {% verbatim %}{{ data[0].maintainer }}{% endverbatim %}</p>                   
+                                    </ul>
+                                 
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-primary" ng-click="ok()">OK</button>
@@ -33,7 +34,7 @@
                  
                     <div class="container-list">
                         <div class="container-charms">
-                            <div class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ charm.name }}{% endverbatim %}.svg' ng-click="open('lg')"></div>
+                            <div i="{% verbatim %}{{ charm.name }}{% endverbatim %}" class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ charm.name }}{% endverbatim %}.svg' ng-click="open('lg', charm.name)"></div>
                             <div class="name-charms">{% verbatim %}{{ charm.name }}{% endverbatim %}</div>
                             <div class="name-summary">{% verbatim %}{{charm.summary}}{% endverbatim %}</div>
                         </div>
@@ -91,9 +92,9 @@
                                     on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
                                     ng-repeat="serviciosinstall in serviceinstall track by $index">
 
-                                        <div  id="service" class="container-charms">
-                                            <div id="service" ng-dblclick="open()" class="container-service-pan" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
-                                            <a id="eliminar-service" href='javascript:eliminarElemento("service","eliminar-service");'>Eliminar</a>
+                                        <div  id="{% verbatim %}{{ serviciosinstall }}{% endverbatim %}" class="container-charms">
+                                            <div id="{% verbatim %}{{ serviciosinstall }}{% endverbatim %}" ng-dblclick="open()" class="container-service-pan" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
+                                            <a id="eliminar-service" href='javascript:eliminarElemento("service","{% verbatim %}{{ serviciosinstall }}{% endverbatim %}");'>Eliminar</a>
                                             </div>
                                             
                                         </div>

@@ -30,10 +30,6 @@ function kitController($scope, CharmsList, CharmMetadata, $modal, $log){
             }); 
         }
     });
-
-    console.log(result);
-	console.log($scope.serviciolist);
-	console.log($scope.charms);
 	           
     $scope.dropSuccessHandler = function($event,index,array){
         array.splice(index,1);
@@ -99,18 +95,19 @@ function kitController($scope, CharmsList, CharmMetadata, $modal, $log){
         //console.log($cookieStore.get('over'));
     };
 
-    
-    $scope.items = ['item1', 'item2', 'item3'];
-  	
-  	$scope.open = function (size) {
+    //MODAL
 
+    $scope.datos = [];
+  	
+  	$scope.open = function (size, name) {
 	    var modalInstance = $modal.open({ 
 	      	templateUrl: 'myModalContent.html',
 	      	controller: 'ModalController',   
 	      	size: size,
 	      	resolve: {
-	        	items: function () {
-	          		return $scope.items;
+	        	data: function () {
+	    			var data = CharmMetadata.query({name: name});
+					return data
 	        	}
 	      	}
 	    });
@@ -120,19 +117,12 @@ function kitController($scope, CharmsList, CharmMetadata, $modal, $log){
     // }, function () {
     //   $log.info('Modal dismissed at: ' + new Date());
     // 	});
-  	};
-
-  	$scope.service = Math.floor(Math.random() * 51) + 25;
-  	 	
+  	};	 	
 }
 
-function ModalController($scope, $modalInstance, items){
-
-	$scope.items = items;
-
-	// $scope.selected = {
- //    item: $scope.items[0]
- //  	};
+function ModalController($scope, $modalInstance, data){
+	
+	$scope.data = data
 
 	$scope.cancel = function () {
     $modalInstance.dismiss('cancel');

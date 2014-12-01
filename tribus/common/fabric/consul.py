@@ -36,6 +36,7 @@ This module define funtions to accomplish the following tasks:
 
 import os
 import json
+import requests
 from tribus import BASEDIR
 from tribus.common.utils import get_path
 from tribus.common.logger import get_logger
@@ -50,6 +51,22 @@ env.consul_ports = '-p 8300:8300 -p 8301:8301 -p 8301:8301/udp '\
              	   '-p 8302:8302 -p 8302:8302/udp -p 8400:8400 '\
                    '-p 8500:8500 -p 8600:53/udp'
 env.consul_dockerfile = get_path([BASEDIR, 'tribus', 'data', 'consul'])
+env.components = {
+        1 : {'name' : 'mysql',
+             'role' : 'db',
+             'imgname' : 'mysql:test',
+             'ports' : '-p 3306:3306',
+             'dockerfile' : get_path([BASEDIR, 'tribus', 'data',
+             'charms', 'mysql'])
+        },
+
+        2 : {'name' : 'mediawiki',
+             'imgname' : 'mediawiki:test',
+             'ports' : '-p 80:80',
+             'dockerfile' : get_path([BASEDIR, 'tribus', 'data',
+             'charms', 'mediawiki'])
+        },
+    }
 
 
 def docker_generate_consul_base_image():
@@ -112,3 +129,61 @@ def docker_start_consul():
 		     	 '%(consul_image)s -server -bootstrap ' % env)
 
 			log.info('Consul esta corriendo en http://localhost:8500')
+
+
+def deploy_test_service():
+
+	docker_start_consul()
+
+	consul_addr = sudo('%(docker)s inspect -f '
+                       '"{{.NetworkSettings.IPAddress}}" '
+                       'consul-server ' % env)
+
+	for n, component in env.components.items():
+            comp_exists = sudo('docker inspect %(imgname)s ' % component)
+
+            if comp_exists.return_code == 1:
+                sudo('docker build -t %(imgname)s '
+                    '%(dockerfile)s' % component)
+
+            component['join_addr'] = consul_addr
+            
+            sudo('docker run -d %(ports)s '
+                 '-h %(name)s --name %(name)s '
+                 '%(imgname)s -join %(join_addr)s ' % component)
+
+
+def consul_query_status():
+
+	with quiet():
+		consul_addr = sudo('%(docker)s inspect -f '
+	                       '"{{.NetworkSettings.IPAddress}}" '
+	                       'consul-server ' % env)
+
+		consul_health = "http://%s:8500/v1/health/node" % (consul_addr)
+
+		consul_node = os.path.join(consul_health, "consul-server")
+
+		response = requests.get(consul_node).json()
+
+		if response:
+			if response[0]['Status'] == "passing":
+				return (True, response[0]['Output'])
+			else:
+				return (False, response[0]['Output'])
+
+def consul_query_services():
+	with quiet():
+		consul_addr = sudo('%(docker)s inspect -f '
+	                       '"{{.NetworkSettings.IPAddress}}" '
+	                       'consul-server ' % env)
+
+		consul_services = "http://%s:8500/v1/catalog/services" % (consul_addr)
+
+		response = requests.get(consul_services).json()
+
+		if response:
+			return response
+
+
+

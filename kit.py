@@ -19,7 +19,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import optparse
-from tribus.common.fabric.consul import docker_start_consul
+from tribus.common.fabric.consul import (docker_start_consul,
+deploy_test_service, consul_query_status, consul_query_services)
 
 
 def main():
@@ -28,7 +29,7 @@ def main():
     p = optparse.OptionParser(description='Interfaz para el kit de servicios',
                               prog='kitservicios',
                               version='kitservicios 0.1',
-                              usage='%prog [servicios or equipos]')
+                              usage='%prog [init servicios desplegar status]')
     options, arguments = p.parse_args()
 
     if len(arguments) == 1:
@@ -37,8 +38,17 @@ def main():
             docker_start_consul()
  		
     	elif arguments[0] == 'servicios':
-    		values = servicios()
-    		print values
+            services = consul_query_services()
+            print "Servicios corriendo en este servidor: "
+            for service, role in services.items():
+                print "*", service
+
+        elif arguments[0] == 'desplegar':
+            deploy_test_service()
+
+        elif arguments[0] == 'status':
+            running, msg = consul_query_status()
+            print msg
     	else:
     		p.print_help()
     else:

@@ -33,7 +33,7 @@ from tastypie.fields import ManyToManyField, OneToOneField
 from tastypie.authentication import SessionAuthentication
 from tastypie.validation import CleanedDataFormValidation
 
-from tribus.web.api.tasks import queue_charm_deploy, wipe_host_conts
+from tribus.web.api.tasks import queue_charm_deploy, wipe_host_conts, queue_service_deploy
 
 from tribus.web.api.authorization import (
     TimelineAuthorization,
@@ -248,4 +248,17 @@ class CharmWipeContainers(Resource):
 
     def obj_create(self, bundle, **kwargs):
         wipe_host_conts.apply_async([bundle.data])
+        return bundle
+
+
+class ServiceDeployResource(Resource):
+    class Meta:
+        resource_name = 'services/deploy'
+        object_class = ServiceObject
+
+    def detail_uri_kwargs(self, bundle_or_obj):
+        return {}
+
+    def obj_create(self, bundle, **kwargs):
+        queue_service_deploy.apply_async([bundle.data])
         return bundle

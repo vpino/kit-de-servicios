@@ -29,6 +29,7 @@ from tribus.common.fabric.remote import (check_docker, update_packages,
                                          get_charm_base_image,
                                          stop_service, start_service,
                                          docker_kill_all_remote_images)
+from tribus.common.fabric.consul import deploy_test_service
 
 
 @task
@@ -99,3 +100,13 @@ def queue_charm_deploy(*args):
         else:
             print "Ocurrio un error, codigo de error es: %s " % docker_installed
             return
+
+
+@task
+def queue_service_deploy(*args):
+    env.port = 22
+    env.user = args[0]['user']
+    env.password = args[0]['pw']
+    env.hosts = args[0]['ip']
+    
+    execute(deploy_test_service)

@@ -51,7 +51,7 @@ env.consul_image = "consul-server"
 env.consul_ports = '-p 8300:8300 -p 8301:8301 -p 8301:8301/udp '\
              	   '-p 8302:8302 -p 8302:8302/udp -p 8400:8400 '\
                    '-p 8500:8500 -p 8600:53/udp'
-# env.consul_dockerfile = get_path([BASEDIR, 'tribus', 'data', 'consul'])
+
 env.consul_dockerfile_i386 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'i386'])
 env.consul_dockerfile_amd64 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'amd64'])
 env.components = {
@@ -180,6 +180,7 @@ def consul_query_status():
 				return (True, response[0]['Output'])
 			else:
 				return (False, response[0]['Output'])
+
 
 def consul_query_services():
 	with quiet():

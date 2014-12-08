@@ -153,7 +153,7 @@ def docker_generate_debian_base_image():
     """
     docker_stop_container()
 
-    with hide('warnings', 'stderr', 'running'):
+    with hide():
 
         log.info('Creating a new Debian base image ...')
 

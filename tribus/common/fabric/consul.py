@@ -40,17 +40,20 @@ import requests
 from tribus import BASEDIR
 from tribus.common.utils import get_path
 from tribus.common.logger import get_logger
+from tribus.common.system import get_local_arch
 from fabric.api import run, env, settings, sudo, hide, put, cd, quiet, local
 
 log = get_logger()
 
 env.port = 22
 env.consul_container = "consul-server"
-env.consul_image = "consul-server:test"
+env.consul_image = "consul-server"
 env.consul_ports = '-p 8300:8300 -p 8301:8301 -p 8301:8301/udp '\
              	   '-p 8302:8302 -p 8302:8302/udp -p 8400:8400 '\
                    '-p 8500:8500 -p 8600:53/udp'
-env.consul_dockerfile = get_path([BASEDIR, 'tribus', 'data', 'consul'])
+# env.consul_dockerfile = get_path([BASEDIR, 'tribus', 'data', 'consul'])
+env.consul_dockerfile_i386 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'i386'])
+env.consul_dockerfile_amd64 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'amd64'])
 env.components = {
         1 : {'name' : 'mysql',
              'role' : 'db',
@@ -76,9 +79,13 @@ def docker_generate_consul_base_image():
     .. versionadded:: 0.2
     """
 
-    sudo('%(docker)s build -t %(consul_image)s %(consul_dockerfile)s' % env)
-
+    env.arch = get_local_arch()
+    if env.arch == 'i386':
+    	sudo('%(docker)s build -t %(consul_image)s-%(arch)s:test %(consul_dockerfile_i386)s' % env)
+    elif env.arch == 'amd64':
+    	sudo('%(docker)s build -t %(consul_image)s-%(arch)s:test %(consul_dockerfile_amd64)s' % env)
     
+
 def docker_check_consul_image():
 	"""
 	Check if the consul image exists, build it if not.
@@ -87,8 +94,8 @@ def docker_check_consul_image():
 	"""
 	with quiet():
 		log.info('Checking if we have a consul image ...')
-
-		state = sudo('%(docker)s inspect %(consul_image)s' % env)
+		env.arch = get_local_arch()
+		state = sudo('%(docker)s inspect %(consul_image)s-%(arch)s:test' % env)
 
 	if state.return_code == 1:
 		docker_generate_consul_base_image()
@@ -105,6 +112,8 @@ def docker_start_consul():
 
 	log.info('Starting Consul service ...')
 
+	env.arch = get_local_arch()
+
 	with quiet():
 
 		log.info('Checking if the Consul container is up ...')
@@ -118,7 +127,7 @@ def docker_start_consul():
 				sudo('%(docker)s rm -f %(consul_container)s' %  env)
 			 	sudo('%(docker)s run -d %(consul_ports)s '
 		     	 '-h %(consul_container)s --name %(consul_container)s '
-		     	 '%(consul_image)s -server -bootstrap ' % env)
+		     	 '%(consul_image)s-%(arch)s:test -server -bootstrap ' % env)
 			 	log.info('Consul esta corriendo en http://localhost:8500')
 			else:
 				log.info('Consul ya esta corriendo en http://localhost:8500')			 	
@@ -126,7 +135,7 @@ def docker_start_consul():
 		elif state.return_code == 1:
 			sudo('%(docker)s run -d %(consul_ports)s '
 		     	 '-h %(consul_container)s --name %(consul_container)s '
-		     	 '%(consul_image)s -server -bootstrap ' % env)
+		     	 '%(consul_image)s-%(arch)s:test -server -bootstrap ' % env)
 
 			log.info('Consul esta corriendo en http://localhost:8500')
 
@@ -184,6 +193,3 @@ def consul_query_services():
 
 		if response:
 			return response
-
-
-

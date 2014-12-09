@@ -107,6 +107,27 @@ function kitController($scope, CharmsList, CharmMetadata, $modal, $log){
 	      	resolve: {
 	        	data: function () {
 	    			var data = CharmMetadata.query({name: name});
+	    			console.log(data);
+					return data
+	        	}
+	      	}
+	    });
+
+    // modalInstance.result.then(function (selectedItem) {
+    //   $scope.selected = selectedItem;
+    // }, function () {
+    //   $log.info('Modal dismissed at: ' + new Date());
+    // 	});
+  	};
+
+  	$scope.opendeploy = function (size, name) {
+	    var modalInstance = $modal.open({ 
+	      	templateUrl: 'myModaldeploy.html',
+	      	controller: 'ModalController',   
+	      	size: size,
+	      	resolve: {
+	        	data: function () {
+	    			var data = CharmMetadata.query({name: name});
 					return data
 	        	}
 	      	}

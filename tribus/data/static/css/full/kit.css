@@ -249,3 +249,12 @@
     color:#a6a6a6;
     text-align: center;
 }
+
+#img-modal-descrip{
+    width: 45px; 
+    height: 45px;
+}
+
+.modal-header{
+    text-align: center;
+}

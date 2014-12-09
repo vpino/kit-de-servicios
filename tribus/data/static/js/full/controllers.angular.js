@@ -1,7 +1,7 @@
 // Declare use of strict javascript
 'use strict';
 
-function kitController($scope, CharmsList, CharmMetadata, $modal, $log){
+function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
 	//Drag Drop         
     $scope.addText = "";
 
@@ -141,7 +141,7 @@ function kitController($scope, CharmsList, CharmMetadata, $modal, $log){
   	};	 	
 }
 
-function ModalController($scope, $modalInstance, data){
+function ModalController($scope, $modalInstance, Deploy, data){
 	
 	$scope.data = data
 
@@ -153,4 +153,17 @@ function ModalController($scope, $modalInstance, data){
    //  $modalInstance.close($scope.selected.item);
   	// };
 
+  	$scope.master = {};
+
+    $scope.update = function(user) {
+        $scope.master = angular.copy(user);
+        Deploy.save({user: user.name, pw: user.password});
+        $modalInstance.dismiss('ok');
+    };
+
+    $scope.reset = function() {
+        $scope.user = angular.copy($scope.master);
+    };
+
+    $scope.reset();
 }

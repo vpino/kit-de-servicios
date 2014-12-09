@@ -29,3 +29,17 @@ angular.module('CharmMetadata', ['ngResource'])
             },
         });
 });
+
+angular.module('Deploy', ['ngResource'])
+.factory('Deploy',  function($resource){
+    //return $resource('/api/0.1/services/deploy/:user:pw',
+    return $resource('/api/0.1/services/deploy/',
+        { user: '@user', pw: '@pw'}, {
+        save: {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': angular.element(document.querySelector('input[name=csrfmiddlewaretoken]')).val()
+            },
+        }
+    });
+});

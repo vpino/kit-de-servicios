@@ -107,6 +107,10 @@ def queue_service_deploy(*args):
     env.port = 22
     env.user = args[0]['user']
     env.password = args[0]['pw']
-    env.hosts = args[0]['ip']
+    # env.hosts = args[0]['ip']
+
+    print args
+    print env.user
+    print env.password
     
-    execute(deploy_test_service)
+    # execute(deploy_test_service)

@@ -57,3 +57,14 @@ tribus.directive('myDraggable', ['$document', function($document) {
         }
       };
     }]);
+
+tribus.directive('removeMe', function() {
+      return {
+            link:function($scope,element)
+            {
+                $scope.remove = function() {
+                element.remove();
+                };
+            }
+      }
+});

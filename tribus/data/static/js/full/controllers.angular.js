@@ -107,7 +107,6 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
 	      	resolve: {
 	        	data: function () {
 	    			var data = CharmMetadata.query({name: name});
-	    			console.log(data);
 					return data
 	        	}
 	      	}
@@ -120,15 +119,18 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
     // 	});
   	};
 
-  	$scope.opendeploy = function (size, name) {
+  	$scope.opendeploy = function (name) {
 	    var modalInstance = $modal.open({ 
 	      	templateUrl: 'myModaldeploy.html',
-	      	controller: 'ModalController',   
-	      	size: size,
+	      	controller: 'ModalControllerConf',   
 	      	resolve: {
 	        	data: function () {
 	    			var data = CharmMetadata.query({name: name});
 					return data
+	        	},
+
+	        	obj : function() {
+	        		return $('#'+name);
 	        	}
 	      	}
 	    });
@@ -149,6 +151,18 @@ function ModalController($scope, $modalInstance, Deploy, data){
     $modalInstance.dismiss('cancel');
   	};
 
+  
+}
+
+function ModalControllerConf($scope, $modalInstance, Deploy, data, obj){
+
+	$scope.data = data
+	$scope.obj = obj
+
+	$scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  	};
+
   	// $scope.ok = function () {
    //  $modalInstance.close($scope.selected.item);
   	// };
@@ -163,6 +177,11 @@ function ModalController($scope, $modalInstance, Deploy, data){
 
     $scope.reset = function() {
         $scope.user = angular.copy($scope.master);
+    };
+
+    $scope.remove = function() {
+        $scope.obj.remove();
+        $modalInstance.dismiss('delete');
     };
 
     $scope.reset();

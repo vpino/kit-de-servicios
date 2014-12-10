@@ -58,35 +58,7 @@
                         <panzoomwidget config="panzoomConfig" model="panzoomModel"></panzoomwidget>
 
                         <panzoom class="panzoom" config="panzoomConfig" model="panzoomModel" ui-on-Drop="onDrop($event,$data,serviceinstall)">
-                            <script type="text/javascript">
-                                var id ="", id_link="", div="";
-                                
-                                function crearLinkEliminar(div_append, id_elemento){
-                                    id_link = "id_link_"+div_append;            
-                                    var crear_enlace = document.createElement('a');
-                                    crear_enlace.setAttribute('id',id_link);
-                                    crear_enlace.setAttribute('href','javascript:eliminarElemento("'+id_elemento+'","'+id_link+'");');
-                                    texto_enlace = document.createTextNode('Eliminar');
-                                    crear_enlace.appendChild(texto_enlace);
-                                    document.getElementById(div_append).appendChild(crear_enlace);
-                                }
-                                 
-                                /*---------------------------------------------------------------------------------------------------------------------*/       
-                            function eliminarElemento(id_elemento, id_link){
-                                elementoEliminar = document.getElementById(id_elemento);
-                                link_eliminar = document.getElementById(id_link);
-                                if (elementoEliminar && id_link){
-                                    elementoPadre = elementoEliminar.parentNode;
-                                    elementoPadre.removeChild(elementoEliminar);
-                                    
-                                    elementoPadreLink = link_eliminar.parentNode;
-                                    elementoPadreLink.removeChild(link_eliminar);
-                                    alert("Eliminado correctamente.");
-                                } else {
-                                    alert("El elemento selecionado no existe, \nno se pudo eliminar.");
-                                }
-                            }
-                            </script>
+
                             <script type="text/ng-template" id="myModaldeploy.html">
                                 <div class="modal-header">                                  
                                     <h3 class="modal-title">{% verbatim %}{{ data[0].name }}{% endverbatim %}</h3>
@@ -111,7 +83,7 @@
                                   <pre>form = {% verbatim %}{{user | json}}{% endverbatim %}</pre>
                                   <pre>master = {% verbatim %}{{master | json}}{% endverbatim %}</pre>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger">Delete</button>
+                                    <button type="button" class="btn btn-danger" ng-click="remove()">Delete</button>
                                     <button type="button" class="btn btn-primary" ng-click="update(user)">OK</button>
                                     <button type="button"class="btn btn-warning" ng-click="cancel()">Cancel</button>
                                 </div>
@@ -122,11 +94,9 @@
                                     on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
                                     ng-repeat="serviciosinstall in serviceinstall track by $index">
 
-                                        <div  id="{% verbatim %}{{ serviciosinstall }}{% endverbatim %}" class="container-charms">
-                                            <div id="{% verbatim %}{{ serviciosinstall }}{% endverbatim %}" ng-dblclick="opendeploy()" class="container-service-pan" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}
-                                            <a id="eliminar-service" href='javascript:eliminarElemento("service","{% verbatim %}{{ serviciosinstall }}{% endverbatim %}");'>Eliminar</a>
+                                        <div  id="{% verbatim %}{{ serviciosinstall }}{% endverbatim %}" class="container-charms" remove-me>
+                                            <div ng-dblclick="opendeploy(serviciosinstall)" class="container-service-pan" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}                                   
                                             </div>
-                                            
                                         </div>
                                     
                                     </div>

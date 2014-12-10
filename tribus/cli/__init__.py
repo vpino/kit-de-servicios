@@ -26,21 +26,3 @@ This module contains funtions to provide the same functionality of the web
 interface but through the console.
 
 """
-
-import json
-from tribus import BASEDIR
-from fabric.api import run, env, settings, sudo, hide, put, cd, local, quiet
-from tribus.common.utils import get_path
-from tribus.common.fabric.development import docker_create_service_cluster
-from tribus.common.logger import get_logger
-
-log = get_logger()
-
-env.host = 'localhost'
-env.port = '22'
-
-def servicios():
-	"""Lista los servicios disponibles en kit de servicios"""
-	return "Lista de servicios"
-
-

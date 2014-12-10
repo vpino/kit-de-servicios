@@ -83,7 +83,7 @@ env.tribus_start_container_script = get_path([BASEDIR, 'tribus',
                                               'data', 'scripts',
                                               'start-container.sh'])
 
-mounts = ['%(basedir)s:%(basedir)s:rw' % env, '/tmp:/tmp:rw']
+mounts = ['%(basedir)s:%(basedir)s:rw' % env, '/tmp:/tmp:rw', '/etc/sudoers:/etc/sudoers:r']
 start_services = ['ssh', 'postgresql', 'slapd']
 change_passwd = ['root:tribus', 'postgres:tribus', 'openldap:tribus']
 

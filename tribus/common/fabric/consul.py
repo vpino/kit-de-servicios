@@ -45,7 +45,6 @@ from fabric.api import run, env, settings, sudo, hide, put, cd, quiet, local
 
 log = get_logger()
 
-env.port = 22
 env.consul_container = "consul-server"
 env.consul_image = "consul-server"
 env.consul_ports = '-p 8300:8300 -p 8301:8301 -p 8301:8301/udp '\

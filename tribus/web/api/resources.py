@@ -33,7 +33,7 @@ from tastypie.fields import ManyToManyField, OneToOneField
 from tastypie.authentication import SessionAuthentication
 from tastypie.validation import CleanedDataFormValidation
 
-from tribus.web.api.tasks import queue_charm_deploy, wipe_host_conts, queue_service_deploy
+from tribus.web.api.tasks import queue_service_deploy
 
 from tribus.web.api.authorization import (
     TimelineAuthorization,
@@ -222,33 +222,33 @@ class CharmConfigResource(Resource):
         return self.get_object_list(bundle)
 
 
-class CharmDeployResource(Resource):
+# class CharmDeployResource(Resource):
 
-    class Meta:
-        resource_name = 'charms/deploy'
-        object_class = CharmObject
+#     class Meta:
+#         resource_name = 'charms/deploy'
+#         object_class = CharmObject
 
-    def detail_uri_kwargs(self, bundle_or_obj):
-        return {}
+#     def detail_uri_kwargs(self, bundle_or_obj):
+#         return {}
 
-    def obj_create(self, bundle, **kwargs):
-        queue_charm_deploy.apply_async([bundle.data])
+#     def obj_create(self, bundle, **kwargs):
+#         queue_charm_deploy.apply_async([bundle.data])
 
-        return bundle
+#         return bundle
 
 
-class CharmWipeContainers(Resource):
+# class CharmWipeContainers(Resource):
 
-    class Meta:
-        resource_name = 'charms/wipe'
-        object_class = CharmObject
+#     class Meta:
+#         resource_name = 'charms/wipe'
+#         object_class = CharmObject
 
-    def detail_uri_kwargs(self, bundle_or_obj):
-        return {}
+#     def detail_uri_kwargs(self, bundle_or_obj):
+#         return {}
 
-    def obj_create(self, bundle, **kwargs):
-        wipe_host_conts.apply_async([bundle.data])
-        return bundle
+#     def obj_create(self, bundle, **kwargs):
+#         wipe_host_conts.apply_async([bundle.data])
+#         return bundle
 
 
 class ServiceDeployResource(Resource):

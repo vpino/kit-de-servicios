@@ -2,18 +2,13 @@
 'use strict';
 
 function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
-	//Drag Drop         
-    $scope.addText = "";
-
-    $scope.serviceinstall = [''];
+    $scope.servicios = [''];
 
     var result = CharmsList.query({}, function (){
-        
         var ruta_base = 'tribus/tribus/data/charms/';
         var icon = '/icon.svg'
         
         $scope.serviciolist = result[0].charms;
-        //$scope.serviciolist = result[0].services;
         $scope.charms = [];
 
         for(var i = 0; i < $scope.serviciolist.length; i++){
@@ -28,13 +23,13 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
             }); 
         }
     });
-	           
-    $scope.dropSuccessHandler = function($event,index,array){
-        array.splice(index,1);
+	
+    $scope.dropSuccessHandler = function($event, index, servicios){
+        servicios.splice(index, 1);
     };
-      
-    $scope.onDrop = function($event,$data,array){
-        array.push($data);
+    
+    $scope.onDrop = function($event, $data, servicios){
+        servicios.push($data);
     };
 
     // Menu Toggle Script -->
@@ -77,7 +72,6 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
         $scope.panzoomModel.zoomToFit(ladder);
     };
 
-
     $scope.mouseover = function(){
         //console.log("true");
         //$cookieStore.put('over', true);
@@ -93,90 +87,63 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
         //console.log($cookieStore.get('over'));
     };
 
-    //MODAL
-
-    $scope.datos = [];
-  	
+    //MODAL INFORMACION DE SERVICIO
   	$scope.open = function (size, name) {
-	    var modalInstance = $modal.open({ 
-	      	templateUrl: 'myModalContent.html',
-	      	controller: 'ModalController',   
+	    var modalInstance = $modal.open({
+            templateUrl: 'serviceInfo.html',
+	      	controller: 'ServiceInfoController',   
 	      	size: size,
 	      	resolve: {
-	        	data: function () {
+	        	servicedata: function () {
 	    			var data = CharmMetadata.query({name: name});
 					return data
 	        	}
 	      	}
 	    });
-
-    // modalInstance.result.then(function (selectedItem) {
-    //   $scope.selected = selectedItem;
-    // }, function () {
-    //   $log.info('Modal dismissed at: ' + new Date());
-    // 	});
   	};
 
+    //MODAL DESPLIEGUE DE SERVICIO
   	$scope.opendeploy = function (name) {
 	    var modalInstance = $modal.open({ 
-	      	templateUrl: 'myModaldeploy.html',
-	      	controller: 'ModalControllerConf',   
+	      	templateUrl: 'serviceDeploy.html',
+	      	controller: 'serviceDeployController',   
 	      	resolve: {
-	        	data: function () {
+	        	servicedata: function () {
 	    			var data = CharmMetadata.query({name: name});
 					return data
 	        	},
 
-	        	obj : function() {
+	        	id : function() {
 	        		return $('#'+name);
 	        	}
 	      	}
 	    });
-
-    // modalInstance.result.then(function (selectedItem) {
-    //   $scope.selected = selectedItem;
-    // }, function () {
-    //   $log.info('Modal dismissed at: ' + new Date());
-    // 	});
   	};	 	
 }
 
-function ModalController($scope, $modalInstance, Deploy, data){
-	$scope.data = data;
+function ServiceInfoController($scope, $modalInstance, servicedata){
+	$scope.servicedata = servicedata;
 	$scope.cancel = function () {
         $modalInstance.dismiss('cancel');
   	};
 }
 
-function ModalControllerConf($scope, $modalInstance, Deploy, data, obj){
+function serviceDeployController($scope, $modalInstance, Deploy, servicedata, id){
 
-	$scope.data = data
-	$scope.obj = obj
+	$scope.servicedata = servicedata
+	$scope.serviceid = id
 
-	$scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  	};
-
-  	// $scope.ok = function () {
-    // $modalInstance.close($scope.selected.item);
-  	// };
-
-  	$scope.master = {};
-
-    $scope.update = function(user) {
-        $scope.master = angular.copy(user);
+    $scope.ok = function(user) {
         Deploy.save({user: user.name, pw: user.password, ip: user.ip});
         $modalInstance.dismiss('ok');
     };
 
-    $scope.reset = function() {
-        $scope.user = angular.copy($scope.master);
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
     };
 
     $scope.remove = function() {
-        $scope.obj.remove();
+        $scope.serviceid.remove();
         $modalInstance.dismiss('delete');
     };
-
-    $scope.reset();
 }

@@ -20,85 +20,7 @@
 
 from celery import task
 from fabric.api import execute, env, local
-# from tribus.common.fabric.remote import (check_docker, update_packages,
-#                                          generate_docker_install,
-#                                          install_docker,
-#                                          docker_kill_all_remote_containers,
-#                                          put_charm_install,
-#                                          create_service_image,
-#                                          get_charm_base_image,
-#                                          stop_service, start_service,
-#                                          docker_kill_all_remote_images)
 from tribus.common.fabric.consul import deploy_test_service
-
-# @task
-# def wipe_host_conts(*args):
-#     """ For the sake of developer's laziness. """
-#     env.user = args[0]['user']
-#     env.password = args[0]['pw']
-#     env.hosts = args[0]['ip']
-#     env.port = 22
-
-#     execute(docker_kill_all_remote_containers)
-#     execute(docker_kill_all_remote_images)
-
-
-# @task
-# def queue_stop_service(*args):
-#     env.user = args[0]['user']
-#     env.password = args[0]['pw']
-#     env.hosts = args[0]['ip']
-#     env.port = 22
-#     env.charm_name = args[0]['charm_name']
-#     env.service_instance = args[0]['service_instance']
-
-#     execute(stop_service)
-
-
-# @task
-# def queue_start_service(*args):
-#     env.user = args[0]['user']
-#     env.password = args[0]['pw']
-#     env.hosts = args[0]['ip']
-#     env.port = 22
-#     env.charm_name = args[0]['charm_name']
-#     env.service_instance = args[0]['service_instance']
-
-#     execute(start_service)
-
-
-# @task
-# def queue_charm_deploy(*args):
-#     env.port = 22
-#     env.user = args[0]['user']
-#     env.password = args[0]['pw']
-#     env.hosts = args[0]['ip']
-#     env.charm_name = args[0]['charm_name']
-
-#     docker_exists = execute(check_docker)[env.hosts]
-
-#     if docker_exists == 0:
-#         execute(put_charm_install)
-#         #execute(get_charm_base_image)
-#         execute(create_service_image)
-
-#     elif docker_exists == 1:
-#         script_placed = execute(generate_docker_install)[env.hosts]
-
-#         if script_placed == 0:
-#             execute(update_packages)
-#             docker_installed = execute(install_docker)[env.hosts]
-#             execute(get_charm_base_image)
-#         else:
-#             return
-
-#         if docker_installed == 0:
-#             execute(put_charm_install)
-#             execute(create_service_image)
-
-#         else:
-#             print "Ocurrio un error, codigo de error es: %s " % docker_installed
-#             return
 
 
 @task
@@ -106,11 +28,5 @@ def queue_service_deploy(*args):
     env.port = 22
     env.user = args[0]['user']
     env.password = args[0]['pw']
-    # host cableado
-    env.host_string = '10.16.106.213'
-    # Dirty hack! 
-    # Estoy dentro del contenedor, por esa razon no funciona la autenticacion con SSH
-    # Este comando me va a dar la IP del contenedor, en el contenedor mi usuario no tiene permisos de 
-    # sudo
-    # env.host_string = local('hostname -I', capture=True).split()
+    env.host_string = args[0]['ip']
     execute(deploy_test_service)

@@ -18,32 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import yaml
-
-from django.contrib.auth.models import User
-from django.core.paginator import Paginator
-from django.core.paginator import InvalidPage
-from django.http.response import Http404
-
 from tastypie import fields
-from tastypie.cache import NoCache
-from tastypie.constants import ALL_WITH_RELATIONS
-from tastypie.resources import ModelResource, Resource
-from tastypie.fields import ManyToManyField, OneToOneField
-from tastypie.authentication import SessionAuthentication
-from tastypie.validation import CleanedDataFormValidation
-
+from tastypie.resources import Resource
 from tribus.web.api.tasks import queue_service_deploy
-
-from tribus.web.api.authorization import (
-    TimelineAuthorization,
-    TribAuthorization,
-    CommentAuthorization,
-    UserAuthorization,
-    UserProfileAuthorization,
-    UserFollowsAuthorization,
-    UserFollowersAuthorization)
-
 from tribus.common.charms.repository import LocalCharmRepository
 from tribus.common.charms.directory import CharmDirectory
 from tribus.common.utils import get_path
@@ -220,35 +197,6 @@ class CharmConfigResource(Resource):
     def obj_get_list(self, bundle, **kwargs):
 
         return self.get_object_list(bundle)
-
-
-# class CharmDeployResource(Resource):
-
-#     class Meta:
-#         resource_name = 'charms/deploy'
-#         object_class = CharmObject
-
-#     def detail_uri_kwargs(self, bundle_or_obj):
-#         return {}
-
-#     def obj_create(self, bundle, **kwargs):
-#         queue_charm_deploy.apply_async([bundle.data])
-
-#         return bundle
-
-
-# class CharmWipeContainers(Resource):
-
-#     class Meta:
-#         resource_name = 'charms/wipe'
-#         object_class = CharmObject
-
-#     def detail_uri_kwargs(self, bundle_or_obj):
-#         return {}
-
-#     def obj_create(self, bundle, **kwargs):
-#         wipe_host_conts.apply_async([bundle.data])
-#         return bundle
 
 
 class ServiceDeployResource(Resource):

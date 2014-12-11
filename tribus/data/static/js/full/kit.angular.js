@@ -47,7 +47,7 @@ tribus.directive('myDraggable', ['$document', function($document) {
           x = event.pageX - startX;
           element.css({
             top: y * 2 + 'px',
-            left:  x * 2 + 'px'
+            left: x * 2 + 'px'
           });
         }
 

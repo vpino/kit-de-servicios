@@ -41,7 +41,7 @@ from tribus import BASEDIR
 from tribus.common.utils import get_path
 from tribus.common.logger import get_logger
 from tribus.common.system import get_local_arch
-from fabric.api import run, env, settings, sudo, hide, put, cd, quiet, local
+from fabric.api import env, sudo, quiet
 
 log = get_logger()
 
@@ -54,21 +54,21 @@ env.consul_ports = '-p 8300:8300 -p 8301:8301 -p 8301:8301/udp '\
 env.consul_dockerfile_i386 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'i386'])
 env.consul_dockerfile_amd64 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'amd64'])
 env.components = {
-        1 : {'name' : 'mysql',
-             'role' : 'db',
-             'imgname' : 'mysql:test',
-             'ports' : '-p 3306:3306',
-             'dockerfile' : get_path([BASEDIR, 'tribus', 'data',
-             'charms', 'mysql'])
-        },
+    1 : {'name' : 'mysql',
+         'role' : 'db',
+         'imgname' : 'mysql:test',
+         'ports' : '-p 3306:3306',
+         'dockerfile' : get_path([BASEDIR, 'tribus', 'data',
+         'charms', 'mysql'])
+    },
 
-        2 : {'name' : 'mediawiki',
-             'imgname' : 'mediawiki:test',
-             'ports' : '-p 80:80',
-             'dockerfile' : get_path([BASEDIR, 'tribus', 'data',
-             'charms', 'mediawiki'])
-        },
-    }
+    2 : {'name' : 'mediawiki',
+         'imgname' : 'mediawiki:test',
+         'ports' : '-p 80:80',
+         'dockerfile' : get_path([BASEDIR, 'tribus', 'data',
+         'charms', 'mediawiki'])
+    },
+}
 
 
 def docker_generate_consul_base_image():

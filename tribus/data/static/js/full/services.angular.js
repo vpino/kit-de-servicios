@@ -32,9 +32,8 @@ angular.module('CharmMetadata', ['ngResource'])
 
 angular.module('Deploy', ['ngResource'])
 .factory('Deploy',  function($resource){
-    //return $resource('/api/0.1/services/deploy/:user:pw',
     return $resource('/api/0.1/services/deploy/',
-        { user: '@user', pw: '@pw'}, {
+        {user: '@user', pw: '@pw', ip: '@ip'}, {
         save: {
             method: 'POST',
             headers: {

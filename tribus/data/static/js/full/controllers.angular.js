@@ -18,7 +18,6 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
 
         for(var i = 0; i < $scope.serviciolist.length; i++){
             CharmMetadata.query({name: $scope.serviciolist[i]}, function(results){
-                //console.log(results);
                 $scope.charms.push({
                     name : results[0].name,
                     description : results[0].description,
@@ -26,7 +25,6 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
                     icon : ruta_base + results[0].name + icon,
                     summary : results[0].summary
                 });
-                //console.log($scope.charms);
             }); 
         }
     });
@@ -45,12 +43,12 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
         $("#wrapper").toggleClass("toggled");
     });
 
-     //PAN ZOOM Controller
+    //PAN ZOOM Controller
     var shark = { x : 391, y: 371, width: 206, height: 136 };
     var chopper = { x : -200, y: 180, width: 660, height: 144 };
     var ladder = { x : 333, y: 325, width: 75, height: 200 };
 
-    $scope.rects = [ chopper, shark, ladder ];
+    $scope.rects = [chopper, shark, ladder];
 
     // Instantiate models which will be passed to <panzoom> and <panzoomwidget>
 
@@ -144,14 +142,10 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
 }
 
 function ModalController($scope, $modalInstance, Deploy, data){
-	
-	$scope.data = data
-
+	$scope.data = data;
 	$scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
+        $modalInstance.dismiss('cancel');
   	};
-
-  
 }
 
 function ModalControllerConf($scope, $modalInstance, Deploy, data, obj){
@@ -164,14 +158,14 @@ function ModalControllerConf($scope, $modalInstance, Deploy, data, obj){
   	};
 
   	// $scope.ok = function () {
-   //  $modalInstance.close($scope.selected.item);
+    // $modalInstance.close($scope.selected.item);
   	// };
 
   	$scope.master = {};
 
     $scope.update = function(user) {
         $scope.master = angular.copy(user);
-        Deploy.save({user: user.name, pw: user.password});
+        Deploy.save({user: user.name, pw: user.password, ip: user.ip});
         $modalInstance.dismiss('ok');
     };
 

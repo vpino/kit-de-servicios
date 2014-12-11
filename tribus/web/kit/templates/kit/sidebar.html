@@ -1,115 +1,95 @@
 <div id="wrapper" ng-controller="kitController">
-
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <div class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="#">
-                        Kit Servicios
-                    </a>
-                </li>
-                <div ui-draggable="true" drag="charm.name"
-                        ng-repeat="charm in charms track by $index">
-
-                            <script type="text/ng-template" id="myModalContent.html">
-                                <div class="modal-header">
-                                    <img id="img-modal-descrip" src="/static/img/charms-icon/{% verbatim %}{{ data[0].name }}{% endverbatim %}.svg"></img>
-                                    <h3 class="modal-title">{% verbatim %}{{ data[0].name }}{% endverbatim %}</h3>
-                                    <p>{% verbatim %}{{ data[0].summary }}{% endverbatim %}</p>
-                                </div>
-                                <div class="modal-body">
-                                    <ul>
-                                        <p ng-click="selected.item = item">Description : {% verbatim %}{{ data[0].description }}{% endverbatim %}</p>     
-                                    </ul>
-                                    <br>
-                                    <ul>                
-                                        <p ng-click="selected.item = item">Maintainer : {% verbatim %}{{ data[0].maintainer }}{% endverbatim %}</p>                   
-                                    </ul>
-                                 
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-primary" ng-click="cancel()">OK</button>
-                                </div>
-                            </script>
- 
-                 
-                    <div class="container-list">
-                        <div class="container-charms">
-                            <div i="{% verbatim %}{{ charm.name }}{% endverbatim %}" class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ charm.name }}{% endverbatim %}.svg' ng-click="open('lg', charm.name)"></div>
-                            <div class="name-charms">{% verbatim %}{{ charm.name }}{% endverbatim %}</div>
-                            <div class="name-summary">{% verbatim %}{{charm.summary}}{% endverbatim %}</div>
-                        </div>
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <div class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#"> Kit Servicios </a>
+            </li>
+            <div ui-draggable="true" drag="charm.name" ng-repeat="charm in charms track by $index">
+                <script type="text/ng-template" id="myModalContent.html">
+                    <div class="modal-header">
+                        <img id="img-modal-descrip" src="/static/img/charms-icon/{% verbatim %}{{ data[0].name }}{% endverbatim %}.svg"></img>
+                        <h3 class="modal-title">{% verbatim %}{{ data[0].name }}{% endverbatim %}</h3>
+                        <p>{% verbatim %}{{ data[0].summary }}{% endverbatim %}</p>
                     </div>
-                
+                    <div class="modal-body">
+                        <ul>
+                            <p ng-click="selected.item = item">Description : {% verbatim %}{{ data[0].description }}{% endverbatim %}</p>     
+                        </ul>
+                        <br>
+                        <ul>                
+                            <p ng-click="selected.item = item">Maintainer : {% verbatim %}{{ data[0].maintainer }}{% endverbatim %}</p>                   
+                        </ul>
+                     
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" ng-click="cancel()">OK</button>
+                    </div>
+                </script>
+                <div class="container-list">
+                    <div class="container-charms">
+                        <div i="{% verbatim %}{{ charm.name }}{% endverbatim %}" class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ charm.name }}{% endverbatim %}.svg' ng-click="open('lg', charm.name)"></div>
+                        <div class="name-charms">{% verbatim %}{{ charm.name }}{% endverbatim %}</div>
+                        <div class="name-summary">{% verbatim %}{{charm.summary}}{% endverbatim %}</div>
+                    </div>
                 </div>
-
-                <div ng-show="selected">Selection from a modal: {% verbatim %}{{ selected }}{% endverbatim %}</div>
-
             </div>
+            <div ng-show="selected">Selection from a modal: {% verbatim %}{{ selected }}{% endverbatim %}</div>
         </div>
-        <!-- /#sidebar-wrapper -->
+    </div>
+    <!-- /#sidebar-wrapper -->
 
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        
-                        <panzoomwidget config="panzoomConfig" model="panzoomModel"></panzoomwidget>
-
-                        <panzoom class="panzoom" config="panzoomConfig" model="panzoomModel" ui-on-Drop="onDrop($event,$data,serviceinstall)">
-
-                            <script type="text/ng-template" id="myModaldeploy.html">
-                                <div class="modal-header">                                  
-                                    <h3 class="modal-title">{% verbatim %}{{ data[0].name }}{% endverbatim %}</h3>
-                                </div>
-                                <div class="modal-body">
-                                    <form role="form">
-                                      <div class="form-group">
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">    
+                    <panzoomwidget config="panzoomConfig" model="panzoomModel"></panzoomwidget>
+                    <panzoom class="panzoom" config="panzoomConfig" model="panzoomModel" ui-on-Drop="onDrop($event,$data,serviceinstall)">
+                        <script type="text/ng-template" id="myModaldeploy.html">
+                            <div class="modal-header">                                  
+                                <h3 class="modal-title">{% verbatim %}{{ data[0].name }}{% endverbatim %}</h3>
+                            </div>
+                            <div class="modal-body">
+                                <form role="form">
+                                    <div class="form-group">
                                         <label for="username">Username</label>
                                         <input type="user" class="form-control" id="username" placeholder="username" ng-model="user.name">
-                                      </div>
-                                      <div class="form-group">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="password">Password</label>
                                         <input type="password" class="form-control" id="password" placeholder="Password" ng-model="user.password">
-                                      </div>
-                                      <div class="checkbox">
-                                        <label>
-                                          <input type="checkbox" ng-model="user.deploy"> Deploy
-                                        </label>
-                                      </div> 
-                                    </form>
-                                </div>
-                                  <pre>form = {% verbatim %}{{user | json}}{% endverbatim %}</pre>
-                                  <pre>master = {% verbatim %}{{master | json}}{% endverbatim %}</pre>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" ng-click="remove()">Delete</button>
-                                    <button type="button" class="btn btn-primary" ng-click="update(user)">OK</button>
-                                    <button type="button"class="btn btn-warning" ng-click="cancel()">Cancel</button>
-                                </div>
-                            </script>
-                            <div>
-                                <div>
-                                    <div ui-draggable="true" drag="serviciosinstall" 
-                                    on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
-                                    ng-repeat="serviciosinstall in serviceinstall track by $index">
-
-                                        <div  id="{% verbatim %}{{ serviciosinstall }}{% endverbatim %}" class="container-charms" remove-me>
-                                            <div ng-dblclick="opendeploy(serviciosinstall)" class="container-service-pan" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}                                   
-                                            </div>
-                                        </div>
-                                    
                                     </div>
-                                </div>
+                                    <div class="form-group">
+                                        <label for="ip">Dirección IP</label>
+                                        <input type="ip" class="form-control" id="ip" placeholder="ip" ng-model="user.ip">
+                                    </div>
+                                    <div class="checkbox">
+                                        <label> <input type="checkbox" ng-model="user.deploy"> Deploy </label>
+                                    </div> 
+                                </form>
                             </div>
-                   
-                        </panzoom>
+                            <pre>form = {% verbatim %}{{user | json}}{% endverbatim %}</pre>
+                            <pre>master = {% verbatim %}{{master | json}}{% endverbatim %}</pre>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" ng-click="remove()">Delete</button>
+                                <button type="button" class="btn btn-primary" ng-click="update(user)">OK</button>
+                                <button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                            </div>
+                        </script>
+                        <div ui-draggable="true" drag="serviciosinstall" 
+                            on-drop-success="dropSuccessHandler($event,$index,serviceinstall)"
+                            ng-repeat="serviciosinstall in serviceinstall track by $index">
 
-                    </div>
+                            <div  id="{% verbatim %}{{ serviciosinstall }}{% endverbatim %}" class="container-charms" remove-me>
+                                <div ng-dblclick="opendeploy(serviciosinstall)" class="container-service-pan" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ serviciosinstall }}{% endverbatim %}.svg'>{% verbatim %}{{ serviciosinstall }}{% endverbatim %}</div>
+                            </div>
+                        </div>
+                    </panzoom>
                 </div>
             </div>
         </div>
-        <!-- /#page-content-wrapper -->
-
     </div>
-    <!-- /#wrapper -->
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->

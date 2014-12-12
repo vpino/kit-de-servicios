@@ -23,6 +23,7 @@ from tastypie.resources import Resource
 from tribus.web.api.tasks import queue_service_deploy
 from tribus.common.charms.repository import LocalCharmRepository
 from tribus.common.charms.directory import CharmDirectory
+from tribus.common.recipes.recipe import RecipeDir
 from tribus.common.utils import get_path
 from tribus.config.base import CHARMSDIR, SERVICEDIR
 
@@ -118,6 +119,7 @@ class ServiceMetadataResource(Resource):
     summary = fields.CharField(attribute='summary')
     maintainer = fields.CharField(attribute='maintainer')
     description = fields.CharField(attribute='description')
+    components = fields.DictField(attribute='components')
 
     class Meta:
         resource_name = 'services/metadata'
@@ -128,13 +130,14 @@ class ServiceMetadataResource(Resource):
         if hasattr(bundle.request, 'GET'):
             charm_name = bundle.request.GET.get('name', None)
 
-        CHARM = CharmDirectory(get_path([SERVICEDIR, charm_name]))
-
+        SERVICE = RecipeDir(get_path([SERVICEDIR, charm_name]))
+        
         return [ServiceObject({
-                    'name': CHARM.metadata.name,
-                    'summary': CHARM.metadata.summary,
-                    'maintainer': CHARM.metadata.maintainer,
-                    'description': CHARM.metadata.description
+                    'name': SERVICE.metadata.name,
+                    'summary': SERVICE.metadata.summary,
+                    'maintainer': SERVICE.metadata.maintainer,
+                    'description': SERVICE.metadata.description,
+                    'components' : SERVICE.metadata.components.items()
                 })]
 
     def obj_get_list(self, bundle, **kwargs):

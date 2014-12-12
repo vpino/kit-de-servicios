@@ -22,6 +22,7 @@
 import os
 import yaml
 from tribus.common import serializer
+from tribus.common.charms.errors import MetaDataError
 from tribus.common.errors import FileNotFound
 from tribus.common.format import is_valid_charm_format
 from tribus.common.schema import (
@@ -63,36 +64,85 @@ class Recipe(object):
         return self._sha256
 
 
+class InterfaceExpander(object):
+    """Schema coercer that expands the interface shorthand notation.
 
+    We need this class because our charm shorthand is difficult to
+    work with (unfortunately). So we coerce shorthand and then store
+    the desired format in ZK.
 
+    Supports the following variants::
 
+      provides:
+        server: riak
+        admin: http
+        foobar:
+          interface: blah
+
+      provides:
+        server:
+          interface: mysql
+          limit:
+          optional: false
+
+    In all input cases, the output is the fully specified interface
+    representation as seen in the mysql interface description above.
+    """
+
+    def __init__(self, limit):
+        """Create relation interface reshaper.
+
+        @limit: the limit for this relation. Used to provide defaults
+            for a given kind of relation role (peer, provider, consumer)
+        """
+        self.limit = limit
+
+    def coerce(self, value, path):
+        """Coerce `value` into an expanded interface.
+
+        Helper method to support each of the variants, either the
+        charm does not specify limit and optional, such as foobar in
+        the above example; or the interface spec is just a string,
+        such as the ``server: riak`` example.
+        """
+
+        if not isinstance(value, dict):
+            # A LOT HACKY!
+            #return {
+                #"interface": UTF8_SCHEMA.coerce(value, path),
+                #"limit": self.limit,
+                #"scope": SCOPE_GLOBAL,
+                #"optional": False
+            #    }
+            return value
+        else:
+            # Optional values are context-sensitive and/or have
+            # defaults, which is different than what KeyDict can
+            # readily support. So just do it here first, then
+            # coerce.
+            #if "limit" not in value:
+            #    value["limit"] = self.limit
+            #if "optional" not in value:
+            #    value["optional"] = False
+            #value["scope"] = value.get("scope", SCOPE_GLOBAL)
+            return INTERFACE_SCHEMA.coerce(value, path)
 
 UTF8_SCHEMA = UnicodeOrString("utf-8")
 SCOPE_GLOBAL = "global"
 SCOPE_CONTAINER = "container"
 
-INTERFACE_SCHEMA = KeyDict({
-    "interface": UTF8_SCHEMA,
-    "limit": OneOf(Constant(None), Int()),
-    "scope": OneOf(Constant(SCOPE_GLOBAL), Constant(SCOPE_CONTAINER)),
-    "optional": Bool()},
-    optional=["scope"])
-
+# Para cada estrucutra de datos puedo crear un esquema personalizado,
+# adaptable a las configuraciones especificas de cada receta
+INTERFACE_SCHEMA = KeyDict({"interface": UTF8_SCHEMA },optional=["scope"])
 
 SCHEMA = KeyDict({
     "name": UTF8_SCHEMA,
     "revision": Int(),
     "summary": UTF8_SCHEMA,
     "description": UTF8_SCHEMA,
-    "components": UTF8_SCHEMA,
     "format": Int(),
-    #"peers": Dict(UTF8_SCHEMA, InterfaceExpander(limit=1)),
-    #"provides": Dict(UTF8_SCHEMA, InterfaceExpander(limit=None)),
-    #"requires": Dict(UTF8_SCHEMA, InterfaceExpander(limit=1)),
-    "subordinate": Bool(),
-    }, optional=set(
-        ["format", "provides", "requires", "peers", "revision",
-         "subordinate"]))
+    "components" : Dict(Int(), InterfaceExpander(limit=1)),
+    }, optional=set(["format", "components", "revision"]))
 
 
 class MetaData(object):
@@ -203,7 +253,6 @@ class MetaData(object):
                                 (path_info, error))
 
 
-
 class RecipeDir(Recipe):
 
 	type = "dir"
@@ -212,6 +261,4 @@ class RecipeDir(Recipe):
 		"""Set initial values and parse configuration files from the recipe."""
 		self.path = path
 		self.metadata = MetaData(os.path.join(path, 'metadata.yaml'))
-		#self.config = ConfigOptions()
-		#self.config.load(os.path.join(path, 'config.yaml'))
         

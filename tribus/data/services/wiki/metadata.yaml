@@ -7,3 +7,4 @@ description: |
  library-like document collections, and supports user uploads of
  images/sounds, multilingual content, TOC autogeneration, ISBN links,
  etc.
+components: mysql mediawiki

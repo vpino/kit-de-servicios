@@ -77,8 +77,12 @@
                         <div ui-draggable="true" drag="servicio"
                             on-drop-success="dropSuccessHandler($event, $index, servicios)" ng-repeat="servicio in servicios track by $index">
 
-                            <div id="{% verbatim %}{{ servicio }}{% endverbatim %}" class="container-charms" remove-me>
-                                <div ng-dblclick="opendeploy(servicio)" class="container-service-pan" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" back-img='/static/img/charms-icon/{% verbatim %}{{ servicio }}{% endverbatim %}.svg'>{% verbatim %}{{ servicio }}{% endverbatim %}</div>
+                            <div id="{% verbatim %}{{ servicio }}{% endverbatim %}" my-draggable ng-mouseover="mouseover()" ng-mouseleave="mouseleave()" class="container-charms" remove-me>
+                                <div class="container-service-pending" back-img='/static/img/charms-icon/service_module_pending/{% verbatim %}{{ servicio }}{% endverbatim %}.svg'>
+                                    <div ng-dblclick="opendeploy(servicio)" class="container-service-pan" back-img='/static/img/charms-icon/{% verbatim %}{{ servicio }}{% endverbatim %}.svg'>
+                                        <p>{% verbatim %}{{ servicio }}{% endverbatim %}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </panzoom>

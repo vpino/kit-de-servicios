@@ -12,14 +12,14 @@
    version="1.1"
    x="0px"
    y="0px"
-   width="95"
-   height="95"
-   viewBox="-143.979 -6 95.000003 95.000003"
+   width="130"
+   height="130"
+   viewBox="-143.979 -6 130 130"
    enable-background="new -143.979 -6 235.958 235.958"
    xml:space="preserve"
    id="svg2"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="service_module_pending.svg"><metadata
+   sodipodi:docname="mediawiki.svg"><metadata
      id="metadata27"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
@@ -36,9 +36,9 @@
      inkscape:window-height="702"
      id="namedview23"
      showgrid="false"
-     inkscape:zoom="1.000178"
-     inkscape:cx="117.979"
-     inkscape:cy="117.979"
+     inkscape:zoom="2.000356"
+     inkscape:cx="129.39327"
+     inkscape:cy="55.351583"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -46,7 +46,7 @@
      id="Layer_1"
      inkscape:version="0.48.3.1 r9886"
      sodipodi:docname="service_module.svg"
-     transform="matrix(0.40261404,0,0,0.40261404,-86.011034,-3.5843188)"><g
+     transform="matrix(0.55094551,0,0,0.55094551,-64.654418,-2.6943259)"><g
        id="g33_1_"
        transform="translate(-399.571,-251.207)"><g
          id="path46_1_"><path
@@ -84,4 +84,4 @@
        inkscape:connector-curvature="0"
        style="fill:#ffffff" /></g><g
      id="Layer_2"
-     transform="translate(0,-140.958)" /></svg>
+     transform="translate(0,-105.958)" /></svg>

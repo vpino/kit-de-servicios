@@ -228,9 +228,17 @@
 .container-service-pan{
     width: 96px;
     height: 96px;
+    margin: 17px;
+    margin-top: 15px;
+    position: absolute;
+    text-align: center;
+    z-index: 2;
+}
+.container-service-pending{
+    width: 130px;
+    height: 130px;
     text-align: center;
 }
-
 .container-list{
     background: #111111;
     /*box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);*/

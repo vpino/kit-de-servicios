@@ -106,7 +106,7 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
   	$scope.opendeploy = function (name) {
 	    var modalInstance = $modal.open({ 
 	      	templateUrl: 'serviceDeploy.html',
-	      	controller: 'serviceDeployController',   
+	      	controller: 'ServiceDeployController',   
 	      	resolve: {
 	        	servicedata: function () {
 	    			var data = CharmMetadata.query({name: name});
@@ -128,7 +128,7 @@ function ServiceInfoController($scope, $modalInstance, servicedata){
   	};
 }
 
-function serviceDeployController($scope, $modalInstance, Deploy, servicedata, id){
+function ServiceDeployController($scope, $modalInstance, Deploy, servicedata, id){
 
 	$scope.servicedata = servicedata
 	$scope.serviceid = id

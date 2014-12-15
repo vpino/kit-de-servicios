@@ -2,7 +2,7 @@ FROM franj/debian-i386:jessie
 
 # Proxy de paquetes porque ya estoy cansado de descargar paquetes
 # Para probar fuera de la oficina, comente esta linea
-RUN echo 'Acquire::http { Proxy "http://10.16.106.152:3142"; };' > /etc/apt/apt.conf.d/02proxy
+RUN echo 'Acquire::http { Proxy "http://192.168.0.100:3142"; };' > /etc/apt/apt.conf.d/02proxy
 
 RUN apt-get update && apt-get install unzip nano python-pip nmap
 

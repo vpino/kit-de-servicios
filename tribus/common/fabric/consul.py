@@ -42,6 +42,8 @@ from tribus.common.utils import get_path
 from tribus.common.logger import get_logger
 from tribus.common.system import get_local_arch
 from fabric.api import env, sudo, quiet
+from tribus.common.recipes.recipe import RecipeDir
+from tribus.config.base import CHARMSDIR, SERVICEDIR
 
 log = get_logger()
 
@@ -53,22 +55,22 @@ env.consul_ports = '-p 8300:8300 -p 8301:8301 -p 8301:8301/udp '\
 
 env.consul_dockerfile_i386 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'i386'])
 env.consul_dockerfile_amd64 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'amd64'])
-env.components = {
-    1 : {'name' : 'mysql',
-         'role' : 'db',
-         'imgname' : 'mysql:test',
-         'ports' : '-p 3306:3306',
-         'dockerfile' : get_path([BASEDIR, 'tribus', 'data',
-         'charms', 'mysql'])
-    },
 
-    2 : {'name' : 'mediawiki',
-         'imgname' : 'mediawiki:test',
-         'ports' : '-p 80:80',
-         'dockerfile' : get_path([BASEDIR, 'tribus', 'data',
-         'charms', 'mediawiki'])
-    },
-}
+
+def get_service_config(name, consul_ip):
+
+	cfg = {}
+	cfg['name'] = name
+	cfg['img'] = "%s:test" % name
+	comp_path = os.path.join(CHARMSDIR, name)
+	cfg['path'] = comp_path
+	with open(os.path.join(comp_path, 'config', 'app.json')) as f:
+		data = f.read()
+	j_data = json.loads(data)
+	cfg['ports'] = '-p %s:%s' % (j_data['service']['port'], j_data['service']['port'])
+	cfg['consul'] = consul_ip
+
+	return cfg
 
 
 def docker_generate_consul_base_image():
@@ -143,22 +145,26 @@ def deploy_test_service():
 
 	docker_start_consul()
 
-	consul_addr = sudo('%(docker)s inspect -f '
-                       '"{{.NetworkSettings.IPAddress}}" '
-                       'consul-server ' % env)
+	# Tengo que detectar la arquitectura del servidor de consul 
+	# en donde se conectaran los servicios
+	consul_ip = sudo('%(docker)s inspect -f "{{.NetworkSettings.IPAddress}}" '
+                     'consul-server ' % env)
 
-	for n, component in env.components.items():
-            comp_exists = sudo('docker inspect %(imgname)s ' % component)
+	# Debe crearse una Excepcion 'Recipe Not Found'
+	serv = RecipeDir(os.path.join(SERVICEDIR, env.service_name))
 
-            if comp_exists.return_code == 1:
-                sudo('docker build -t %(imgname)s '
-                    '%(dockerfile)s' % component)
+	components = serv.metadata.components.items()
 
-            component['join_addr'] = consul_addr
-            
-            sudo('docker run -d %(ports)s '
-                 '-h %(name)s --name %(name)s '
-                 '%(imgname)s -join %(join_addr)s ' % component)
+	for n, name in components:
+
+		cfg = get_service_config(name, consul_ip)
+		
+		comp_exists = sudo('docker inspect %(img)s' % cfg)
+
+		if comp_exists.return_code == 1:
+			sudo('docker build -t %(img)s %(path)s' % cfg)
+
+		sudo('docker run -d %(ports)s -h %(name)s --name %(name)s %(img)s -join %(consul)s' % cfg)
 
 
 def consul_query_status():

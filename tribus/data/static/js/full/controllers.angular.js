@@ -1,19 +1,19 @@
 // Declare use of strict javascript
 'use strict';
 
-function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
+function kitController($scope, ServicesList, ServicesMetadata, Deploy, $modal, $log){
     $scope.servicios = [''];
 
-    var result = CharmsList.query({}, function (){
-        var ruta_base = 'tribus/tribus/data/charms/';
+    var result = ServicesList.query({}, function (){
+        var ruta_base = 'tribus/tribus/data/services/';
         var icon = '/icon.svg'
         
-        $scope.serviciolist = result[0].charms;
-        $scope.charms = [];
+        $scope.serviciolist = result[0].services;
+        $scope.services = [];
 
         for(var i = 0; i < $scope.serviciolist.length; i++){
-            CharmMetadata.query({name: $scope.serviciolist[i]}, function(results){
-                $scope.charms.push({
+            ServicesMetadata.query({name: $scope.serviciolist[i]}, function(results){
+                $scope.services.push({
                     name : results[0].name,
                     description : results[0].description,
                     maintainer : results[0].maintainer,
@@ -95,7 +95,7 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
 	      	size: size,
 	      	resolve: {
 	        	servicedata: function () {
-	    			var data = CharmMetadata.query({name: name});
+	    			var data = ServicesMetadata.query({name: name});
 					return data
 	        	}
 	      	}
@@ -109,7 +109,7 @@ function kitController($scope, CharmsList, CharmMetadata, Deploy, $modal, $log){
 	      	controller: 'ServiceDeployController',   
 	      	resolve: {
 	        	servicedata: function () {
-	    			var data = CharmMetadata.query({name: name});
+	    			var data = ServicesMetadata.query({name: name});
 					return data
 	        	},
 
@@ -134,7 +134,7 @@ function ServiceDeployController($scope, $modalInstance, Deploy, servicedata, id
 	$scope.serviceid = id
 
     $scope.ok = function(user) {
-        Deploy.save({user: user.name, pw: user.password, ip: user.ip});
+        Deploy.save({user: user.name, pw: user.password, ip: user.ip, name: $scope.servicedata[0].name});
         $modalInstance.dismiss('ok');
     };
 

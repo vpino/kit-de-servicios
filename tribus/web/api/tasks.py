@@ -29,4 +29,5 @@ def queue_service_deploy(*args):
     env.user = args[0]['user']
     env.password = args[0]['pw']
     env.host_string = args[0]['ip']
+    env.service_name = args[0]['name']
     execute(deploy_test_service)

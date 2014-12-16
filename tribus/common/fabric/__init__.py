@@ -30,7 +30,7 @@ Vagrant, chroot, etc), and also on (remote) servers when deploying Charms.
 
 import os
 import pwd
-from fabric.api import env
+from fabric.api import env, local
 from tribus import BASEDIR
 from tribus.config.base import CONFDIR, AUTHOR, AUTHOR_EMAIL
 from tribus.config.ldap import (AUTH_LDAP_SERVER_URI,
@@ -102,6 +102,7 @@ env.fvars = {
     'START_SERVICES': ' '.join(start_services),
     'CHANGE_PASSWD': ' '.join(change_passwd),
     'HOST_USER': env.user,
+    'HOST_DIR': local("ip r|awk '/\/24/ { print $9 }'", capture=True),
     'HOST_USER_ID': env.user_id
 }
 

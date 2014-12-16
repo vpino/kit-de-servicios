@@ -374,8 +374,8 @@ def docker_start_container():
                '"%(docker)s run -d '
                '-p 127.0.0.1:22222:22 '
                '-p 127.0.0.1:8000:8000 '
-               '--name %(tribus_runtime_container)s '
-               '%(mounts)s %(dvars)s %(tribus_runtime_image)s '
+               '--name %(tribus_runtime_container)s %(mounts)s '
+               '%(dvars)s %(tribus_runtime_image)s '
                'bash %(tribus_start_container_script)s"') % env, capture=True)
 
 

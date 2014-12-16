@@ -19,7 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from celery import task
-from fabric.api import execute, env, local
+from fabric.api import execute, env, sudo, local
 from tribus.common.fabric.consul import deploy_test_service
 
 
@@ -28,6 +28,6 @@ def queue_service_deploy(*args):
     env.port = 22
     env.user = args[0]['user']
     env.password = args[0]['pw']
-    env.host_string = args[0]['ip']
+    env.host_string = local('echo $HOST_DIR', capture=True)
     env.service_name = args[0]['name']
     execute(deploy_test_service)

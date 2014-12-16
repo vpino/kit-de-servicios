@@ -28,9 +28,6 @@
                 <div class="container-list">
                     <div class="container-charms">
                         <div i="{% verbatim %}{{ service.name }}{% endverbatim %}" class="container-service" back-img='/static/img/charms-icon/{% verbatim %}{{ service.name }}{% endverbatim %}.svg' ng-click="open('lg', service.name)"></div>
-                        <!-- <div i="{% verbatim %}{{ charm.name }}{% endverbatim %}" class="container-service" 
-                         ng-style="{'background-image':'url(/static/img/charms-icon/{% verbatim %}{{charm.name}}{% endverbatim %}.svg)'}"
-                         ng-click="open('lg', charm.name)"></div> -->
                         <div class="name-charms">{% verbatim %}{{ service.name }}{% endverbatim %}</div>
                         <div class="name-summary">{% verbatim %}{{service.summary}}{% endverbatim %}</div>
                     </div>
@@ -61,10 +58,6 @@
                                     <div class="form-group">
                                         <label for="password">Password</label>
                                         <input type="password" class="form-control" id="password" placeholder="Password" ng-model="user.password">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="ip">Dirección IP</label>
-                                        <input type="ip" class="form-control" id="ip" placeholder="ip" ng-model="user.ip">
                                     </div>
                                 </form>
                             </div>

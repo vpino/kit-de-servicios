@@ -134,7 +134,7 @@ function ServiceDeployController($scope, $modalInstance, Deploy, servicedata, id
 	$scope.serviceid = id
 
     $scope.ok = function(user) {
-        Deploy.save({user: user.name, pw: user.password, ip: user.ip, name: $scope.servicedata[0].name});
+        Deploy.save({user: user.name, pw: user.password, name: $scope.servicedata[0].name});
         $modalInstance.dismiss('ok');
     };
 

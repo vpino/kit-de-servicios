@@ -11,6 +11,9 @@
 /*    background: ;*/
     z-index: 3;
 }
+.navbar-brand{
+    margin-right: 100px;
+}
 
 /*sidebar*/
 #wrapper {

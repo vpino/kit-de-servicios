@@ -63,6 +63,11 @@ env.tribus_base_image = 'franj/tribus-%(arch)s:jessie' % env
 env.tribus_runtime_image = 'franj/tribus-run-%(arch)s:jessie' % env
 env.tribus_runtime_container = 'tribus-run-container'
 
+# Consul config
+env.consul_dockerfile_i386 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'i386'])
+env.consul_dockerfile_amd64 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'amd64'])
+env.docker_bridge = '172.17.42.1'
+
 env.debian_base_image_script = get_path([BASEDIR, 'tribus',
                                          'data', 'scripts',
                                          'debian-base-image.sh'])

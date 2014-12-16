@@ -23,8 +23,6 @@ This module contains directives to manage a Consul service
 
 This module define funtions to accomplish the following tasks:
 
-
-- Create a Consul server if needed
 - Check if the Consul service is running
 - Others 
 
@@ -47,17 +45,8 @@ from tribus.config.base import CHARMSDIR, SERVICEDIR
 
 log = get_logger()
 
-env.consul_container = "consul-server"
-env.consul_image = "consul-server"
-env.consul_ports = '-p 8300:8300 -p 8301:8301 -p 8301:8301/udp '\
-             	   '-p 8302:8302 -p 8302:8302/udp -p 8400:8400 '\
-                   '-p 8500:8500 -p 8600:53/udp'
 
-env.consul_dockerfile_i386 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'i386'])
-env.consul_dockerfile_amd64 = get_path([BASEDIR, 'tribus', 'data', 'consul', 'amd64'])
-
-
-def get_service_config(name, consul_ip):
+def get_service_config(name):
 
 	cfg = {}
 	cfg['name'] = name
@@ -68,26 +57,26 @@ def get_service_config(name, consul_ip):
 		data = f.read()
 	j_data = json.loads(data)
 	cfg['ports'] = '-p %s:%s' % (j_data['service']['port'], j_data['service']['port'])
-	cfg['consul'] = consul_ip
+	cfg['consul'] = env.docker_bridge
 
 	return cfg
 
 
-def docker_generate_consul_base_image():
-    """
+def docker_generate_service_base():
+	"""
     Crea una imagen base de Consul
 
     .. versionadded:: 0.2
     """
+	
+	env.arch = get_local_arch()	
+	if env.arch == 'i386':
+		sudo('%(docker)s build -t service-base:test %(consul_dockerfile_i386)s' % env)
+	elif env.arch == 'amd64':
+		sudo('%(docker)s build -t service-base:test %(consul_dockerfile_amd64)s' % env)
 
-    env.arch = get_local_arch()
-    if env.arch == 'i386':
-    	sudo('%(docker)s build -t %(consul_image)s-%(arch)s:test %(consul_dockerfile_i386)s' % env)
-    elif env.arch == 'amd64':
-    	sudo('%(docker)s build -t %(consul_image)s-%(arch)s:test %(consul_dockerfile_amd64)s' % env)
-    
 
-def docker_check_consul_image():
+def docker_check_service_base():
 	"""
 	Check if the consul image exists, build it if not.
 
@@ -96,59 +85,18 @@ def docker_check_consul_image():
 	with quiet():
 		log.info('Checking if we have a consul image ...')
 		env.arch = get_local_arch()
-		state = sudo('%(docker)s inspect %(consul_image)s-%(arch)s:test' % env)
+		state = sudo('%(docker)s inspect service-base:test' % env)
 
 	if state.return_code == 1:
-		docker_generate_consul_base_image()
-
-
-def docker_start_consul():
-	"""
-	Starts the consul container.
-
-	.. versionadded:: 0.2
-	"""
-
-	docker_check_consul_image()
-
-	log.info('Starting Consul service ...')
-
-	env.arch = get_local_arch()
-
-	with quiet():
-
-		log.info('Checking if the Consul container is up ...')
-
-		state = sudo('%(docker)s inspect %(consul_container)s' % env)
-
-		if state.return_code == 0:
-			output = json.loads(state.stdout)
-
-			if not output[0]['State']['Running']:
-				sudo('%(docker)s rm -f %(consul_container)s' %  env)
-			 	sudo('%(docker)s run -d %(consul_ports)s '
-		     	 '-h %(consul_container)s --name %(consul_container)s '
-		     	 '%(consul_image)s-%(arch)s:test -server -bootstrap ' % env)
-			 	log.info('Consul esta corriendo en http://localhost:8500')
-			else:
-				log.info('Consul ya esta corriendo en http://localhost:8500')			 	
-
-		elif state.return_code == 1:
-			sudo('%(docker)s run -d %(consul_ports)s '
-		     	 '-h %(consul_container)s --name %(consul_container)s '
-		     	 '%(consul_image)s-%(arch)s:test -server -bootstrap ' % env)
-
-			log.info('Consul esta corriendo en http://localhost:8500')
+		docker_generate_service_base()
 
 
 def deploy_test_service():
 
-	docker_start_consul()
+	# Necesito asegurarme de que existe la imagen base para los servicios
+	docker_check_service_base()
 
-	# Tengo que detectar la arquitectura del servidor de consul 
-	# en donde se conectaran los servicios
-	consul_ip = sudo('%(docker)s inspect -f "{{.NetworkSettings.IPAddress}}" '
-                     'consul-server ' % env)
+	# Debo asegurarme tambien de que el servicio de consul este corriendo en el host
 
 	# Debe crearse una Excepcion 'Recipe Not Found'
 	serv = RecipeDir(os.path.join(SERVICEDIR, env.service_name))
@@ -157,7 +105,7 @@ def deploy_test_service():
 
 	for n, name in components:
 
-		cfg = get_service_config(name, consul_ip)
+		cfg = get_service_config(name)
 		
 		comp_exists = sudo('docker inspect %(img)s' % cfg)
 
@@ -165,37 +113,3 @@ def deploy_test_service():
 			sudo('docker build -t %(img)s %(path)s' % cfg)
 
 		sudo('docker run -d %(ports)s -h %(name)s --name %(name)s %(img)s -join %(consul)s' % cfg)
-
-
-def consul_query_status():
-
-	with quiet():
-		consul_addr = sudo('%(docker)s inspect -f '
-	                       '"{{.NetworkSettings.IPAddress}}" '
-	                       'consul-server ' % env)
-
-		consul_health = "http://%s:8500/v1/health/node" % (consul_addr)
-
-		consul_node = os.path.join(consul_health, "consul-server")
-
-		response = requests.get(consul_node).json()
-
-		if response:
-			if response[0]['Status'] == "passing":
-				return (True, response[0]['Output'])
-			else:
-				return (False, response[0]['Output'])
-
-
-def consul_query_services():
-	with quiet():
-		consul_addr = sudo('%(docker)s inspect -f '
-	                       '"{{.NetworkSettings.IPAddress}}" '
-	                       'consul-server ' % env)
-
-		consul_services = "http://%s:8500/v1/catalog/services" % (consul_addr)
-
-		response = requests.get(consul_services).json()
-
-		if response:
-			return response

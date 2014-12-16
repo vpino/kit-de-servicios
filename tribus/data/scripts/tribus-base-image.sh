@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Comentar ambos si no dispone de una cache de paquetes
+echo 'Acquire::http { Proxy "http://192.168.0.100:3142"; };' > /etc/apt/apt.conf.d/02proxy
 #echo 'Acquire::http { Proxy "http://10.16.106.152:3142"; };' > /etc/apt/apt.conf.d/02proxy
 
 debconf-set-selections ${PRESEED_DEBCONF}

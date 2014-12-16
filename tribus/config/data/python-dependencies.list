@@ -18,6 +18,7 @@ celery-haystack==0.7.2
 django-registration==1.0
 django-tastypie==0.10.0
 python-mimeparse==0.1.4
+python-consul==0.3.3
 requests==2.5.0
 transifex-client==0.11.beta
 lxml==3.3.5

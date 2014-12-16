@@ -3,6 +3,19 @@
 
 // Services --------------------------------------------------------------------
 
+angular.module('ConsulNodes', ['ngResource'])
+.factory('ConsulNodes', function($resource){
+    return $resource('/api/0.1/consul/nodes/',{}, {
+            query: {
+                method: 'GET',
+                isArray: true,
+                transformResponse: function(data){
+                    return angular.fromJson(data).objects;
+                },
+            },
+        });
+});
+
 angular.module('ServicesList', ['ngResource'])
 .factory('ServicesList', function($resource){
     return $resource('/api/0.1/services/list/',{}, {

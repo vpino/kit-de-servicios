@@ -4,11 +4,11 @@
 // Application -----------------------------------------------------------------
 
 var tribus = angular.module('tribus', ['ui.bootstrap', 'ngDragDrop', 'ngPanzoom', 'ngPanzoomwidget',
-                                       'ServicesList', 'ServicesMetadata', 'Deploy']);
+                                       'ServicesList', 'ServicesMetadata', 'ConsulNodes', 'Deploy']);
 
 // Controllers -----------------------------------------------------------------
 
-tribus.controller('kitController', ['$scope', 'ServicesList', 'ServicesMetadata',
+tribus.controller('kitController', ['$scope', 'ServicesList', 'ServicesMetadata', 'ConsulNodes',
                                     'Deploy', '$modal', '$log', kitController]);
 
 // Directive -------------------------------------------------------------------

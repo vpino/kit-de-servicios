@@ -2,17 +2,14 @@ FROM franj/debian-amd64:jessie
 
 # Proxy de paquetes porque ya estoy cansado de descargar paquetes
 # Para probar fuera de la oficina, comente esta linea
+#RUN echo 'Acquire::http { Proxy "http://10.16.106.152:3142"; };' > /etc/apt/apt.conf.d/02proxy
 RUN echo 'Acquire::http { Proxy "http://192.168.0.100:3142"; };' > /etc/apt/apt.conf.d/02proxy
 
-RUN apt-get update && apt-get install unzip nano python-pip nmap
+RUN apt-get update && apt-get install unzip python-pip
 
 # Add consul binary
-ADD https://dl.bintray.com/mitchellh/consul/0.3.1_linux_amd64.zip /tmp/consul.zip
+ADD https://dl.bintray.com/mitchellh/consul/0.4.1_linux_amd64.zip /tmp/consul.zip
 RUN cd /bin && unzip /tmp/consul.zip && chmod +x /bin/consul && rm /tmp/consul.zip
-
-# Add consul UI
-ADD https://dl.bintray.com/mitchellh/consul/0.3.1_web_ui.zip /tmp/webui.zip
-RUN cd /tmp && unzip /tmp/webui.zip && mv dist /ui && rm /tmp/webui.zip
 
 # Add consul config
 ADD ./config /config/

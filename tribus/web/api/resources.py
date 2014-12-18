@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import consul
 from tastypie import fields
 from tastypie.resources import Resource
 from tribus.web.api.tasks import queue_service_deploy
@@ -27,6 +28,7 @@ from tribus.common.recipes.recipe import RecipeDir
 from tribus.common.utils import get_path
 from tribus.config.base import CHARMSDIR, SERVICEDIR
 
+c = consul.Consul(host='172.17.42.1', port=8500)
 
 class CharmObject(object):
     def __init__(self, initial=None):
@@ -62,30 +64,21 @@ class ServiceObject(object):
         return self._data
 
 
-class CharmListResource(Resource):
-    charms = fields.ListField(attribute='charms')
+class ConsulObject(object):
+    def __init__(self, initial=None):
+        self.__dict__['_data'] = {}
+        
+        if hasattr(initial, 'items'):
+            self.__dict__['_data'] = initial
 
-    class Meta:
-        resource_name = 'charms/list'
-        object_class = CharmObject
+    def __getattr__(self, name):
+        return self._data.get(name, None)
 
-    def get_object_list(self, bundle):
+    def __setattr__(self, name, value):
+        self.__dict__['_data'][name] = value
 
-        CHARM = LocalCharmRepository(CHARMSDIR)
-
-        charms = CHARM.list()
-
-        l = []
-
-        for ch in charms:
-            l.append(ch.metadata.name)
-
-        return [CharmObject({
-                    'charms': l
-                })]
-
-    def obj_get_list(self, bundle, **kwargs):
-        return self.get_object_list(bundle)
+    def to_dict(self):
+        return self._data
 
 
 class ServiceListResource(Resource):
@@ -144,34 +137,6 @@ class ServiceMetadataResource(Resource):
         return self.get_object_list(bundle)
 
 
-class CharmMetadataResource(Resource):
-    name = fields.CharField(attribute='name')
-    summary = fields.CharField(attribute='summary')
-    maintainer = fields.CharField(attribute='maintainer')
-    description = fields.CharField(attribute='description')
-
-    class Meta:
-        resource_name = 'charms/metadata'
-        object_class = CharmObject
-
-    def get_object_list(self, bundle):
-
-        if hasattr(bundle.request, 'GET'):
-            charm_name = bundle.request.GET.get('name', None)
-
-        CHARM = CharmDirectory(get_path([CHARMSDIR, charm_name]))
-
-        return [CharmObject({
-                    'name': CHARM.metadata.name,
-                    'summary': CHARM.metadata.summary,
-                    'maintainer': CHARM.metadata.maintainer,
-                    'description': CHARM.metadata.description,
-                })]
-
-    def obj_get_list(self, bundle, **kwargs):
-        return self.get_object_list(bundle)
-
-
 class CharmConfigResource(Resource):
     config = fields.CharField(attribute='config')
 
@@ -195,6 +160,26 @@ class CharmConfigResource(Resource):
 
         return [CharmObject({
                     'config': config
+                })]
+
+    def obj_get_list(self, bundle, **kwargs):
+
+        return self.get_object_list(bundle)
+
+
+class ConsulNodesResource(Resource):
+    nodes = fields.ListField(attribute='nodes')
+
+    class Meta:
+        resource_name = 'consul/nodes'
+        object_class = ConsulObject
+
+    def get_object_list(self, bundle):
+
+        NODES = c.catalog.nodes()
+
+        return [ConsulObject({
+                    'nodes': NODES
                 })]
 
     def obj_get_list(self, bundle, **kwargs):

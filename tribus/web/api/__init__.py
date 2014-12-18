@@ -20,16 +20,14 @@
 
 
 from tastypie.api import Api
-from tribus.web.api.resources import (CharmMetadataResource,
-    CharmConfigResource, CharmListResource,
+from tribus.web.api.resources import (CharmConfigResource,
     ServiceMetadataResource, ServiceListResource,
-    ServiceDeployResource)
+    ServiceDeployResource, ConsulNodesResource)
 
 
 api_01 = Api(api_name='0.1')
-api_01.register(CharmMetadataResource())
 api_01.register(CharmConfigResource())
-api_01.register(CharmListResource())
 api_01.register(ServiceMetadataResource())
 api_01.register(ServiceListResource())
 api_01.register(ServiceDeployResource())
+api_01.register(ConsulNodesResource())

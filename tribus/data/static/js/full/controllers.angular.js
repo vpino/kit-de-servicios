@@ -1,8 +1,12 @@
 // Declare use of strict javascript
 'use strict';
 
-function kitController($scope, ServicesList, ServicesMetadata, Deploy, $modal, $log){
+function kitController($scope, ServicesList, ServicesMetadata, ConsulNodes, Deploy, $modal, $log){
     $scope.servicios = [''];
+
+    var nodes = ConsulNodes.query({});
+
+    console.log(nodes);
 
     var result = ServicesList.query({}, function (){
         var ruta_base = 'tribus/tribus/data/services/';

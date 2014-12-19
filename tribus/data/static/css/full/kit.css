@@ -226,7 +226,7 @@
     width: 96px;
     height: 96px;
     text-align: center;
-    margin-left: 65px;
+    display: inline-block;
 }
 .container-service-pan{
     width: 96px;

@@ -39,7 +39,7 @@ class Recipe(object):
         raise NotImplementedError("%s.%s not supported" %
                                   (self.__class__.__name__, attr))
 
- 	
+
     def compute_sha256(self):
         """
 
@@ -255,10 +255,9 @@ class MetaData(object):
 
 class RecipeDir(Recipe):
 
-	type = "dir"
+    type = "dir"
 
-	def __init__(self, path):
-		"""Set initial values and parse configuration files from the recipe."""
-		self.path = path
-		self.metadata = MetaData(os.path.join(path, 'metadata.yaml'))
-        
+    def __init__(self, path):
+        """Set initial values and parse configuration files from the recipe."""
+        self.path = path
+        self.metadata = MetaData(os.path.join(path, 'metadata.yaml'))

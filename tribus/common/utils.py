@@ -34,7 +34,7 @@ import hashlib
 
 
 # Taken from: http://stackoverflow.com/a/2158532
-def flatten_list(l=[]):
+def flatten_list(l=None):
     """
 
     Convert a nested list into one combined list.
@@ -53,6 +53,8 @@ def flatten_list(l=[]):
     []
 
     """
+    if l is None:
+        l = []
     from collections import Iterable
     for el in l:
         if isinstance(el, Iterable) and not isinstance(el, basestring):
@@ -85,7 +87,7 @@ def cat_file(filename=None):
     return open(filename).read()
 
 
-def get_path(path=[]):
+def get_path(path=None):
     """
 
     Builds and normalizes a path. This will resolve symlinks to their
@@ -104,6 +106,8 @@ def get_path(path=[]):
     '/usr/share/logs/vars/included/hola.deb'
 
     """
+    if path is None:
+        path = []
     assert path
     assert type(path) == list
     return os.path.normpath(os.path.realpath(
@@ -279,7 +283,7 @@ def list_items(path=None, dirs=True, files=True):
             or (os.path.isfile(os.path.join(path, f)) and files)]
 
 
-def readconfig(filename, options=[], conffile=False, strip_comments=True):
+def readconfig(filename, options=None, conffile=False, strip_comments=True):
     """
 
     Reads a file whether if is a data or configuration file and returns
@@ -350,21 +354,3 @@ def filename_generator(file_parts, new_m_time):
     m = hashlib.md5()
     m.update(filename)
     return '{0}/{1}.{2}{3}'.format(url, m.hexdigest(), new_m_time, ext)
-
-
-def repeated_relation_counter(control_file):
-    import deb822
-    archivo = urllib.urlopen(control_file)
-    for paragraph in deb822.Packages.iter_paragraphs(archivo):
-        for rel_type, rel in paragraph.relations.items():
-            if rel:
-                for r in rel:
-                    for rr in r:
-                        encontrados = 0
-                        for name in paragraph[rel_type].replace(',', ' ').split():
-                            match = re.match('^'+rr['name'].replace("+", "\+").replace("-", "\-")+'$', name)
-                            if match and rr.get('version'):
-                                encontrados += 1
-                        if encontrados > 2:
-                            print paragraph['package'], encontrados
-                            print r

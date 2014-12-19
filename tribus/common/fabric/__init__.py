@@ -107,7 +107,7 @@ env.fvars = {
     'START_SERVICES': ' '.join(start_services),
     'CHANGE_PASSWD': ' '.join(change_passwd),
     'HOST_USER': env.user,
-    'HOST_DIR': local("ip r|awk '/\/25/ { print $9 }'", capture=True),
+    'HOST_DIR': local(r"ip r|awk '/\/25/ { print $9 }'", capture=True),
     'HOST_USER_ID': env.user_id
 }
 

@@ -33,7 +33,6 @@ This module define funtions to accomplish the following tasks:
 """
 
 import sys
-import time
 import json
 import paramiko
 from contextlib import nested

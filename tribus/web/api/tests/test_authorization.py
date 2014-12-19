@@ -3,7 +3,6 @@ from django.test import Client
 from tastypie.test import ResourceTestCase
 from doctest import DocTestSuite
 from django.core.urlresolvers import reverse
-from tribus.web.profile.views import *
 from django.contrib.auth.models import User
 
 

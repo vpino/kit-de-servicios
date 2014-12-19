@@ -64,10 +64,10 @@ def get_service_config(name):
 
 def docker_generate_service_base():
 	"""
-    Crea una imagen base de Consul
+	Crea una imagen base de Consul
 
-    .. versionadded:: 0.2
-    """
+	.. versionadded:: 0.2
+	"""
 	
 	env.arch = get_local_arch()	
 	if env.arch == 'i386':

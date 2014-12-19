@@ -116,7 +116,7 @@ def get_requirements(filename=None):
     return requirements
 
 
-def get_packages(path=None, exclude_packages=[]):
+def get_packages(path=None, exclude_packages=None):
     """
     Returns a list of all python packages found within directory ``path``, with
     ``exclude_packages`` packages excluded.
@@ -133,6 +133,10 @@ def get_packages(path=None, exclude_packages=[]):
 
     .. versionadded:: 0.1
     """
+
+    if exclude_packages is None:
+        exclude_packages = []
+    
     assert path
     assert exclude_packages
     assert type(path) == str

@@ -44,7 +44,7 @@ function kitController($scope, ServicesList, ServicesMetadata, ConsulNodes, Depl
 
     //PAN ZOOM Controller
     var shark = { x : 391, y: 371, width: 206, height: 136 };
-    var chopper = { x : -200, y: 180, width: 660, height: 144 };
+    var chopper = { x : -200, y: 180, width: 850, height: 500 };
     var ladder = { x : 333, y: 325, width: 75, height: 200 };
 
     $scope.rects = [chopper, shark, ladder];
@@ -53,7 +53,7 @@ function kitController($scope, ServicesList, ServicesMetadata, ConsulNodes, Depl
 
     // The panzoom config model can be used to override default configuration values
     $scope.panzoomConfig = {
-        zoomLevels: 8,
+        zoomLevels: 7,
         neutralZoomLevel: 3,
         scalePerZoomLevel: 1.5,
         initialZoomToFit: chopper

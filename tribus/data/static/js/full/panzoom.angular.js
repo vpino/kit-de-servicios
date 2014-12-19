@@ -454,7 +454,7 @@ angular.module('ngPanzoom', ['monospaced.mousewheel'])
 			};
 		}],
 		template:
-			'<div class="pan-zoom-frame" ng-dblclick="onDblClick($event)" ng-mousedown="onMousedown($event)"' +
+			'<div class="pan-zoom-frame" ng-mousedown="onMousedown($event)"' + //ng-dblclick="onDblClick($event)"
 				' msd-wheel="onMouseWheel($event, $delta, $deltaX, $deltaY)"' +
 				' style="position:relative;overflow:hidden;cursor:move">' +
 				'<div class="pan-zoom-contents" style="position:absolute;left:0px;top:0px" ng-transclude>' +

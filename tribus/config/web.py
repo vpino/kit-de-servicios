@@ -3,7 +3,6 @@
 
 import djcelery
 from celery.schedules import crontab
-
 from tribus import BASEDIR
 from tribus.common.utils import get_path
 from tribus.config.ldap import *
@@ -88,7 +87,7 @@ PASSWORD_HASHERS = (
 )
 
 BROKER_URL = 'django://'
-CELERY_RESULT_BACKEND = 'database'
+#CELERY_RESULT_BACKEND = 'database'
 CELERY_CACHE_BACKEND = 'memory'
 CELERY_RESULT_DBURI = "postgresql://tribus:tribus@localhost/tribus"
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
@@ -135,10 +134,9 @@ HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 INSTALLED_APPS = (
     'ldapdb',
     'django_auth_ldap',
-    'south',
+    #'south',
     'django_static',
     'djcelery',
-    'tastypie',
     'haystack',
     'celery_haystack',
     #'registration',
@@ -154,11 +152,12 @@ INSTALLED_APPS = (
     'tribus.web.kit',
     #'tribus.web.registration',
     'tribus.web.api',
-    'tribus.web.admin',
+    # 'tribus.web.admin',
 )
 
 SOUTH_TESTS_MIGRATE = False
 SKIP_SOUTH_TESTS = True
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

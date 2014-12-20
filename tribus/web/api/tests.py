@@ -19,12 +19,3 @@ class EntryResourcesTest(ResourceTestCase):
 		self.password = '123456'
 		self.user = User.objects.create_user(self.username, 'example@example.com', self.password)
 		
-
-
-
-
-
-
-
-
-

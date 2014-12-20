@@ -1,12 +1,15 @@
-# THIS FILE WOULD BE USED TO INITIALIZE CELERY 3.1.X
-# 'django-celery' is not required, install it ONLY if you need to manage the schedule
-# from the admin, or if you want to store task results in the DB through django's ORM:
-# http://stackoverflow.com/questions/20116573/in-celery-3-1-making-django-periodic-task
+import os
 
-# import os
-# from celery import Celery
-# from django.conf import settings
+from celery import Celery
 
-# app = Celery()
-# cfg = app.config_from_object('django.conf:settings')
-# app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+from django.conf import settings
+
+# set the default Django settings module for the 'celery' program.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tribus.config.web')
+
+app = Celery('tribus', broker='django://')
+
+# Using a string here means the worker will not have to
+# pickle the object when using Windows.
+app.config_from_object('django.conf:settings')
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

@@ -88,18 +88,18 @@ PASSWORD_HASHERS = (
 )
 
 BROKER_URL = 'django://'
-CELERY_RESULT_BACKEND = 'database'
+# CELERY_RESULT_BACKEND = 'database'
 CELERY_CACHE_BACKEND = 'memory'
-CELERY_RESULT_DBURI = "postgresql://tribus:tribus@localhost/tribus"
-CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+# CELERY_RESULT_DBURI = "postgresql://tribus:tribus@localhost/tribus"
+# CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 
-CELERYBEAT_SCHEDULE = {
-    "update_cache": {
-        "task": "tribus.web.cloud.tasks.update_cache",
-        "schedule": crontab(minute=0, hour=0),  # A las 12 am
-        "args": (),
-    }
-}
+# CELERYBEAT_SCHEDULE = {
+#     "update_cache": {
+#         "task": "tribus.web.cloud.tasks.update_cache",
+#         "schedule": crontab(minute=0, hour=0),  # A las 12 am
+#         "args": (),
+#     }
+# }
 
 CACHES = {
     'default': {
@@ -130,18 +130,18 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
+# HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 INSTALLED_APPS = (
     'ldapdb',
     'django_auth_ldap',
     'south',
     'django_static',
-    'djcelery',
+    # 'djcelery',
     'tastypie',
-    'haystack',
-    'celery_haystack',
-    #'registration',
+    # 'haystack',
+    # 'celery_haystack',
+    # 'registration',
     'kombu.transport.django',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -154,7 +154,7 @@ INSTALLED_APPS = (
     'tribus.web.kit',
     #'tribus.web.registration',
     'tribus.web.api',
-    'tribus.web.admin',
+    # 'tribus.web.admin',
 )
 
 SOUTH_TESTS_MIGRATE = False

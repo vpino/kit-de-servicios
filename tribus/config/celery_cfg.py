@@ -3,10 +3,15 @@
 # from the admin, or if you want to store task results in the DB through django's ORM:
 # http://stackoverflow.com/questions/20116573/in-celery-3-1-making-django-periodic-task
 
-# import os
-# from celery import Celery
-# from django.conf import settings
+from __future__ import absolute_import
 
-# app = Celery()
-# cfg = app.config_from_object('django.conf:settings')
-# app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+import os
+from celery import Celery
+from django.conf import settings
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tribus.config.web')
+
+app = Celery()
+app = app.config_from_object('django.conf:settings')
+
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

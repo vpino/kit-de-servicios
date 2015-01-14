@@ -18,234 +18,247 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# COMMON VARIABLES & CONFIG ----------------------------------------------------
-# ------------------------------------------------------------------------------
+# # COMMON VARIABLES & CONFIG ----------------------------------------------------
+# # ------------------------------------------------------------------------------
 
 SHELL = sh -e
-PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-FAB = $(shell which fab)
-BASH = $(shell which bash)
-SU = $(shell which su)
-SUDO = $(shell which sudo)
-APTITUDE = $(shell which aptitude)
-USER = $(shell id -u -n)
-ROOT = root
+# PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+# FAB = $(shell which fab)
+# BASH = $(shell which bash)
+# SU = $(shell which su)
+# SUDO = $(shell which sudo)
+# APTITUDE = $(shell which aptitude)
+# USER = $(shell id -u -n)
+# ROOT = root
 
+all: build
 
-# HELPER TASKS -----------------------------------------------------------------
-# ------------------------------------------------------------------------------
+build: install 
 
-dependencies:
+install:
+	# Installing shared data
+	mkdir -p $(DESTDIR)/usr/share/kit-servicios/
+	#echo "Hola, instalando"
+	
+uninstall:
 
-	@# With this script we will satisfy dependencies on the supported
-	@# distributions.
-	@$(BASH) tribus/data/scripts/satisfy-depends.sh
+	rm -rf $(DESTDIR)/usr/share/kit-servicios/
+	#echo "Hola, desinstalando"
 
-generate_debian_base_image_i386: dependencies
+# # HELPER TASKS -----------------------------------------------------------------
+# # ------------------------------------------------------------------------------
 
-	@$(FAB) generate_debian_base_image_i386
+# dependencies:
 
-generate_debian_base_image_amd64: dependencies
+# 	@# With this script we will satisfy dependencies on the supported
+# 	@# distributions.
+# 	@$(BASH) tribus/data/scripts/satisfy-depends.sh
 
-	@$(FAB) generate_debian_base_image_amd64
+# generate_debian_base_image_i386: dependencies
 
-generate_tribus_base_image_i386: dependencies
+# 	@$(FAB) generate_debian_base_image_i386
 
-	@$(FAB) generate_tribus_base_image_i386
+# generate_debian_base_image_amd64: dependencies
 
-generate_tribus_base_image_amd64: dependencies
+# 	@$(FAB) generate_debian_base_image_amd64
 
-	@$(FAB) generate_tribus_base_image_amd64
+# generate_tribus_base_image_i386: dependencies
 
-kill_all_containers: dependencies
+# 	@$(FAB) generate_tribus_base_image_i386
 
-	@$(FAB) docker_kill_all_containers
+# generate_tribus_base_image_amd64: dependencies
 
-kill_all_images: dependencies
+# 	@$(FAB) generate_tribus_base_image_amd64
 
-	@$(FAB) docker_kill_all_images
+# kill_all_containers: dependencies
 
-kill_tribus_images: dependencies
+# 	@$(FAB) docker_kill_all_containers
 
-	@$(FAB) docker_kill_tribus_images
+# kill_all_images: dependencies
 
+# 	@$(FAB) docker_kill_all_images
 
-# DEVEL TASKS ------------------------------------------------------------------
+# kill_tribus_images: dependencies
 
-kill_dev_containers: dependencies
+# 	@$(FAB) docker_kill_tribus_images
 
-	@$(FAB) docker_kill_dev_containers
 
-kill_dev_images: dependencies
+# # DEVEL TASKS ------------------------------------------------------------------
 
-	@$(FAB) docker_kill_dev_images
+# kill_dev_containers: dependencies
 
-generate_consul_image: dependencies
+# 	@$(FAB) docker_kill_dev_containers
 
-	@$(FAB) docker_create_service_cluster
+# kill_dev_images: dependencies
 
-generate_comp_image: dependencies
+# 	@$(FAB) docker_kill_dev_images
 
-	@$(FAB) create_component_image
+# generate_consul_image: dependencies
 
-start_service: dependencies
+# 	@$(FAB) docker_create_service_cluster
 
-	@$(FAB) start_service	
+# generate_comp_image: dependencies
 
-deploy_test_service: dependencies
+# 	@$(FAB) create_component_image
 
-	@$(FAB) deploy_test_service	
+# start_service: dependencies
 
-# COMMON TASKS -----------------------------------------------------------------
+# 	@$(FAB) start_service	
 
-environment: dependencies
+# deploy_test_service: dependencies
 
-	@$(FAB) environment
+# 	@$(FAB) deploy_test_service	
 
-start: dependencies
+# # COMMON TASKS -----------------------------------------------------------------
 
-	@$(FAB) django_runserver
+# environment: dependencies
 
-stop: dependencies
+# 	@$(FAB) environment
 
-	@$(FAB) docker_stop_container
+# start: dependencies
 
-login: dependencies
+# 	@$(FAB) django_runserver
 
-	@$(FAB) docker_login_container
+# stop: dependencies
 
-reset: dependencies
+# 	@$(FAB) docker_stop_container
 
-	@$(FAB) docker_reset_container
+# login: dependencies
 
-update: dependencies
+# 	@$(FAB) docker_login_container
 
-	@$(FAB) docker_update_container
+# reset: dependencies
 
-sync: dependencies
+# 	@$(FAB) docker_reset_container
 
-	@$(FAB) django_syncdb
+# update: dependencies
 
-shell: dependencies
+# 	@$(FAB) docker_update_container
 
-	@$(FAB) django_shell
+# sync: dependencies
 
-# INDEX TASKS -----------------------------------------------------------------
+# 	@$(FAB) django_syncdb
 
-rebuild_index: dependencies
+# shell: dependencies
 
-	@$(FAB) haystack_rebuild_index
+# 	@$(FAB) django_shell
 
-purge_tasks: dependencies
+# # INDEX TASKS -----------------------------------------------------------------
 
-	@$(FAB) celery_purge_tasks
+# rebuild_index: dependencies
 
-# -----------------------------------------------------------------------------
+# 	@$(FAB) haystack_rebuild_index
 
-update_catalog: dependencies
+# purge_tasks: dependencies
 
-	@$(FAB) update_catalog
+# 	@$(FAB) celery_purge_tasks
 
-compile_catalog: dependencies
+# # -----------------------------------------------------------------------------
 
-	@$(FAB) compile_catalog
+# update_catalog: dependencies
 
-init_catalog: dependencies
+# 	@$(FAB) update_catalog
 
-	@$(FAB) init_catalog
+# compile_catalog: dependencies
 
-extract_messages: dependencies
+# 	@$(FAB) compile_catalog
 
-	@$(FAB) extract_messages
+# init_catalog: dependencies
 
-tx_push: dependencies
+# 	@$(FAB) init_catalog
 
-	@$(FAB) tx_push
+# extract_messages: dependencies
 
-tx_pull: dependencies
+# 	@$(FAB) extract_messages
 
-	@$(FAB) tx_pull
+# tx_push: dependencies
 
+# 	@$(FAB) tx_push
 
-# BUILD TASKS ------------------------------------------------------------------------------
+# tx_pull: dependencies
 
-build: dependencies
+# 	@$(FAB) tx_pull
 
-	@$(FAB) build
 
-build_sphinx: dependencies
+# # BUILD TASKS ------------------------------------------------------------------------------
 
-	@$(FAB) build_sphinx
+# build: dependencies
 
-build_mo: dependencies
+# 	@$(FAB) build
 
-	@$(FAB) build_mo
+# build_sphinx: dependencies
 
-build_css: dependencies
+# 	@$(FAB) build_sphinx
 
-	@$(FAB) build_css
+# build_mo: dependencies
 
-build_js: dependencies
+# 	@$(FAB) build_mo
 
-	@$(FAB) build_js
+# build_css: dependencies
 
-build_man: dependencies
+# 	@$(FAB) build_css
 
-	@$(FAB) build_man
+# build_js: dependencies
 
+# 	@$(FAB) build_js
 
-# CLEAN TASKS ------------------------------------------------------------------------------
+# build_man: dependencies
 
-clean: dependencies
+# 	@$(FAB) build_man
 
-	@$(FAB) clean
 
-clean_css: dependencies
+# # CLEAN TASKS ------------------------------------------------------------------------------
 
-	@$(FAB) clean_css
+# clean: dependencies
 
-clean_js: dependencies
+# 	@$(FAB) clean
 
-	@$(FAB) clean_js
+# clean_css: dependencies
 
-clean_mo: dependencies
+# 	@$(FAB) clean_css
 
-	@$(FAB) clean_mo
+# clean_js: dependencies
 
-clean_sphinx: dependencies
+# 	@$(FAB) clean_js
 
-	@$(FAB) clean_sphinx
+# clean_mo: dependencies
 
-clean_man: dependencies
+# 	@$(FAB) clean_mo
 
-	@$(FAB) clean_man
+# clean_sphinx: dependencies
 
-clean_dist: dependencies
+# 	@$(FAB) clean_sphinx
 
-	@$(FAB) clean_dist
+# clean_man: dependencies
 
-clean_pyc: dependencies
+# 	@$(FAB) clean_man
 
-	@$(FAB) clean_pyc
+# clean_dist: dependencies
 
-test: dependencies
+# 	@$(FAB) clean_dist
 
-	@$(FAB) test
+# clean_pyc: dependencies
 
-install: dependencies
+# 	@$(FAB) clean_pyc
 
-	@$(FAB) install
+# test: dependencies
 
-bdist: dependencies
+# 	@$(FAB) test
 
-	@$(FAB) bdist
+# install: dependencies
 
-sdist: dependencies
+# 	@$(FAB) install
 
-	@$(FAB) sdist
+# bdist: dependencies
 
-report_setup_data: dependencies
+# 	@$(FAB) bdist
 
-	@$(FAB) report_setup_data
+# sdist: dependencies
 
-.PHONY: environment
+# 	@$(FAB) sdist
+
+# report_setup_data: dependencies
+
+# 	@$(FAB) report_setup_data
+
+# .PHONY: environment

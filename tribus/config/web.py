@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import djcelery
 from celery.schedules import crontab
 
@@ -14,6 +15,7 @@ SITE_ID = 1
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+ALLOWED_HOSTS = ['localhost']
 
 ADMINS = ()
 MANAGERS = ADMINS
@@ -64,32 +66,39 @@ SECRET_KEY = 'oue0893ro5c^82!zke^ypu16v0u&%s($lnegf^7-vcgc^$e&$f'
 # DATABASE CONFIGURATION ------------------------------------------------------
 #
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'tribus',
+#         'USER': 'tribus',
+#         'PASSWORD': 'tribus',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     },
+#     'ldap': {
+#         'ENGINE': 'ldapdb.backends.ldap',
+#         'NAME': AUTH_LDAP_SERVER_URI,
+#         'USER': AUTH_LDAP_BIND_DN,
+#         'PASSWORD': AUTH_LDAP_BIND_PASSWORD,
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tribus',
-        'USER': 'tribus',
-        'PASSWORD': 'tribus',
-        'HOST': 'localhost',
-        'PORT': '',
-    },
-    'ldap': {
-        'ENGINE': 'ldapdb.backends.ldap',
-        'NAME': AUTH_LDAP_SERVER_URI,
-        'USER': AUTH_LDAP_BIND_DN,
-        'PASSWORD': AUTH_LDAP_BIND_PASSWORD,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASEDIR, 'db.sqlite3'),
     }
 }
 
-DATABASE_ROUTERS = ['ldapdb.router.Router']
+#DATABASE_ROUTERS = ['ldapdb.router.Router']
 
-PASSWORD_HASHERS = (
-    'tribus.web.registration.ldap.hashers.SSHAPasswordLDAPHasher',
-)
+#PASSWORD_HASHERS = (
+#    'tribus.web.registration.ldap.hashers.SSHAPasswordLDAPHasher',
+#)
 
 BROKER_URL = 'django://'
 # CELERY_RESULT_BACKEND = 'database'
-CELERY_CACHE_BACKEND = 'memory'
+# CELERY_CACHE_BACKEND = 'memory'
 # CELERY_RESULT_DBURI = "postgresql://tribus:tribus@localhost/tribus"
 # CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 
@@ -120,24 +129,24 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 
 # CONFIGURACION HAYSTACK CON XAPIAN
-XAPIAN_INDEX = get_path([BASEDIR, 'xapian_index'])
-HAYSTACK_LOGGING = True
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'xapian_backend.XapianEngine',
-        'PATH': XAPIAN_INDEX,
-        'HAYSTACK_XAPIAN_LANGUAGE': 'spanish'
-    },
-}
+# XAPIAN_INDEX = get_path([BASEDIR, 'xapian_index'])
+# HAYSTACK_LOGGING = True
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'xapian_backend.XapianEngine',
+#         'PATH': XAPIAN_INDEX,
+#         'HAYSTACK_XAPIAN_LANGUAGE': 'spanish'
+#     },
+# }
 
 # HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 INSTALLED_APPS = (
-    'ldapdb',
-    'django_auth_ldap',
-    'south',
+    #'ldapdb',
+    #'django_auth_ldap',
+    #'south',
     'django_static',
-    # 'djcelery',
+    'djcelery',
     'tastypie',
     # 'haystack',
     # 'celery_haystack',

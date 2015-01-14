@@ -23,7 +23,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from tribus.web.api import api_01
 
-admin.autodiscover()
+# admin.autodiscover()
 
 urlpatterns = patterns(
     '',

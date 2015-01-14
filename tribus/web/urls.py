@@ -18,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.views.generic.base import TemplateView
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from tribus.web.api import api_01
@@ -27,7 +26,6 @@ from tribus.web.api import api_01
 
 urlpatterns = patterns(
     '',
-    url(regex=r'^prueba/$', view='tribus.web.views.prueba'),
     url(regex=r'^kit/$', view='tribus.web.kit.views.kit'),
     url(regex=r'^api/', view=include(api_01.urls))
 )

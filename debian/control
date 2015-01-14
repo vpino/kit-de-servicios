@@ -16,6 +16,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  fabric (>= 1.10.0),
  cssmin (>= 0.2.0),
  slimit (>= 0.8.1),
+ python-dev,
  python-django (>= 1.7.1),
  python-yaml (>= 3.11),
  python-sphinx (>= 1.2.3),
@@ -26,7 +27,9 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-mimeparse (>= 0.1.4),
  python-requests (>= 2.4.3),
  python-lxml (>= 3.4.0),
- python-sh (>= 1.09)
+ python-sh (>= 1.09),
+ uwsgi-plugin-python (>= 2.0.7), 
+ nginx (>= 1.6.2)
 Description: Proyecto Kit de servicios
  Este paquete instala el componente Kit de servicios
 

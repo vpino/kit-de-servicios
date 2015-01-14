@@ -1,26 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from tribus.config.brand import TRIBUS_SPONSORS
-from django.shortcuts import render
-# from tribus.web.registration.forms import SignupForm
-# from haystack.query import SearchQuerySet
-from django.core.paginator import Paginator, InvalidPage
-from django.contrib.contenttypes.models import ContentType
-
-
-def prueba(request):
-
-    # Cargamos la librería AngujarJS junto con sus plugins
-    # render_js = ['angular', 'angular.sanitize', 'angular.resource',
-    #                 'angular.bootstrap']
-
-    # Cargamos las funciones de Tribus para AngularJS
-    # render_js += ['controllers.angular', 'services.angular',
-    #                 'elements.angular', 'search.angular',
-    #                 'navbar.angular']
-
-    # context["render_js"] = render_js
-    context = {}
-
-    return render(request, 'index.html', context)
+#
+# Copyright (C) 2013-2014 Tribus Developers
+#
+# This file is part of Tribus.
+#
+# Tribus is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Tribus is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.

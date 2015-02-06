@@ -120,17 +120,17 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 
 # CONFIGURACION HAYSTACK CON XAPIAN
-XAPIAN_INDEX = get_path([BASEDIR, 'xapian_index'])
-HAYSTACK_LOGGING = True
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'xapian_backend.XapianEngine',
-        'PATH': XAPIAN_INDEX,
-        'HAYSTACK_XAPIAN_LANGUAGE': 'spanish'
-    },
-}
+# XAPIAN_INDEX = get_path([BASEDIR, 'xapian_index'])
+# HAYSTACK_LOGGING = True
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'xapian_backend.XapianEngine',
+#         'PATH': XAPIAN_INDEX,
+#         'HAYSTACK_XAPIAN_LANGUAGE': 'spanish'
+#     },
+# }
 
-HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
+# HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 INSTALLED_APPS = (
     'ldapdb',
@@ -139,8 +139,8 @@ INSTALLED_APPS = (
     'django_static',
     'djcelery',
     'tastypie',
-    'haystack',
-    'celery_haystack',
+    #'haystack',
+    #'celery_haystack',
     #'registration',
     'kombu.transport.django',
     'django.contrib.admin',

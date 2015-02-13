@@ -21,7 +21,7 @@
 # # COMMON VARIABLES & CONFIG ----------------------------------------------------
 # # ------------------------------------------------------------------------------
 
-SHELL = sh -e
+#SHELL = sh -e
 # PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 # FAB = $(shell which fab)
 # BASH = $(shell which bash)
@@ -31,18 +31,18 @@ SHELL = sh -e
 # USER = $(shell id -u -n)
 # ROOT = root
 
-all: build
+#all: build
 
-build: install 
+#build: install 
 
-install:
+#install:
 	# Installing shared data
-	mkdir -p $(DESTDIR)/usr/share/kit-servicios/
+#	mkdir -p $(DESTDIR)/usr/share/kit-servicios/
 	#echo "Hola, instalando"
 	
-uninstall:
+#uninstall:
 
-	rm -rf $(DESTDIR)/usr/share/kit-servicios/
+#	rm -rf $(DESTDIR)/usr/share/kit-servicios/
 	#echo "Hola, desinstalando"
 
 # # HELPER TASKS -----------------------------------------------------------------

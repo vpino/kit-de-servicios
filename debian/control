@@ -1,16 +1,16 @@
-Source: kit-servicios
+Source: kds
 Section: web
 Priority: optional
+X-Python-Version: >= 2.6
 Maintainer: Jose Francisco Guerrero <jsfrncscg@gmail.com>
-Build-Depends: debhelper (>= 9), 
- python, 
- python-setuptools,
- python-support
-Standards-Version: 3.9.5
+Build-Depends: python-all (>= 2.6.6-3), debhelper (>= 9), 
+ dh-python
+Build-Depends-Indep: python-django (>= 1.7)
+Standards-Version: 3.9.6
 Homepage: http://canaima.softwarelibre.gob.ve
 Vcs-Git: git@github.com:tribusdev/kit-servicios.git
 
-Package: kit-servicios
+Package: kds
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  fabric (>= 1.10.0),
@@ -32,8 +32,3 @@ Depends: ${misc:Depends}, ${python:Depends},
  nginx (>= 1.6.2)
 Description: Proyecto Kit de servicios
  Este paquete instala el componente Kit de servicios
-
-Package: kit-servicios-doc
-Architecture: all
-Description: Documentacion para kit-servicios-1.0
- Documentacion del kit de servicios

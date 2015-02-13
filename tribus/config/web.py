@@ -53,9 +53,9 @@ WSGI_APPLICATION = 'tribus.web.wsgi.application'
 # LDAP CONFIGURATION ----------------------------------------------------------
 #
 
-AUTHENTICATION_BACKENDS = (
-    'django_auth_ldap.backend.LDAPBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'django_auth_ldap.backend.LDAPBackend',
+# )
 
 # This should be secret, but as we are in development, doesn't matter
 # Production settings should be set in tribus/config/web_production.py
@@ -83,12 +83,12 @@ SECRET_KEY = 'oue0893ro5c^82!zke^ypu16v0u&%s($lnegf^7-vcgc^$e&$f'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASEDIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASEDIR, 'db.sqlite3'),
+#     }
+# }
 
 #DATABASE_ROUTERS = ['ldapdb.router.Router']
 
@@ -96,7 +96,7 @@ DATABASES = {
 #    'tribus.web.registration.ldap.hashers.SSHAPasswordLDAPHasher',
 #)
 
-BROKER_URL = 'django://'
+# BROKER_URL = 'django://'
 # CELERY_RESULT_BACKEND = 'database'
 # CELERY_CACHE_BACKEND = 'memory'
 # CELERY_RESULT_DBURI = "postgresql://tribus:tribus@localhost/tribus"
@@ -142,16 +142,6 @@ ACCOUNT_ACTIVATION_DAYS = 7
 # HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 INSTALLED_APPS = (
-    #'ldapdb',
-    #'django_auth_ldap',
-    #'south',
-    'django_static',
-    'djcelery',
-    'tastypie',
-    # 'haystack',
-    # 'celery_haystack',
-    # 'registration',
-    'kombu.transport.django',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -159,11 +149,13 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'kombu.transport.django',
+    'django_static',
+    'djcelery',
+    'tastypie',
     'tribus.web',
     'tribus.web.kit',
-    #'tribus.web.registration',
     'tribus.web.api',
-    # 'tribus.web.admin',
 )
 
 SOUTH_TESTS_MIGRATE = False

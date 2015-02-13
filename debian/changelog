@@ -1,5 +1,5 @@
-kit-servicios (1.0-1) jessie; urgency=low
+kds (1.0) jessie; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release. (Closes: #0)
 
- -- Jose Francisco Guerrero <jsfrncscg@gmail.com>  Mon, 12 Jan 2015 16:41:39 -0430
+ -- Francisco Guerrero <jsfrncscg@gmail.com>  Thu, 12 Feb 2015 16:53:25 -0430

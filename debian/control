@@ -24,11 +24,13 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-django-celery (>= 3.1.16),
  python-psycopg2 (>= 2.5.4),
  python-django-tastypie (>= 0.12.0),
+ python-django-static (>= 1.5.5),
  python-mimeparse (>= 0.1.4),
  python-requests (>= 2.4.3),
  python-lxml (>= 3.4.0),
  python-sh (>= 1.09),
  uwsgi-plugin-python (>= 2.0.7), 
+ uwsgi (>= 2.0.7),
  nginx (>= 1.6.2)
 Description: Proyecto Kit de servicios
  Este paquete instala el componente Kit de servicios

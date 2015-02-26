@@ -21,7 +21,7 @@
 # import consul
 from tastypie import fields
 from tastypie.resources import Resource
-from tribus.web.api.tasks import queue_service_deploy
+from tribus.web.api.tasks import queue_service_deploy, saludar1
 from tribus.common.charms.repository import LocalCharmRepository
 from tribus.common.charms.directory import CharmDirectory
 from tribus.common.recipes.recipe import RecipeDir
@@ -196,5 +196,6 @@ class ServiceDeployResource(Resource):
         return {}
 
     def obj_create(self, bundle, **kwargs):
-        queue_service_deploy.apply_async([bundle.data])
+        saludar1.apply_async([bundle.data])
+        #queue_service_deploy.apply_async([bundle.data])
         return bundle

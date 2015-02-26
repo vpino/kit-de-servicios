@@ -22,6 +22,11 @@ from celery import task
 from fabric.api import execute, env
 from tribus.common.fabric.consul import deploy_test_service
 
+@task
+def saludar1(*args):
+	print "Hola esto es un saludo!"
+	print args
+
 
 @task
 def queue_service_deploy(*args):

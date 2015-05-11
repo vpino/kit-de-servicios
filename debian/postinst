@@ -7,6 +7,11 @@ set -e
 
 case "$1" in
     configure)
+        
+        # update-alternatives --force --install /etc/default/celeryd celeryd /etc/kds/default/celeryd 22
+        # echo "Instalando configuracion personalizada para Celeryd"
+        mv /etc/init.d/celeryd.init /etc/init.d/celeryd || true
+
         adduser --system --shell /bin/bash --gecos 'KDS system user' \
             --group --disabled-password --quiet --no-create-home kds
 

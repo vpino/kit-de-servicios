@@ -1,2 +1,3 @@
-- X
-- Y
+- La solución para configurar el servicio de celery fue instalar manualmente el archivo /etc/init.d/celeryd bajo el nombre celeryd.init, luego en el postinstall se le cambia el nombre a celeryd. El otro archivo incluido relativo a la configuracion de celeryd es /etc/default/celeryd. De esta forma es posible configurar e iniciar celery al completar la instalacion de Kit de Servicios. La solucion utilizando diverts no funciona dado que genera enlaces simbolicos y celery no admite un enlace simbolico como archivo de configuración en /etc/default/celeryd
+
+- 

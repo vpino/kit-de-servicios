@@ -31,8 +31,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-sh (>= 1.09),
  uwsgi-plugin-python (>= 2.0.7), 
  uwsgi (>= 2.0.7),
- nginx (>= 1.6.2),
- celeryd, 
+ nginx,
  rabbitmq-server
 Description: Proyecto Kit de servicios
  Este paquete instala el componente Kit de servicios

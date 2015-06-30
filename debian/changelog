@@ -1,3 +1,24 @@
+kds (X.Z) jessie; urgency=medium
+
+  [ Jose Francisco Guerrero ]
+  * [b1fc5b0] - Configurando celery como demonio al terminar la instalacion de Kit de servicios - Actualizando dependencias
+  * [5bfc18f] - Correcciones menores para la construccion del paquete
+
+  [ Francisco Guerrero ]
+
+ -- Francisco Guerrero <jsfrncscg@gmail.com>  Tue, 30 Jun 2015 19:25:48 -0430
+
+kds (X.Y) jessie; urgency=medium
+
+  [ Jose Francisco Guerrero ]
+  * [59f0832] - Actualizando dependencias del paquete - Agregando scripts del mantenedor
+  * [b1fc5b0] - Configurando celery como demonio al terminar la instalacion de Kit de servicios - Actualizando dependencias
+  * [5bfc18f] - Correcciones menores para la construccion del paquete
+
+  [ Francisco Guerrero ]
+
+ -- Francisco Guerrero <jsfrncscg@gmail.com>  Tue, 30 Jun 2015 19:25:32 -0430
+
 kds (1.0) jessie; urgency=low
 
   * Initial release. (Closes: #0)

@@ -1,4 +1,5 @@
-PACKAGE (VERSION) unstable; urgency=medium
+kds (1.0) unstable; urgency=low
 
+  * Initial release.
 
- -- Francisco Guerrero <jsfrncscg@gmail.com>  Tue, 30 Jun 2015 19:48:04 -0430
+ -- Francisco Guerrero <jsfrncscg@gmail.com>  Tue, 30 Jun 2015 21:13:35 -0430

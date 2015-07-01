@@ -1,3 +1,9 @@
+kds (1.0-2) unstable; urgency=medium
+
+  * [600c5f0] Agregando formato de fuente
+
+ -- Francisco Guerrero <jsfrncscg@gmail.com>  Wed, 01 Jul 2015 15:17:47 -0430
+
 kds (1.0-1) unstable; urgency=medium
 
   * [dfe2aef] Quitando python-all como dependencia de construccion

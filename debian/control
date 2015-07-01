@@ -3,8 +3,7 @@ Section: web
 Priority: optional
 X-Python-Version: >= 2.6
 Maintainer: Jose Francisco Guerrero <jsfrncscg@gmail.com>
-Build-Depends: python-all (>= 2.6.6-3), debhelper (>= 9), 
- dh-python
+Build-Depends: debhelper (>= 9), dh-python
 Build-Depends-Indep: python-django (>= 1.7)
 Standards-Version: 3.9.6
 Homepage: http://canaima.softwarelibre.gob.ve

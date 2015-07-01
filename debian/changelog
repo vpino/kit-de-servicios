@@ -1,3 +1,9 @@
+kds (1.0-1) unstable; urgency=medium
+
+  * [dfe2aef] Quitando python-all como dependencia de construccion
+
+ -- Francisco Guerrero <jsfrncscg@gmail.com>  Wed, 01 Jul 2015 15:07:11 -0430
+
 kds (1.0) unstable; urgency=low
 
   * Initial release.

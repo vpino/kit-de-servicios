@@ -1,3 +1,9 @@
+kds (1.0-3) unstable; urgency=medium
+
+  * [89e5a12] Probando copia de archivos del proyecto a la carpeta correspondiente
+
+ -- Francisco Guerrero <jsfrncscg@gmail.com>  Thu, 02 Jul 2015 09:01:27 -0430
+
 kds (1.0-2) unstable; urgency=medium
 
   * [600c5f0] Agregando formato de fuente

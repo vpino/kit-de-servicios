@@ -1,16 +1,5 @@
 #!/usr/bin/make -f
-DJANGO_DEBIAN_PACKAGE=kds
 
-# Configuration for django-debian
-django_debian_use_dbconfig_common=yes
-django_debian_use_staticfiles=yes
-django_debian_use_south=no
-django_debian_synchronize_db=yes
-django_debian_web_server_integration=nginx
-django_debian_web_server_integration_files=standard
-django_debian_settings_module=tribus.config.web
+%:
+	dh ${@}
 
-#include /usr/local/share/django-debian/dpkg/rules
-
-clean binary build: %:
-	dh $@ --with python2 --buildsystem=pybuild

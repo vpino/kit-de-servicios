@@ -3,7 +3,7 @@ Section: web
 Priority: optional
 X-Python-Version: >= 2.6
 Maintainer: Jose Francisco Guerrero <jsfrncscg@gmail.com>
-Build-Depends: debhelper (>= 9), dh-python
+Build-Depends: debhelper (>= 9), dh-python, python-all, python-setuptools
 Standards-Version: 3.9.6
 Homepage: http://canaima.softwarelibre.gob.ve
 Vcs-Git: git@github.com:tribusdev/kit-servicios.git

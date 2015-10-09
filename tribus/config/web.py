@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import djcelery
 from celery.schedules import crontab
 
@@ -14,6 +15,7 @@ SITE_ID = 1
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+ALLOWED_HOSTS = ['localhost']
 
 ADMINS = ()
 MANAGERS = ADMINS
@@ -51,9 +53,9 @@ WSGI_APPLICATION = 'tribus.web.wsgi.application'
 # LDAP CONFIGURATION ----------------------------------------------------------
 #
 
-AUTHENTICATION_BACKENDS = (
-    'django_auth_ldap.backend.LDAPBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'django_auth_ldap.backend.LDAPBackend',
+# )
 
 # This should be secret, but as we are in development, doesn't matter
 # Production settings should be set in tribus/config/web_production.py
@@ -64,42 +66,49 @@ SECRET_KEY = 'oue0893ro5c^82!zke^ypu16v0u&%s($lnegf^7-vcgc^$e&$f'
 # DATABASE CONFIGURATION ------------------------------------------------------
 #
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tribus',
-        'USER': 'tribus',
-        'PASSWORD': 'tribus',
-        'HOST': 'localhost',
-        'PORT': '',
-    },
-    'ldap': {
-        'ENGINE': 'ldapdb.backends.ldap',
-        'NAME': AUTH_LDAP_SERVER_URI,
-        'USER': AUTH_LDAP_BIND_DN,
-        'PASSWORD': AUTH_LDAP_BIND_PASSWORD,
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'tribus',
+#         'USER': 'tribus',
+#         'PASSWORD': 'tribus',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     },
+#     'ldap': {
+#         'ENGINE': 'ldapdb.backends.ldap',
+#         'NAME': AUTH_LDAP_SERVER_URI,
+#         'USER': AUTH_LDAP_BIND_DN,
+#         'PASSWORD': AUTH_LDAP_BIND_PASSWORD,
+#     }
+# }
 
-DATABASE_ROUTERS = ['ldapdb.router.Router']
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASEDIR, 'db.sqlite3'),
+#     }
+# }
 
-PASSWORD_HASHERS = (
-    'tribus.web.registration.ldap.hashers.SSHAPasswordLDAPHasher',
-)
+#DATABASE_ROUTERS = ['ldapdb.router.Router']
 
-BROKER_URL = 'django://'
-CELERY_RESULT_BACKEND = 'database'
-CELERY_CACHE_BACKEND = 'memory'
-CELERY_RESULT_DBURI = "postgresql://tribus:tribus@localhost/tribus"
-CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+#PASSWORD_HASHERS = (
+#    'tribus.web.registration.ldap.hashers.SSHAPasswordLDAPHasher',
+#)
 
-CELERYBEAT_SCHEDULE = {
-    "update_cache": {
-        "task": "tribus.web.cloud.tasks.update_cache",
-        "schedule": crontab(minute=0, hour=0),  # A las 12 am
-        "args": (),
-    }
-}
+# BROKER_URL = 'django://'
+# CELERY_RESULT_BACKEND = 'database'
+# CELERY_CACHE_BACKEND = 'memory'
+# CELERY_RESULT_DBURI = "postgresql://tribus:tribus@localhost/tribus"
+# CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+
+# CELERYBEAT_SCHEDULE = {
+#     "update_cache": {
+#         "task": "tribus.web.cloud.tasks.update_cache",
+#         "schedule": crontab(minute=0, hour=0),  # A las 12 am
+#         "args": (),
+#     }
+# }
 
 CACHES = {
     'default': {
@@ -133,16 +142,6 @@ ACCOUNT_ACTIVATION_DAYS = 7
 # HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 INSTALLED_APPS = (
-    'ldapdb',
-    'django_auth_ldap',
-    'south',
-    'django_static',
-    'djcelery',
-    'tastypie',
-    #'haystack',
-    #'celery_haystack',
-    #'registration',
-    'kombu.transport.django',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -150,11 +149,13 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'kombu.transport.django',
+    'django_static',
+    'djcelery',
+    'tastypie',
     'tribus.web',
     'tribus.web.kit',
-    #'tribus.web.registration',
     'tribus.web.api',
-    'tribus.web.admin',
 )
 
 SOUTH_TESTS_MIGRATE = False

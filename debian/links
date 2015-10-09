@@ -1,0 +1,3 @@
+/usr/share/pyshared/kds/templates /usr/share/kds/templates
+/etc/nginx/sites-available/tribus.nginx.conf /etc/nginx/sites-enabled/tribus.nginx.conf
+/etc/uwsgi/apps-available/tribus.uwsgi.ini /etc/uwsgi/apps-enabled/tribus.uwsgi.ini

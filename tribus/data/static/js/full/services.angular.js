@@ -2,7 +2,7 @@
 'use strict';
 
 // Services --------------------------------------------------------------------
-
+/*
 angular.module('ConsulNodes', ['ngResource'])
 .factory('ConsulNodes', function($resource){
     return $resource('/api/0.1/consul/nodes/',{}, {
@@ -15,7 +15,7 @@ angular.module('ConsulNodes', ['ngResource'])
             },
         });
 });
-
+*/
 angular.module('ServicesList', ['ngResource'])
 .factory('ServicesList', function($resource){
     return $resource('/api/0.1/services/list/',{}, {

@@ -7,6 +7,11 @@ set -e
 
 case "$1" in
     install|upgrade)
+
+	if [ -e /var/lib/dpkg/info/apache2.list ] || [ -e /var/lib/live/config/apache2 ]; then
+		service apache2 stop
+	fi
+
     ;;
 
     abort-upgrade)

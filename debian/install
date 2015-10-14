@@ -1,5 +1,4 @@
 tribus/config/data/tribus.nginx.conf /etc/nginx/sites-available/
 tribus/config/data/tribus.uwsgi.ini /etc/uwsgi/apps-available/
-tribus/config/data/celeryd /etc/default/
-tribus/config/data/celeryd.init /etc/init.d/
+tribus/config/data/celeryd /etc/kds/
 tribus/ /usr/lib/python2.7/dist-packages/

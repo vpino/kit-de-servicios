@@ -10,6 +10,8 @@ case "$1" in
         # update-alternatives --remove celeryd /etc/default/celeryd
 		service nginx stop
 		service uwsgi stop
+        service celeryd stop
+        service rabbitmq-server stop
     ;;
 
     failed-upgrade)

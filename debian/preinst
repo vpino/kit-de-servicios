@@ -12,6 +12,10 @@ case "$1" in
 		service apache2 stop
 	fi
 
+	mkdir -p /etc/kds/diverted
+
+	dpkg-divert --divert /etc/kds/diverted/celeryd --rename /etc/default/celeryd
+
     ;;
 
     abort-upgrade)

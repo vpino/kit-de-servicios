@@ -1,3 +1,9 @@
+kds (0.1.5) unstable; urgency=medium
+
+  * [f716e5a] Corrigiendo error en postinst
+
+ -- Francisco Guerrero <jsfrncscg@gmail.com>  Wed, 14 Oct 2015 15:19:57 -0430
+
 kds (0.1.4) unstable; urgency=medium
 
   * [4cb62fb] Ajustando parametros de construccion de python

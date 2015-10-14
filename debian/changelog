@@ -1,3 +1,11 @@
+kds (0.1.4) unstable; urgency=medium
+
+  * [4cb62fb] Ajustando parametros de construccion de python
+  * [258ee11] Deteniendo apache previo a la instalacion
+  * [c0569db] Mejorando instalacion y desinstalacion
+
+ -- Francisco Guerrero <jsfrncscg@gmail.com>  Wed, 14 Oct 2015 11:13:13 -0430
+
 kds (0.1.3) unstable; urgency=medium
 
   * [89e5a12] Probando copia de archivos del proyecto a la carpeta correspondiente

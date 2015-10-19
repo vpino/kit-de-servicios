@@ -8,6 +8,9 @@ set -e
 case "$1" in
     configure)
         
+        echo "Colocando /etc/default/celeryd en /etc/kds/diverted/celeryd"
+        dpkg-divert --divert /etc/kds/diverted/celeryd --rename /etc/default/celeryd
+
         echo "Instalando configuracion personalizada para Celeryd"
         ln /etc/kds/celeryd /etc/default/celeryd
 

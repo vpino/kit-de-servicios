@@ -7,7 +7,6 @@ set -e
 
 case "$1" in
     remove|upgrade|deconfigure)
-        # update-alternatives --remove celeryd /etc/default/celeryd
 		service nginx stop
 		service uwsgi stop
         service celeryd stop

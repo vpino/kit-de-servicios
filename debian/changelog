@@ -1,3 +1,9 @@
+kds (0.1.6) unstable; urgency=medium
+
+  * [2c42e5d] Corrigiendo error durante la deinstalacion de kds
+
+ -- Francisco Guerrero <jsfrncscg@gmail.com>  Mon, 19 Oct 2015 10:15:07 -0430
+
 kds (0.1.5) unstable; urgency=medium
 
   * [f716e5a] Corrigiendo error en postinst

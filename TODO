@@ -1,6 +1,22 @@
 * [] Issues:
+
+- Agregar una relacion de incompatibilidad con apache2 para evitar conflictos durante la configuración de nginx
+- Adelgazar dependencias []
+- Pruebas de Kit de servicios con Xen en reemplazdo de docker []
+- Pruebas con Puppet en reemplazo de Consul []
+- Recrear el despliegue de la receta de la Wiki usando Xen []
+- Empaquetar django-static [*]
+- Configurar celery en Kit de servicios []
+- Reconfigurar el makefile original de KDS como herramienta de linea de comandos con fabric []
+- Corregir errores de Lintian
         
 * [] Documentación:
+
+- Como se logro la configuración de Nginx []
+- Como se logro la configuración de Uwsgi []
+- Como se logro la configuración de Celery []
+- Creación de usuarios especializados para determinadas tareas en KDS []
+- Diagrama de los componentes actuales de Kit de servicios []
 	
 * [] Diseño:
         

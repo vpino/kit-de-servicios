@@ -1,8 +1,0 @@
-[submodule "tribus/data/charms/mysql"]
-	path = tribus/data/charms/mysql
-	url = git@github.com:tribusdev/mysql.git
-	branch = generic
-[submodule "tribus/data/charms/mediawiki"]
-	path = tribus/data/charms/mediawiki
-	url = git@github.com:tribusdev/mediawiki.git
-	branch = generic

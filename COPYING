@@ -1,15 +1,15 @@
 
-Copyright (C) 2013-2014 Tribus Developers
+Copyright (C) 2015 Canaima GNU/Linux
 
 Please refer to CONTRIBUTORS for a complete list of Copyright
 holders.
 
-Tribus is free software: you can redistribute it and/or modify
+KDS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Tribus is distributed in the hope that it will be useful,
+KDS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
@@ -21,9 +21,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 Third party software
 ====================
 
-The following software has been included in Tribus:
+The following software has been included in KDS:
 
-tribus/common/setup/message_extractors.py
+kds/common/setup/message_extractors.py
 -----------------------------------------
 
     Source: http://babel.edgewall.org/wiki/BabelDjango
@@ -57,7 +57,7 @@ tribus/common/setup/message_extractors.py
     IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-tribus/common/dictconfig.py
+kds/common/dictconfig.py
 ---------------------------
 
     Source: https://bitbucket.org/vinay.sajip/dictconfig

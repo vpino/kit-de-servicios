@@ -6,16 +6,16 @@ import urllib
 import urlparse
 import yaml
 
-from tribus.common.charms.provider import get_charm_from_path
-from tribus.common.charms.url import CharmURL
-from tribus.common.errors import FileNotFound
-from tribus.common.utils import list_dirs
-from tribus.common import under
+from kds.common.charms.provider import get_charm_from_path
+from kds.common.charms.url import CharmURL
+from kds.common.errors import FileNotFound
+from kds.common.utils import list_dirs
+from kds.common import under
 
-from tribus.common.charms.errors import (
+from kds.common.charms.errors import (
     CharmNotFound, CharmError, RepositoryNotFound, ServiceConfigValueError)
 
-log = logging.getLogger("tribus")
+log = logging.getLogger("kds")
 
 CS_STORE_URL = "https://store.juju.ubuntu.com"
 
@@ -121,8 +121,8 @@ def resolve(vague_name, repository_path, default_series):
     :param str default_series: the Ubuntu series to insert when `charm_name` is
         inadequately specified.
 
-    :return: a tuple of a :class:`tribus.common.charms.url.CharmURL` and a
-        :class:`tribus.common.charms.base.CharmBase` subclass, which together contain
+    :return: a tuple of a :class:`kds.common.charms.url.CharmURL` and a
+        :class:`kds.common.charms.base.CharmBase` subclass, which together contain
         both the charm's data and all information necessary to specify its
         source.
     """

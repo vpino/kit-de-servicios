@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from tribus import BASEDIR
-from tribus.common.utils import get_path
-from tribus.config.ldap import AUTH_LDAP_BASE
+from kds import BASEDIR
+from kds.common.utils import get_path
+from kds.config.ldap import AUTH_LDAP_BASE
 
 DEBUG = True
 
-SITE_ROOT = get_path([BASEDIR, 'tribus', 'web'])
+SITE_ROOT = get_path([BASEDIR, 'kds', 'web'])
 MEDIA_ROOT = ''
 MEDIA_URL = '/media/'
 STATIC_ROOT = ''
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [get_path([BASEDIR, 'tribus', 'data', 'static'])]
-TEMPLATE_DIRS = [get_path([BASEDIR, 'tribus', 'data', 'templates'])]
+STATICFILES_DIRS = [get_path([BASEDIR, 'kds', 'data', 'static'])]
+TEMPLATE_DIRS = [get_path([BASEDIR, 'kds', 'data', 'templates'])]
 
 DATABASES = {
     'default': {
@@ -26,13 +26,13 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django_auth_ldap',
     'django_static',
-    'tribus.web.cloud',
+    'kds.web.cloud',
     'south',
     'haystack',
     #'waffle',
 )
 
-ROOT_URLCONF = 'tribus.web.urls'
+ROOT_URLCONF = 'kds.web.urls'
 
 HAYSTACK_CONNECTIONS = {
     'default': {

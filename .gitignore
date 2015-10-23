@@ -10,6 +10,10 @@
 # Celery process id
 celerybeat.pid
 
+# SQLITE
+
+*.sqlite3
+
 # Packages
 *.egg
 *.egg-info
@@ -113,14 +117,14 @@ web_local.py
 web_production.py
 
 # Javascript minificado
-tribus/data/static/js/min/
+kds/data/static/js/min/
 
 # CSS minificado
-tribus/data/static/css/min/
+kds/data/static/css/min/
 
 # Node package manager logs
 npm-debug.log
 
 # Compiled documentation
-tribus/data/docs/html
-tribus_recorder.log
+kds/data/docs/html
+kds_recorder.log

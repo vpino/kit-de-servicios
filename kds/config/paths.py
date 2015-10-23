@@ -19,12 +19,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from tribus.config.base import BASEDIR
+from kds.config.base import BASEDIR
 
 reprepro_dir = os.path.join(BASEDIR, 'test_repo')
 sample_packages_dir = os.path.join(BASEDIR, 'package_samples')
-selected_packages =  os.path.join(BASEDIR, 'tribus', 'config', 'data',
+selected_packages =  os.path.join(BASEDIR, 'kds', 'config', 'data',
                                   'selected_packages.list')
-distributions_path = os.path.join(BASEDIR, 'tribus', 'config', 'data',
+distributions_path = os.path.join(BASEDIR, 'kds', 'config', 'data',
                                   'dists-template')
 

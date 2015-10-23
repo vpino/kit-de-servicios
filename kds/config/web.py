@@ -4,9 +4,9 @@
 import os
 import djcelery
 from celery.schedules import crontab
-from tribus import BASEDIR
-from tribus.common.utils import get_path
-from tribus.config.ldap import *
+from kds import BASEDIR
+from kds.common.utils import get_path
+from kds.config.ldap import *
 
 djcelery.setup_loader()
 
@@ -26,88 +26,32 @@ TIME_ZONE = 'America/Caracas'
 LANGUAGE_CODE = 'es'
 DATABASE_OPTIONS = {'charset': 'utf8'}
 DEFAULT_CHARSET = 'utf-8'
-LOCALE_PATHS = [get_path([BASEDIR, 'tribus', 'data', 'i18n'])]
+LOCALE_PATHS = [get_path([BASEDIR, 'kds', 'data', 'i18n'])]
 
-SITE_ROOT = get_path([BASEDIR, 'tribus', 'web'])
+SITE_ROOT = get_path([BASEDIR, 'kds', 'web'])
 MEDIA_ROOT = ''
 MEDIA_URL = '/media/'
 STATIC_ROOT = ''
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [get_path([BASEDIR, 'tribus', 'data', 'static'])]
-TEMPLATE_DIRS = [get_path([BASEDIR, 'tribus', 'data', 'templates'])]
+STATICFILES_DIRS = [get_path([BASEDIR, 'kds', 'data', 'static'])]
+TEMPLATE_DIRS = [get_path([BASEDIR, 'kds', 'data', 'templates'])]
 
 DJANGO_STATIC = not DEBUG
-DJANGO_STATIC_MEDIA_ROOTS = [get_path([BASEDIR, 'tribus', 'data'])]
-DJANGO_STATIC_FILENAME_GENERATOR = 'tribus.common.utils.filename_generator'
+DJANGO_STATIC_MEDIA_ROOTS = [get_path([BASEDIR, 'kds', 'data'])]
+DJANGO_STATIC_FILENAME_GENERATOR = 'kds.common.utils.filename_generator'
 DJANGO_STATIC_NAME_MAX_LENGTH = 200
 
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 LOGIN_REDIRECT_URL = '/'
 
-ROOT_URLCONF = 'tribus.web.urls'
-WSGI_APPLICATION = 'tribus.web.wsgi.application'
-
-#
-# LDAP CONFIGURATION ----------------------------------------------------------
-#
-
-# AUTHENTICATION_BACKENDS = (
-#     'django_auth_ldap.backend.LDAPBackend',
-# )
+ROOT_URLCONF = 'kds.web.urls'
+WSGI_APPLICATION = 'kds.web.wsgi.application'
 
 # This should be secret, but as we are in development, doesn't matter
-# Production settings should be set in tribus/config/web_production.py
-# Other local configuration should be set in tribus/config/web_local.py
+# Production settings should be set in kds/config/web_production.py
+# Other local configuration should be set in kds/config/web_local.py
 SECRET_KEY = 'oue0893ro5c^82!zke^ypu16v0u&%s($lnegf^7-vcgc^$e&$f'
-
-#
-# DATABASE CONFIGURATION ------------------------------------------------------
-#
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'tribus',
-#         'USER': 'tribus',
-#         'PASSWORD': 'tribus',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     },
-#     'ldap': {
-#         'ENGINE': 'ldapdb.backends.ldap',
-#         'NAME': AUTH_LDAP_SERVER_URI,
-#         'USER': AUTH_LDAP_BIND_DN,
-#         'PASSWORD': AUTH_LDAP_BIND_PASSWORD,
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASEDIR, 'db.sqlite3'),
-#     }
-# }
-
-#DATABASE_ROUTERS = ['ldapdb.router.Router']
-
-#PASSWORD_HASHERS = (
-#    'tribus.web.registration.ldap.hashers.SSHAPasswordLDAPHasher',
-#)
-
-# BROKER_URL = 'django://'
-# CELERY_RESULT_BACKEND = 'database'
-# CELERY_CACHE_BACKEND = 'memory'
-# CELERY_RESULT_DBURI = "postgresql://tribus:tribus@localhost/tribus"
-# CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
-
-# CELERYBEAT_SCHEDULE = {
-#     "update_cache": {
-#         "task": "tribus.web.cloud.tasks.update_cache",
-#         "schedule": crontab(minute=0, hour=0),  # A las 12 am
-#         "args": (),
-#     }
-# }
 
 CACHES = {
     'default': {
@@ -119,26 +63,19 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASEDIR, 'db.sqlite3'),
+    }
+}
+
 APPEND_SLASH = True
 TASTYPIE_ALLOW_MISSING_SLASH = True
 TASTYPIE_FULL_DEBUG = False
 API_LIMIT_PER_PAGE = 20
 TASTYPIE_DEFAULT_FORMATS = ['json']
 ACCOUNT_ACTIVATION_DAYS = 7
-
-
-# CONFIGURACION HAYSTACK CON XAPIAN
-# XAPIAN_INDEX = get_path([BASEDIR, 'xapian_index'])
-# HAYSTACK_LOGGING = True
-# HAYSTACK_CONNECTIONS = {
-#     'default': {
-#         'ENGINE': 'xapian_backend.XapianEngine',
-#         'PATH': XAPIAN_INDEX,
-#         'HAYSTACK_XAPIAN_LANGUAGE': 'spanish'
-#     },
-# }
-
-# HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -152,9 +89,9 @@ INSTALLED_APPS = (
     'django_static',
     'djcelery',
     'tastypie',
-    'tribus.web',
-    'tribus.web.kit',
-    'tribus.web.api',
+    'kds.web',
+    'kds.web.kit',
+    'kds.web.api',
 )
 
 SOUTH_TESTS_MIGRATE = False
@@ -194,20 +131,20 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.tz',
-    'tribus.web.processors.default_context',
+    'kds.web.processors.default_context',
 )
 
 try:
-    from tribus.config.logger import *
+    from kds.config.logger import *
 except:
     pass
 
 try:
-    from tribus.config.web_local import *
+    from kds.config.web_local import *
 except:
     pass
 
 try:
-    from tribus.config.web_production import *
+    from kds.config.web_production import *
 except:
     pass

@@ -26,9 +26,9 @@ def get_logger():
     try:
         from logging.config import dictConfig
     except ImportError:
-        from tribus.common.dictconfig import dictConfig
+        from kds.common.dictconfig import dictConfig
 
-    from tribus.config.logger import LOGGING
+    from kds.config.logger import LOGGING
 
     dictConfig(LOGGING)
-    return getLogger('tribus')
+    return getLogger('kds')

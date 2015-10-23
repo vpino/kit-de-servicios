@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2013-2014 Tribus Developers
+# Copyright (C) 2015 Canaima GNU/Linux
 #
-# This file is part of Tribus.
+# This file is part of KDS.
 #
-# Tribus is free software: you can redistribute it and/or modify
+# KDS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# Tribus is distributed in the hope that it will be useful, but
+# KDS is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
@@ -20,12 +20,12 @@
 
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from tribus.web.api import api_01
+from kds.web.api import api_01
 
 # admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(regex=r'^kit/$', view='tribus.web.kit.views.kit'),
+    url(regex=r'^kit/$', view='kds.web.kit.views.kit'),
     url(regex=r'^api/', view=include(api_01.urls))
 )

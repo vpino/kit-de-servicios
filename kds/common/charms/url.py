@@ -1,7 +1,7 @@
 import copy
 import re
 
-from tribus.common.charms.errors import CharmURLError
+from kds.common.charms.errors import CharmURLError
 
 
 _USER_RE = re.compile("^[a-z0-9][a-zA-Z0-9+.-]+$")

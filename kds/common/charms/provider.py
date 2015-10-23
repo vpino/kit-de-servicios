@@ -3,7 +3,7 @@
 Register a set of input handlers and spawn the correct charm
 implementation.
 """
-from tribus.common.errors import CharmError
+from kds.common.errors import CharmError
 import os.path
 
 
@@ -18,10 +18,10 @@ def get_charm_from_path(specification):
     to an implementation and create an instance of the proper type.
     """
     if _is_bundle(specification):
-        from tribus.common.charms.bundle import CharmBundle
+        from kds.common.charms.bundle import CharmBundle
         return CharmBundle(specification)
     elif os.path.isdir(specification):
-        from tribus.common.charms.directory import CharmDirectory
+        from kds.common.charms.directory import CharmDirectory
         return CharmDirectory(specification)
 
     raise CharmError(

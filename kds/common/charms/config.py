@@ -25,11 +25,11 @@ import os
 import sys
 import yaml
 
-from tribus.common import serializer
-from tribus.common.format import YAMLFormat
-from tribus.common.schema import (SchemaError, KeyDict, Dict, String,
+from kds.common import serializer
+from kds.common.format import YAMLFormat
+from kds.common.schema import (SchemaError, KeyDict, Dict, String,
                                   Constant, OneOf, Int, Float)
-from tribus.common.charms.errors import (ServiceConfigError,
+from kds.common.charms.errors import (ServiceConfigError,
                                          ServiceConfigValueError)
 
 OPTION_SCHEMA = KeyDict({'type': OneOf(Constant('string'),

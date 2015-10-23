@@ -20,15 +20,15 @@
 
 """
 
-tribus.config.pkg
+kds.config.pkg
 =================
 
 
 """
 
-from tribus.config.base import CONFDIR, DOCDIR
-from tribus.common.utils import get_path, cat_file, readconfig
-from tribus.common.setup.utils import (get_requirements, get_dependency_links,
+from kds.config.base import CONFDIR, DOCDIR
+from kds.common.utils import get_path, cat_file, readconfig
+from kds.common.setup.utils import (get_requirements, get_dependency_links,
                                        get_classifiers)
 
 platforms = ('Any')
@@ -37,7 +37,7 @@ keywords = ('Social Network',
             'Source Code Management')
 f_readme = get_path([DOCDIR, 'rst', 'readme.rst'])
 f_python_classifiers = get_path([CONFDIR, 'data', 'python-classifiers.list'])
-f_exclude_sources = get_path([CONFDIR, 'data', 'exclude-sources.list'])
+#f_exclude_sources = get_path([CONFDIR, 'data', 'exclude-sources.list'])
 f_exclude_packages = get_path([CONFDIR, 'data', 'exclude-packages.list'])
 f_exclude_patterns = get_path([CONFDIR, 'data', 'exclude-patterns.list'])
 f_include_data_patterns = get_path([CONFDIR, 'data',

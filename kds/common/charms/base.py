@@ -26,7 +26,7 @@ All Charm subclasses must be based on Charmbase.
 
 """
 
-from tribus.common.errors import CharmError
+from kds.common.errors import CharmError
 
 
 def get_revision(file_content, metadata, path):

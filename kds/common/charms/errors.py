@@ -1,4 +1,4 @@
-from tribus.common.errors import CharmError, TribusError
+from kds.common.errors import CharmError, TribusError
 
 
 class CharmNotFound(TribusError):

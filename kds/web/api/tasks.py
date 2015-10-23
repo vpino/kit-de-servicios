@@ -20,7 +20,7 @@
 
 from celery import task
 from fabric.api import execute, env
-from kds.common.fabric.consul import deploy_test_service
+#from kds.common.fabric.consul import deploy_test_service
 
 @task
 def saludar1(*args):
@@ -35,4 +35,4 @@ def queue_service_deploy(*args):
     env.password = args[0]['pw']
     env.host_string = 'localhost'
     env.service_name = args[0]['name']
-    execute(deploy_test_service)
+    #execute(deploy_test_service)

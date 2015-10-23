@@ -36,13 +36,13 @@ from kds import BASEDIR
 from kds.config.base import CONFDIR, AUTHOR, AUTHOR_EMAIL
 from kds.config.ldap import (AUTH_LDAP_SERVER_URI,
                                 AUTH_LDAP_BIND_DN, AUTH_LDAP_BIND_PASSWORD)
-from kds.config.pkg import (python_dependencies, debian_run_dependencies,
-                               debian_build_dependencies)
+#from kds.config.pkg import (python_dependencies, debian_run_dependencies,
+                               #debian_build_dependencies)
 from kds.common.utils import get_path
 from kds.common.system import get_local_arch
-from kds.common.fabric.docker import *
-from kds.common.fabric.django import *
-from kds.common.fabric.setup import *
+#from kds.common.fabric.docker import *
+#from kds.common.fabric.django import *
+#from kds.common.fabric.setup import *
 
 
 # Fabric environment configuration

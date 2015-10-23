@@ -2,8 +2,8 @@
     "Python": {
         "python": '/usr/bin/python',
         "pythonExtraPaths": [
-            '/tmp/tribus/python/deb-packages',
-            '/tmp/tribus/python/pip-packages'
+            '/tmp/kds/python/deb-packages',
+            '/tmp/kds/python/pip-packages'
         ]
     },
 }

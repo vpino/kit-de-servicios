@@ -28,7 +28,7 @@ import json
 import os
 import yaml
 
-from tribus.common.errors import TribusError
+from kds.common.errors import TribusError
 
 
 class BaseFormat(object):

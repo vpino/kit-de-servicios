@@ -3,16 +3,16 @@ import os
 
 import yaml
 
-from tribus.common.charms.errors import MetaDataError
-from tribus.common.errors import FileNotFound
-from tribus.common import serializer
-from tribus.common.format import is_valid_charm_format
-from tribus.common.schema import (
+from kds.common.charms.errors import MetaDataError
+from kds.common.errors import FileNotFound
+from kds.common import serializer
+from kds.common.format import is_valid_charm_format
+from kds.common.schema import (
     SchemaError, Bool, Constant, Dict, Int,
     KeyDict, OneOf, UnicodeOrString)
 
 
-log = logging.getLogger("tribus.common.charms")
+log = logging.getLogger("kds.common.charms")
 UTF8_SCHEMA = UnicodeOrString("utf-8")
 SCOPE_GLOBAL = "global"
 SCOPE_CONTAINER = "container"

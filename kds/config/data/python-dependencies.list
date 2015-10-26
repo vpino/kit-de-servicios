@@ -11,3 +11,7 @@ requests==2.4.3
 lxml==3.3.5
 sh==1.09
 -e git+https://github.com/joseguerrero/django-static.git#egg=django-static
+python-dateutil
+billiard
+kombu
+pytz

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# http://stackoverflow.com/questions/12521552/installing-pip-packages-to-a-virtualenv-using-a-download-cache
+
 activate () {
   . ../venv/bin/activate
 }

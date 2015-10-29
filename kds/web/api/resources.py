@@ -20,7 +20,7 @@
 
 from tastypie import fields
 from tastypie.resources import Resource
-from kds.web.api.tasks import queue_service_deploy, saludar1
+from kds.web.api.tasks import queue_service_deploy, saludar
 from kds.common.charms.repository import LocalCharmRepository
 from kds.common.charms.directory import CharmDirectory
 from kds.common.recipes.recipe import RecipeDir

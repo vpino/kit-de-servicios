@@ -39,6 +39,7 @@ if BASEDIR == '/usr/share/pyshared':
     LOCALEDIR = '/usr/share/locale'
     PACKAGECACHE = '/var/cache/kds'
     CHARMSDIR = BASEDIR + '/kds/data/charms'
+    ROLESDIR = BASEDIR + '/kds/data/roles'
     SERVICEDIR = BASEDIR + '/kds/data/services'
 
 else:
@@ -50,5 +51,6 @@ else:
     ICONDIR = BASEDIR + '/kds/data/icons'
     PACKAGECACHE = BASEDIR + '/packagecache'
     CHARMSDIR = BASEDIR + '/kds/data/charms'
+    ROLESDIR = BASEDIR + '/kds/data/roles'
     SERVICEDIR = BASEDIR + '/kds/data/services'
 

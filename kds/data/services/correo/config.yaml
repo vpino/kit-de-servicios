@@ -1,0 +1,19 @@
+options:
+  mailserver_dspam_mysql_password:
+    default: "11"
+    description: contrasena base de datos del servicio de correo
+    type: string
+
+  mailserver_domain:
+    default: canaima.net.ve
+    description: dominio del servicio de correo
+    type: string
+
+  mailserver_fqdn:
+    default: kmail.canaima.net.ve
+    description: nombre dominio completo del servicio de correo
+    type: string
+  puerto:
+    default: "22"
+    description: puerto del servicio
+    type: string

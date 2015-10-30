@@ -2,7 +2,7 @@
 'use strict';
 
 //function kitController($scope, ServicesList, ServicesMetadata, ConsulNodes, Deploy, $modal, $log){
-function kitController($scope, ServicesList, ServicesMetadata, Deploy, $modal, $log){
+function kitController($scope, ServicesList, ServicesMetadata, ServicesConfig, Deploy, $modal, $log){
     $scope.servicios = [''];
 
     //var nodes = ConsulNodes.query({});
@@ -101,6 +101,7 @@ function kitController($scope, ServicesList, ServicesMetadata, Deploy, $modal, $
 	      	resolve: {
 	        	servicedata: function () {
 	    			var data = ServicesMetadata.query({name: name});
+                    console.log("Esta vaina cuando sale")
 					return data
 	        	}
 	      	}
@@ -114,8 +115,8 @@ function kitController($scope, ServicesList, ServicesMetadata, Deploy, $modal, $
 	      	controller: 'ServiceDeployController',   
 	      	resolve: {
 	        	servicedata: function () {
-	    			var data = ServicesMetadata.query({name: name});
-					return data
+	    			var data = ServicesConfig.query({name: name});
+					return data;
 	        	},
 
 	        	id : function() {

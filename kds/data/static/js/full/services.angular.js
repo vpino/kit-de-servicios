@@ -48,7 +48,7 @@ angular.module('ServicesConfig', ['ngResource'])
 angular.module('Deploy', ['ngResource'])
 .factory('Deploy',  function($resource){
     return $resource('/api/0.1/service/deploy/',
-        {user: '@user', pw: '@pw', name: '@name'}, {
+        {config: '@config'}, {
         save: {
             method: 'POST',
             headers: {

@@ -122,7 +122,8 @@ class ServiceConfigResource(Resource):
 
         for k, v in SERVICE.config._data.iteritems():
             d = {}
-            d['nombre'] = k
+            d['field_name'] = k
+            d['nombre'] = v.get('name', None)
             d['default'] = v.get('default', None)
             d['tipo'] = v.get('type', None)
             campos.append(d)
@@ -145,5 +146,6 @@ class ServiceDeployResource(Resource):
         return {}
 
     def obj_create(self, bundle, **kwargs):
+        #saludar.apply_async([bundle.data])
         queue_service_deploy.apply_async([bundle.data])
         return bundle

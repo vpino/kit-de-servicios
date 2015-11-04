@@ -129,6 +129,9 @@ class ServiceConfigResource(Resource):
             campos.append(d)
 
         config['campos'] = campos
+        config['ipadd'] = ''
+        config['username'] = ''
+        config['passwd'] = ''
 
         return [ServiceObject({'config': config})]
 

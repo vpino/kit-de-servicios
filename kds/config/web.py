@@ -36,10 +36,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [get_path([BASEDIR, 'kds', 'data', 'static'])]
 TEMPLATE_DIRS = [get_path([BASEDIR, 'kds', 'data', 'templates'])]
 
-DJANGO_STATIC = not DEBUG
-DJANGO_STATIC_MEDIA_ROOTS = [get_path([BASEDIR, 'kds', 'data'])]
-DJANGO_STATIC_FILENAME_GENERATOR = 'kds.common.utils.filename_generator'
-DJANGO_STATIC_NAME_MAX_LENGTH = 200
+#DJANGO_STATIC = not DEBUG
+#DJANGO_STATIC_MEDIA_ROOTS = [get_path([BASEDIR, 'kds', 'data'])]
+#DJANGO_STATIC_FILENAME_GENERATOR = 'kds.common.utils.filename_generator'
+#DJANGO_STATIC_NAME_MAX_LENGTH = 200
 
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'

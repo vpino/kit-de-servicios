@@ -51,6 +51,22 @@
             </div>
             <div class="modal-body">
               <form role="form">
+
+                <div class="form-group">
+                  <label> Dirección IP </label>
+                  <input type="campo" class="form-control" id="id-address" placeholder="" ng-model="servicedata[0].config.ipadd">
+                </div>
+
+                <div class="form-group">
+                  <label> Usuario </label>
+                  <input type="campo" class="form-control" id="id-address" placeholder="" ng-model="servicedata[0].config.username">
+                </div>
+
+                <div class="form-group">
+                  <label> Contraseña </label>
+                  <input type="campo" class="form-control" id="id-address" placeholder="" ng-model="servicedata[0].config.passwd">
+                </div>
+
                 <div data-ng-repeat="campo in servicedata[0].config.campos">
                   <div ng-if="campo.tipo=='string'">
                     <div class="form-group">
@@ -63,7 +79,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-danger" ng-click="remove()">Borrar</button>
-              <button type="button" class="btn btn-primary" ng-click="ok(servicedata[0].config.campos)">Desplegar</button>
+              <button type="button" class="btn btn-primary" ng-click="ok(servicedata[0].config)">Desplegar</button>
               <button type="button" class="btn btn-warning" ng-click="cancel()">Cancelar</button>
             </div>
           </script>

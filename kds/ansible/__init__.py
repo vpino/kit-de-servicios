@@ -20,34 +20,51 @@
 
 import os
 
-from kds.common.logger import get_logger
-from kds.config.base import ROLESDIR
+#from kds.common.logger import get_logger
+#from kds.config.base import ROLESDIR
 
 from ansible import utils
 from ansible import callbacks
 from ansible.playbook import PlayBook
 
-log = get_logger()
+#log = get_logger()
 
 stats = callbacks.AggregateStats()
 playbook_cb = callbacks.PlaybookCallbacks(verbose=utils.VERBOSITY)
 runner_cb = callbacks.PlaybookRunnerCallbacks(stats, verbose=utils.VERBOSITY)
 
 
+#def deploy_service(username, passwd, ipadd, extras):
 def deploy_service():
 	
-	ruta = os.path.join(ROLESDIR, 'ansible-role-mailserver/site.yml')
+	#ruta = os.path.join(ROLESDIR, 'ansible-role-mailserver/site.yml')	
+	ruta = '/home/fran/Proyectos/kit-de-servicios/kds/kds/data/roles/ansible-role-mailserver/site.yml'
 
-	user = 'kds'
+	#extras["host"] = "cnti"
+	#extras["rol"] = "ansible-role-mailserver"
+
+	#print "Stage 2"
+
+	username = 'kds'
 
 	passwd = 'ola'
 
-	extra = {"host":"cnti", "rol":"ansible-role-mailserver", "mailserver_dspam_mysql_password":"11", "mailserver_domain": "canaima.net.ve", "mailserver_fqdn": "kmail.canaima.net.ve"}
+	extras = {"host":"cnti", "rol":"ansible-role-mailserver", "mailserver_dspam_mysql_password":"11", "mailserver_domain": "canaima.net.ve", "mailserver_fqdn": "kmail.canaima.net.ve"}
 	
 	pb = PlayBook(playbook=ruta, sudo=True, sudo_pass=passwd, 
-		remote_user=user, extra_vars=extra, callbacks=playbook_cb,
+		remote_user=username, extra_vars=extras, callbacks=playbook_cb,
 		runner_callbacks=runner_cb, stats=stats)
+
+	print "Stage 3"
 	
 	pb.run()
-	log.info('Despliegue de servicio completado exitosamente')
+
+	print "Stage 4"
+	#log.info('Despliegue de servicio completado exitosamente')
+
+def main():
+
+	deploy_service()
+
+main()
 	

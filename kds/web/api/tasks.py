@@ -24,12 +24,21 @@ from kds.ansible import deploy_service
 @task
 def saludar(*args):
     print "Hola esto es un saludo!"
-    print args
 
 
 @task
-def queue_service_deploy(*args):
-    user = args[0]['user']
-    password = args[0]['pw']
-    service_name = args[0]['name']
-    deploy_service()
+def queue_service_deploy(*args): 
+
+    config = args[0].get('config', None)
+
+    username = config.get('username', None)
+    passwd = config.get('passwd', None)
+    ipadd = config.get('ipadd', None)
+
+    extras = {}
+    for campo in config.get('campos'):
+        extras[campo['field_name']] = campo['default']
+
+    print "Stage 1"
+    
+    deploy_service(username, passwd, ipadd, extras)

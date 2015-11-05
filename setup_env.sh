@@ -6,7 +6,7 @@ activate () {
   . ../venv/bin/activate
 }
 
-sudo apt install python-dev libxml2-dev libxslt1-dev libsasl2-dev libldap2-dev libpq-dev gcc
+sudo apt install python-pip python-dev libxml2-dev libxslt1-dev libsasl2-dev libldap2-dev libpq-dev gcc
 
 PROJECT_PATH=$(pwd)
 cd ..
@@ -17,6 +17,10 @@ virtualenv ../venv
 
 activate
 
+pip install pip2pi
+
 pip2tgz ../packages/ -r req.txt
+
+dir2pi -n ../packages
 
 pip install --index-url=file://$ROOT/packages/simple  -r req.txt

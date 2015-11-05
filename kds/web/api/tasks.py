@@ -39,6 +39,9 @@ def queue_service_deploy(*args):
     for campo in config.get('campos'):
         extras[campo['field_name']] = campo['default']
 
-    print "Stage 1"
-    
-    deploy_service(username, passwd, ipadd, extras)
+    hosts = []
+
+    if ipadd:
+    	hosts.append(ipadd)
+
+    deploy_service(username, passwd, hosts, extras)

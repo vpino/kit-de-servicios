@@ -36,17 +36,12 @@ runner_cb = callbacks.PlaybookRunnerCallbacks(stats, verbose=utils.VERBOSITY)
 
 def deploy_service(username, passwd, hosts, extras):
 
-	
 	ruta = os.path.join(ROLESDIR, 'ansible-role-mailserver/site.yml')
 	
-	#extras["host"] = "cnti"
-	#extras["rol"] = "ansible-role-mailserver"
+	extras['host_key_checking'] = False
 
 	pb = PlayBook(playbook=ruta, sudo=True, sudo_pass=passwd, host_list=hosts,
 		remote_user=username, extra_vars=extras, callbacks=playbook_cb,
 		runner_callbacks=runner_cb, stats=stats)
 	
 	pb.run()
-
-	#log.info('Despliegue de servicio completado exitosamente')
-	

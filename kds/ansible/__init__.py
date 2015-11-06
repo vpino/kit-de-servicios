@@ -38,8 +38,6 @@ def deploy_service(username, passwd, hosts, extras):
 
 	ruta = os.path.join(ROLESDIR, 'ansible-role-mailserver/site.yml')
 	
-	extras['host_key_checking'] = False
-
 	pb = PlayBook(playbook=ruta, sudo=True, sudo_pass=passwd, host_list=hosts,
 		remote_user=username, extra_vars=extras, callbacks=playbook_cb,
 		runner_callbacks=runner_cb, stats=stats)

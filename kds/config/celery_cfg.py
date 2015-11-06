@@ -4,6 +4,10 @@ from celery import Celery
 
 from django.conf import settings
 
+from kds.config.base import CONFDIR
+
+os.environ['ANSIBLE_CONFIG'] = str(os.path.join(CONFDIR, 'ansible.cfg'))
+
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kds.config.web')
 

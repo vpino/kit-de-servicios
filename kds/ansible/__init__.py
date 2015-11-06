@@ -18,14 +18,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from tastypie.api import Api
-from kds.web.api.resources import (ServiceConfigResource,
-    ServiceMetadataResource, ServiceListResource,
-    ServiceDeployResource)
+import os
+
+from kds.common.logger import get_logger
+from kds.config.base import ROLESDIR
+
+from ansible import utils
+from ansible import callbacks
+from ansible.playbook import PlayBook
+
+log = get_logger()
+
+stats = callbacks.AggregateStats()
+playbook_cb = callbacks.PlaybookCallbacks(verbose=utils.VERBOSITY)
+runner_cb = callbacks.PlaybookRunnerCallbacks(stats, verbose=utils.VERBOSITY)
 
 
-api_01 = Api(api_name='0.1')
-api_01.register(ServiceConfigResource())
-api_01.register(ServiceMetadataResource())
-api_01.register(ServiceListResource())
-api_01.register(ServiceDeployResource())
+def deploy_service(username, passwd, hosts, extras):
+
+	ruta = os.path.join(ROLESDIR, 'ansible-role-mailserver/site.yml')
+	
+	pb = PlayBook(playbook=ruta, sudo=True, sudo_pass=passwd, host_list=hosts,
+		remote_user=username, extra_vars=extras, callbacks=playbook_cb,
+		runner_callbacks=runner_cb, stats=stats)
+	
+	pb.run()

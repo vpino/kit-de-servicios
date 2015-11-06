@@ -20,28 +20,12 @@
 
 from tastypie import fields
 from tastypie.resources import Resource
-from kds.web.api.tasks import queue_service_deploy, saludar1
+from kds.web.api.tasks import queue_service_deploy, saludar
 from kds.common.charms.repository import LocalCharmRepository
 from kds.common.charms.directory import CharmDirectory
 from kds.common.recipes.recipe import RecipeDir
 from kds.common.utils import get_path
-from kds.config.base import CHARMSDIR, SERVICEDIR
-
-class CharmObject(object):
-    def __init__(self, initial=None):
-        self.__dict__['_data'] = {}
-        
-        if hasattr(initial, 'items'):
-            self.__dict__['_data'] = initial
-
-    def __getattr__(self, name):
-        return self._data.get(name, None)
-
-    def __setattr__(self, name, value):
-        self.__dict__['_data'][name] = value
-
-    def to_dict(self):
-        return self._data
+from kds.config.base import SERVICEDIR
 
 
 class ServiceObject(object):
@@ -95,15 +79,15 @@ class ServiceMetadataResource(Resource):
     components = fields.DictField(attribute='components')
 
     class Meta:
-        resource_name = 'services/metadata'
+        resource_name = 'service/metadata'
         object_class = ServiceObject
 
     def get_object_list(self, bundle):
 
         if hasattr(bundle.request, 'GET'):
-            charm_name = bundle.request.GET.get('name', None)
+            service_name = bundle.request.GET.get('name', None)
 
-        SERVICE = RecipeDir(get_path([SERVICEDIR, charm_name]))
+        SERVICE = RecipeDir(get_path([SERVICEDIR, service_name]))
         
         return [ServiceObject({
                     'name': SERVICE.metadata.name,
@@ -117,30 +101,39 @@ class ServiceMetadataResource(Resource):
         return self.get_object_list(bundle)
 
 
-class CharmConfigResource(Resource):
-    config = fields.CharField(attribute='config')
+class ServiceConfigResource(Resource):
+    
+    config = fields.DictField(attribute='config')
 
     class Meta:
-        resource_name = 'charms/config'
-        object_class = CharmObject
+        resource_name = 'service/config'
+        object_class = ServiceObject
 
     def get_object_list(self, bundle):
 
         if hasattr(bundle.request, 'GET'):
-            charm_name = bundle.request.GET.get('name', None)
-
-        CHARM = CharmDirectory(get_path([CHARMSDIR, charm_name]))
-
+            service_name = bundle.request.GET.get('name', None)
+        
+        SERVICE = CharmDirectory(get_path([SERVICEDIR, service_name]))
+        
         config = {}
 
-        for k, v in CHARM.config._data.iteritems():
-            default = v.get('default', None)
-            if default:
-                config[k] = default
+        campos = []
 
-        return [CharmObject({
-                    'config': config
-                })]
+        for k, v in SERVICE.config._data.iteritems():
+            d = {}
+            d['field_name'] = k
+            d['nombre'] = v.get('name', None)
+            d['default'] = v.get('default', None)
+            d['tipo'] = v.get('type', None)
+            campos.append(d)
+
+        config['campos'] = campos
+        config['ipadd'] = ''
+        config['username'] = ''
+        config['passwd'] = ''
+
+        return [ServiceObject({'config': config})]
 
     def obj_get_list(self, bundle, **kwargs):
 
@@ -149,12 +142,13 @@ class CharmConfigResource(Resource):
 
 class ServiceDeployResource(Resource):
     class Meta:
-        resource_name = 'services/deploy'
+        resource_name = 'service/deploy'
         object_class = ServiceObject
 
     def detail_uri_kwargs(self, bundle_or_obj):
         return {}
 
     def obj_create(self, bundle, **kwargs):
+        #saludar.apply_async([bundle.data])
         queue_service_deploy.apply_async([bundle.data])
         return bundle

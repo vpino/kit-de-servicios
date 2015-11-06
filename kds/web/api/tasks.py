@@ -19,20 +19,29 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from celery import task
-from fabric.api import execute, env
-#from kds.common.fabric.consul import deploy_test_service
+from kds.ansible import deploy_service
 
 @task
-def saludar1(*args):
-	print "Hola esto es un saludo!"
-	print args
+def saludar(*args):
+    print "Hola esto es un saludo!"
 
 
 @task
-def queue_service_deploy(*args):
-    env.port = '22'
-    env.user = args[0]['user']
-    env.password = args[0]['pw']
-    env.host_string = 'localhost'
-    env.service_name = args[0]['name']
-    #execute(deploy_test_service)
+def queue_service_deploy(*args): 
+
+    config = args[0].get('config', None)
+
+    username = config.get('username', None)
+    passwd = config.get('passwd', None)
+    ipadd = config.get('ipadd', None)
+
+    extras = {}
+    for campo in config.get('campos'):
+        extras[campo['field_name']] = campo['default']
+
+    hosts = []
+
+    if ipadd:
+    	hosts.append(ipadd)
+
+    deploy_service(username, passwd, hosts, extras)

@@ -4,10 +4,14 @@ from celery import Celery
 
 from django.conf import settings
 
-# set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tribus.config.web')
+from kds.config.base import CONFDIR
 
-app = Celery('tribus')
+os.environ['ANSIBLE_CONFIG'] = str(os.path.join(CONFDIR, 'ansible.cfg'))
+
+# set the default Django settings module for the 'celery' program.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kds.config.web')
+
+app = Celery('kds')
 
 # Using a string here means the worker will not have to
 # pickle the object when using Windows.

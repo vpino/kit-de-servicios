@@ -2,7 +2,7 @@
 'use strict';
 
 //function kitController($scope, ServicesList, ServicesMetadata, ConsulNodes, Deploy, $modal, $log){
-function kitController($scope, ServicesList, ServicesMetadata, Deploy, $modal, $log){
+function kitController($scope, ServicesList, ServicesMetadata, ServicesConfig, Deploy, $modal, $log){
     $scope.servicios = [''];
 
     //var nodes = ConsulNodes.query({});
@@ -114,8 +114,8 @@ function kitController($scope, ServicesList, ServicesMetadata, Deploy, $modal, $
 	      	controller: 'ServiceDeployController',   
 	      	resolve: {
 	        	servicedata: function () {
-	    			var data = ServicesMetadata.query({name: name});
-					return data
+	    			var data = ServicesConfig.query({name: name});
+					return data;
 	        	},
 
 	        	id : function() {
@@ -138,8 +138,8 @@ function ServiceDeployController($scope, $modalInstance, Deploy, servicedata, id
 	$scope.servicedata = servicedata
 	$scope.serviceid = id
 
-    $scope.ok = function(user) {
-        Deploy.save({user: user.name, pw: user.password, name: $scope.servicedata[0].name});
+    $scope.ok = function(config) {
+        Deploy.save({config: config});
         $modalInstance.dismiss('ok');
     };
 

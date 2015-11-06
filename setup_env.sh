@@ -8,7 +8,7 @@ activate () {
 
  
 
-sudo apt install python-pip python-dev libxml2-dev libxslt1-dev libsasl2-dev libldap2-dev libpq-dev gcc
+sudo apt install python-pip python-dev libxml2-dev libxslt1-dev libsasl2-dev libldap2-dev libpq-dev gcc rabbitmq-server
                
 
 PROJECT_PATH=$(pwd)

@@ -86,7 +86,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'kombu.transport.django',
-    'django_static',
     'djcelery',
     'tastypie',
     'kds.web',

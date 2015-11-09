@@ -18,15 +18,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from tastypie.api import Api
-from kds.web.api.resources import (ServiceConfigResource,
-    ServiceMetadataResource, ServiceListResource,
-    ServiceDeployResource, HostsListResource)
+import nmap 
+import netifaces
 
 
-api_01 = Api(api_name='0.1')
-api_01.register(ServiceConfigResource())
-api_01.register(ServiceMetadataResource())
-api_01.register(ServiceListResource())
-api_01.register(ServiceDeployResource())
-api_01.register(HostsListResource())
+#TODO Validaciones
+
+def get_active_hosts():
+
+	default_gateway = netifaces.gateways().get('default').values()[0][0]
+
+	nm = nmap.PortScanner()
+
+	scan_result = nm.scan(default_gateway + "/24", None, '-sP')
+
+	active_hosts = scan_result.get('scan').keys()
+
+	active_hosts.remove(default_gateway)
+
+	return active_hosts

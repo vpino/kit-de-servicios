@@ -25,6 +25,7 @@ from kds.common.charms.repository import LocalCharmRepository
 from kds.common.charms.directory import CharmDirectory
 from kds.common.recipes.recipe import RecipeDir
 from kds.common.utils import get_path
+from kds.common.hosts import get_active_hosts
 from kds.config.base import SERVICEDIR
 
 
@@ -152,3 +153,21 @@ class ServiceDeployResource(Resource):
         #saludar.apply_async([bundle.data])
         queue_service_deploy.apply_async([bundle.data])
         return bundle
+
+
+class HostsListResource(Resource):
+    hosts = fields.ListField(attribute='hosts')
+
+    class Meta:
+        resource_name = 'hosts/list'
+        object_class = ServiceObject
+
+    def get_object_list(self, bundle):
+
+        return [ServiceObject({
+                    'hosts': get_active_hosts()
+                })]
+
+    def obj_get_list(self, bundle, **kwargs):
+        return self.get_object_list(bundle)
+

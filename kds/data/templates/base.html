@@ -1,33 +1,28 @@
 {% load i18n %}
 {% load static %}
-{% load django_static %}
 <!DOCTYPE html>
 <html>
     <head>
         <title>{% block title %}{% endblock %}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {% staticall %}
-            {% for css in render_css %}
-                {% if DEBUG %}
-                <link type="text/css" rel="stylesheet" href="{% static 'css/full/'|add:css|add:'.css' %}" />
-                {% else %}
-                <link type="text/css" rel="stylesheet" href="{% static 'css/min/'|add:css|add:'.css' %}" />
-                {% endif %}
-            {% endfor %}
-        {% endstaticall %}
+        {% for css in render_css %}
+            {% if DEBUG %}
+            <link type="text/css" rel="stylesheet" href="{% static 'css/full/'|add:css|add:'.css' %}" />
+            {% else %}
+            <link type="text/css" rel="stylesheet" href="{% static 'css/min/'|add:css|add:'.css' %}" />
+            {% endif %}
+        {% endfor %}
     </head>
     <body>
         {% block content %} {% endblock %}
-        {% staticall %}
-            {% for js in render_js %}
-                {% if DEBUG %}
-                <script type="text/javascript" src="{% static 'js/full/'|add:js|add:'.js' %}"></script>
-                {% else %}
-                <script type="text/javascript" src="{% static 'js/min/'|add:js|add:'.js' %}"></script>
-                {% endif %}
-            {% endfor %}
-        {% endstaticall %}
+        {% for js in render_js %}
+            {% if DEBUG %}
+            <script type="text/javascript" src="{% static 'js/full/'|add:js|add:'.js' %}"></script>
+            {% else %}
+            <script type="text/javascript" src="{% static 'js/min/'|add:js|add:'.js' %}"></script>
+            {% endif %}
+        {% endfor %}
         {% block scripts %}{% endblock %}
     </body>
 </html>

@@ -1,0 +1,96 @@
+{% extends "baseapis.html" %}
+{% block title %} Paquetes de Canaima {% endblock %}
+{% block content %}
+<br><br>
+<p class ="center-align">
+    <a  href="{% url "paquetes_create" %}" class="btn-floating btn-large waves-effect ">
+        <i class="material-icons">add</i>
+
+    </a>
+    Agregar Paquete
+</p> <br><br>
+
+
+    <h5 class="center-align"> Lista de Paquetes de Canaima </h5> <br><br>
+
+<div class="container">
+  <div class="row">
+    <div class="col s12 center-align">
+      <table class="bordered center-align">
+        <thead>
+          <tr>
+              <th data-field="name"> Nombre </th>
+              <th data-field="name"> Escritorio </th>
+              <th data-field="name"> Arquitectura </th>
+              <th data-field="actions"> Distribucion </th>
+              <th data-field="actions"> Acciones </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for paquete in paquetes %}
+
+          <tr>
+            <td> <span class="title"> {{ paquete.Nombre }} </span> </td>
+                
+            <td> 
+                <ul>{% for Escritorio in paquete.Escritorio.all %}
+
+                  <li> <span class="title"> - {{ Escritorio }}  </span> </li>
+
+
+                  {% endfor %}
+                </ul>
+            </td>
+
+
+            <td> 
+                <ul>{% for Arquitectura in paquete.Arquitectura.all %}
+
+                  <li> <span class="title"> - {{ Arquitectura }}  </span> </li>
+
+
+                  {% endfor %}
+                </ul>
+            </td>
+
+            <td> 
+                <ul>{% for Distribucion in paquete.Distribucion.all %}
+
+                  <li> <span class="title"> - {{ Distribucion }}  </span> </li>
+
+
+                  {% endfor %}
+                </ul>
+            </td>
+            <td> <a href="{% url "paquetes_edit" paquete.id %}"> <i class="small material-icons">settings</i> </a>
+                 <a href="{% url "paquetes_delete" paquete.id %}"> <i class="small material-icons">delete</i> </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+        <div class="repositorios">
+              <ul class="pagination">
+                <span class="step-links">
+                  {% if paquetes.has_previous %}
+                      <li class="disabled"><a href="?page={{ paquetes.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+                  {% endif %}
+
+                  <li class="active waves-effect">
+                    <a href="#!">
+                      <span class="current">
+                        Page {{ paquetes.number }} of {{ paquetes.paginator.num_pages }}.
+                      </span>
+                    </a>
+                  </li>
+
+                  {% if paquetes.has_next %}
+                      <li class="waves-effect"><a href="?page={{ paquetes.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
+                  {% endif %}
+                </span>
+              </ul>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

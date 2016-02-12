@@ -1,7 +1,13 @@
 * [] Issues:
 
 - Agregar validaciones en el formulario de despliegue de servicios []
-- 
+- Investigar librerias para crear dashboards: 
+  * http://visjs.org
+  * http://www.jointjs.com
+  * https://github.com/Freeboard/freeboard
+  * https://www.pubnub.com/blog/2015-09-01-getting-started-javascript-realtime-dashboards/
+  * http://arborjs.org/introduction
+  * http://sigmajs.org
 
         
 * [] Documentación:

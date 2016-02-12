@@ -34,6 +34,8 @@ def get_active_hosts():
 
 	active_hosts = scan_result.get('scan').keys()
 
-	active_hosts.remove(default_gateway)
+	if default_gateway in active_hosts:
+
+		active_hosts.remove(default_gateway)
 
 	return active_hosts

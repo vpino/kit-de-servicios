@@ -1,0 +1,6 @@
+Django==1.8.5
+djangorestframework
+python-nmap
+netifaces
+psutil
+py-cpuinfo

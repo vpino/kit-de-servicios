@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="panelApp">
+<head>
+
+  <title>Kit de Servicios</title>
+
+  <base href="/" />
+
+  {% include 'stylesheets.html' %}
+</head>
+
+<body> 
+
+ {% include 'navbar.html' %}
+
+  {% include 'servicios.html' %}
+
+
+    <div class="row">
+      <div class="col s12 " ng-view> </div>
+    </div>
+
+  {% include 'javascripts.html' %}
+</body>
+</html>

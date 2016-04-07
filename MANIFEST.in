@@ -1,4 +1,0 @@
-recursive-include kds *
-global-exclude *.pyc
-global-exclude *.png
-global-exclude *.mo

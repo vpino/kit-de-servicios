@@ -1,4 +1,0 @@
-kds/config/data/kds.nginx.conf /etc/nginx/sites-available/
-kds/config/data/kds.uwsgi.ini /etc/uwsgi/apps-available/
-kds/config/data/celeryd /etc/kds/
-kds/ /usr/lib/python2.7/dist-packages/

@@ -1,0 +1,206 @@
+{% load staticfiles %}
+
+<div class="row">
+
+	<div class="col s12 right-align">
+	
+	<br>
+
+	<span> Llave SSH del Maestro </span>
+		<a class="waves-effect waves-light btn modal-trigger right-align" href="#modal1">Llave</a>
+
+
+	<!-- Modal Trigger -->
+
+		<!-- Modal Structure -->
+		<div id="modal1" class="modal bottom-sheet">
+
+			<div class="modal-content">
+				<h4>Llave SSH del Maestro</h4>
+
+				 <ul class="collection">
+					
+					<li class="collection-item avatar">
+						<i class="material-icons circle green">vpn_key</i>
+						<span class="title">Llave Pública de vpino</span>
+						<p>
+
+						<span class="teal accent-4">
+
+						ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCz2u3OWMpzsTNoJn5RahsRIWk6xzpRV7+QAx6kz2iW1ePAgOFBvjLbQenVbF9BpjjYomcdLcvcI8et4V39u5xiG2VZ30MQqCGxZ8wUk1wELwwh/XoKSfB/j+oq1QEPFgjubSKC6u52wiskvLRIc7bhBUM2vBnIRcQyEKTdKR+757ESCxV3nPlDjCxrQ5XtccsxZUfWGv5w1xwmTxvBfKR0USLwMmOntK0DPy53wRvi8GEDg5nk0kjTq1fHn5WR5y7/uCCGZ26dFU8Ldqr1vOHzCJoOTclFoSGqRxbsDr/unjYGg91hOLpytQahPvmRSoMcElkSlMSTb9qzdtkmUL1yyRNMYsCWdRVqaFoxksrCcwnkEYoHrRYNpsAFjsheex70sORIPfb8oJH9HD3BZBDNZcu2UInxN7iFqx0HWpqvnQw1A0RGlBYQLQvKLngwKMsBUz/q/JnuET0fcDLLYrBJiUBOUod1xB+VDl7LaGFsH7R1EHtQfZBS7doI+gzIVw+DTnKa02G7ESXhAgHyicJKHv9y+DFgA/NXAmn5/Qb5BmLirBqix7GFcEFmgQVWXFyM5cmo6e/Xb9qtoLBRs5WioPrEhHouOlHOhd2TUY4huL6Pmz6QR1AFgWGdtmbQ3amirH6D1THnsnKKALt5Yz9y8d9X/RUFkUXCMpWmxIN+qQ== vpino@victor
+
+						</span>
+						
+						</p>
+						<a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+					</li>
+
+				</ul>
+
+			</div>
+
+			<div class="modal-footer">
+				
+				<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+
+				<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
+				
+			</div>
+		</div>
+
+		      	
+	</div>
+	
+
+</div>
+
+
+ <div class="row">
+
+    <div class="col s3">
+    	<center> <h3> Servicios </h3> </center>
+    	<br>
+		<ul class="collapsible popout" data-collapsible="accordion">
+		    <li>
+		      	
+		      	<div class="collapsible-header"><i class="material-icons">filter_drama</i> 
+		      		Servicio de Correo 
+		      	</div>
+				
+				<div class="collapsible-body">
+			        
+			        	<p>
+
+				        Un servidor de correo es una aplicación de red de computadoras ubicada en un servidor de Internet, para prestar servicio de correo electrónico (correo-e o "e-mail").
+
+						El Mail Transfer Agent (MTA) tiene varias formas de comunicarse con otros servidores de correo:
+
+					    Recibe los mensajes desde otro MTA. Actúa como "servidor" de otros servidores.
+					    Envía los mensajes hacia otro MTA. Actúa como un "cliente" de otros servidores.
+					    Actúa como intermediario entre un Mail Submission Agent y otro MTA.
+						</p>
+			    </div>
+
+		    </li>
+		    
+		    <li>
+			    <div class="collapsible-header"><i class="material-icons">place</i> 
+			    
+			    	Time Server
+			    
+			    </div>
+		      	
+		      	<div class="collapsible-body">
+
+		      		<p>
+
+		      			Lorem ipsum dolor sit amet.
+
+		      		</p>
+
+		      	</div>
+
+		    </li>
+
+		    <li>
+		      
+		      <div class="collapsible-header"><i class="material-icons">whatshot</i> 
+		      	
+		      	DNS 
+
+		      </div>
+		      
+		      <div class="collapsible-body">
+
+		      	<p>Lorem ipsum dolor sit amet.</p>
+
+		      </div>
+
+		    </li>
+
+		</ul>
+	</div>
+
+    <div class="col s9">
+
+    	<center> <h3> Equipos Conectados en la Red </h3> </center>
+
+    	Search: <input ng-model="query">
+
+    	<div ng-show="!pcs.length">
+    	
+    	<h1> Cargando, por favor espere .... </h1>
+
+			<div class="preloader-wrapper big active">
+				<div class="spinner-layer spinner-blue-only">
+					
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+
+					<div class="gap-patch">
+						<div class="circle"></div>
+					</div>
+				
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</div>
+
+    	</div>
+		
+    		<ul ng-show="pcs.length" ng-cloak>
+
+    		    	<h1> Equipos Conectados: {% verbatim %}{{pcs.length}}{% endverbatim %} </h1>
+
+
+			<li ng-repeat="pc in pcs">
+
+
+
+				<div class="col s3 card card small">
+
+					<div class="card-image waves-effect waves-block waves-light">
+						
+						<img class="activator" ng-src="{%  static "img/pc.png" %}">
+					
+					</div>
+
+					<div class="card-content">
+						
+						<span class="card-title activator grey-text text-darken-4">PC<i class="material-icons right">more_vert</i></span>
+						
+						<p><a href="pc">Desplegar Servicio</a></p>
+					</div>
+
+					<div class="card-reveal">
+						
+						<span class="card-title grey-text text-darken-4"> Información <i class="material-icons right">close</i></span>
+						
+						<p>
+							IP: {% verbatim %}{{ pc }}{% endverbatim %}
+						</p>
+
+					</div>
+
+				</div>
+
+				<span></span>
+			</li>
+			
+		</ul>
+
+
+		
+           
+
+
+
+    </div>
+
+
+
+
+
+</div>

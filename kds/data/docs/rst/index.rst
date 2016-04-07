@@ -1,3 +1,0 @@
-======
-Kit de servicios
-======

@@ -1,1 +1,0 @@
-.. automodule:: tribus.common.setup.utils

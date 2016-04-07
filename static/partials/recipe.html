@@ -1,0 +1,82 @@
+<div class="row">
+	
+	<center> <h1> Parametros </h1> </center>
+	
+	<form class="col s12">
+
+		<div class="row" data-ng-repeat="service in Params.campos">
+
+			<div class="row"> 
+					
+				<div ng-if="service.tipo=='string'">
+
+					<div class="input-field col s4">
+							
+						<i class="material-icons prefix">description</i>
+						<input ng-model="default"  id="default" type="text" class="validate" id='service.nombre'>
+						<label>{{service.nombre}}</label>
+
+					</div>
+
+				</div>
+
+				<div ng-if="service.tipo=='boolean'">
+
+					<div class="input-field col s4">
+							
+						<i class="material-icons prefix">description</i>
+						<input ng-model="default"  id="default" type="text" class="validate" id='default'>
+						<label>Default</label>
+
+					</div>
+
+					<div class="input-field col s4"> 
+						<i class="material-icons prefix">vpn_key</i>
+						<input id="nombre" type="text" class="validate" id='nombre' ng-model="nombre" >
+						<label>Nombre</label>
+
+					</div>
+
+					<div class="input-field col s4">
+
+						<i class="material-icons prefix">textsms</i>
+						<input id="field_name" type="text" class="validate" id='field_name' ng-model="field_name" >
+						<label>Field Name</label>
+
+					</div>
+
+					<div class="input-field col s4">
+						<p>
+					    	<input type="checkbox" id="True" />
+					    	<label for="True">True</label>
+
+					    	<input type="checkbox" id="False" />
+					    	<label for="False">False</label>
+					   
+					    </p>
+
+				    </div>
+
+				</div>
+
+				<div ng-if="service.tipo=='list'">
+
+					<div class="input-field col s4" data-ng-repeat="item in service.default">
+
+						<p>
+							<input name="group1" type="radio" id="{{item}}" />
+							<label for="{{item}}">{{item}}</label>
+						  
+					    </p>
+
+				    </div>
+
+				</div>
+				
+
+			</div>
+
+		</div>
+		
+	</form>
+</div>

@@ -4,17 +4,42 @@
 	
 	<form class="col s12">
 
+		<div class="input-field col s12">
+							
+			<i class="material-icons prefix">account_circle</i>
+			<input ng-model="Params.username"  id="username" type="text" class="validate">
+			<label> Nombre de usuario</label>
+
+		</div>
+
+		<div class="input-field col s12">
+							
+			<i class="material-icons prefix">vpn_key</i>
+			<input ng-model="Params.passwd" id="Params.passwd" type="password" class="validate">
+			<label>Contraseña del usuario</label>
+
+		</div>
+
+		<div class="input-field col s12">
+							
+			<i class="material-icons prefix">dns</i>
+			<input ng-model="Params.ipadd"  id="default" type="text" class="validate">
+			<label>IP</label>
+
+		</div>
+
+
 		<div class="row" data-ng-repeat="service in Params.campos">
 
 			<div class="row"> 
 					
 				<div ng-if="service.tipo=='string'">
 
-					<div class="input-field col s4">
+					<div class="input-field col s12">
 							
 						<i class="material-icons prefix">description</i>
-						<input ng-model="default"  id="default" type="text" class="validate" id='service.nombre'>
-						<label>{{service.nombre}}</label>
+						<input ng-model="service.default"  id="service.nombre" type="text" class="validate" id=''>
+						<label class="active">{{service.nombre}}</label>
 
 					</div>
 
@@ -22,7 +47,7 @@
 
 				<div ng-if="service.tipo=='boolean'">
 
-					<div class="input-field col s4">
+					<div class="input-field col s12">
 							
 						<i class="material-icons prefix">description</i>
 						<input ng-model="default"  id="default" type="text" class="validate" id='default'>
@@ -30,14 +55,14 @@
 
 					</div>
 
-					<div class="input-field col s4"> 
+					<div class="input-field col s12"> 
 						<i class="material-icons prefix">vpn_key</i>
 						<input id="nombre" type="text" class="validate" id='nombre' ng-model="nombre" >
 						<label>Nombre</label>
 
 					</div>
 
-					<div class="input-field col s4">
+					<div class="input-field col s12">
 
 						<i class="material-icons prefix">textsms</i>
 						<input id="field_name" type="text" class="validate" id='field_name' ng-model="field_name" >
@@ -45,7 +70,7 @@
 
 					</div>
 
-					<div class="input-field col s4">
+					<div class="input-field col s12">
 						<p>
 					    	<input type="checkbox" id="True" />
 					    	<label for="True">True</label>
@@ -61,7 +86,7 @@
 
 				<div ng-if="service.tipo=='list'">
 
-					<div class="input-field col s4" data-ng-repeat="item in service.default">
+					<div class="input-field col s12" data-ng-repeat="item in service.default">
 
 						<p>
 							<input name="group1" type="radio" id="{{item}}" />
@@ -77,6 +102,43 @@
 			</div>
 
 		</div>
+
+		<center>
+
+		<button type="submit" class="btn btn-primary" ng-click="deployService(Params)">Desplegar</button>
+
+			<div class="fixed-action-btn horizontal">
+				
+				<a href="#!" class="btn-floating btn-large waves-light">
+					<i class="large material-icons">mode_edit</i>
+				</a>
+
+				<ul>
+					
+					<li>
+						<a ng-click="deployService(Params)" class="btn-floating waves-light"><i class="material-icons">add</i>
+						</a>
+					</li>
+
+					<li>
+						<a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i>
+						</a>
+					</li>
+
+					<li>
+						<a class="btn-floating green"><i class="material-icons">publish</i></a>
+					</li>
+
+					<li>
+						<a class="btn-floating blue"><i class="material-icons">attach_file</i>
+						</a>
+					</li>
+
+				</ul>
+
+			</div>
+
+		</center>
 		
 	</form>
 </div>

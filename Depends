@@ -4,3 +4,4 @@ python-nmap
 netifaces
 psutil
 py-cpuinfo
+ansible

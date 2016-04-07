@@ -13,6 +13,7 @@ import nmap
 import netifaces
 import json
 import os
+from ansible import deploy_service
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SERVICEDIR = BASE_DIR + '/data/services'
@@ -143,12 +144,11 @@ class ServiceConfigResource(APIView):
 
         return Response (status=status.HTTP_404_NOT_FOUND)
 
-
-
-
-
-
     def post(self, request, *args, **kwargs):
 
-        print request
-        print args
+        print request.data
+
+        deploy_service(request.data['config']['username'], request.data['config']['passwd'], [request.data['config']['ipadd']],  request.data['config']['campos'])
+
+        return Response(status=status.HTTP_201_CREATED)
+

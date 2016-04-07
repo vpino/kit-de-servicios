@@ -16,12 +16,3 @@ options:
     default: kmail.canaima.net.ve
     description: nombre dominio completo del servicio de correo
     type: string
-
-  lista_strings:
-    name: Dominio del servicio
-    default: 
-        - alto
-        - medio
-        - bajo
-    description: dominio del servicio de correo
-    type: list

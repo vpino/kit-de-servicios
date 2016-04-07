@@ -172,11 +172,9 @@ class ConfigOptions(object):
 
         # apply validation
         validator = validation_kinds[kind]
-        print validator
         value, valid = validator(value, self._data[name])
 
         if not valid:
-            print name, value
             # Return value such that it roundtrips; this allows us to
             # report back the boolean false instead of the Python
             # output format, False

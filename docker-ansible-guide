@@ -49,3 +49,7 @@ La agregamos
 11. Activimos el servicio de ssh
 
 - /etc/init.d/ssh start
+
+12. Levantar una maquinade docker
+- sudo docker start id
+- sudo docker attacth id

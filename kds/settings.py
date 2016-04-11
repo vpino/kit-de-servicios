@@ -39,7 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'panel_control',
-    'kds_client'
+    'kds_client',
+    'kds_ansible'
 )
 
 MIDDLEWARE_CLASSES = (

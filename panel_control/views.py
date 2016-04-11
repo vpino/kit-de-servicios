@@ -9,11 +9,11 @@ from common.charms.repository import LocalCharmRepository
 from common.charms.directory import CharmDirectory
 from common.recipes.recipe import RecipeDir
 from common.utils import get_path
+from kds_ansible.views import deploy_service
 import nmap 
 import netifaces
 import json
 import os
-from ansible import deploy_service
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SERVICEDIR = BASE_DIR + '/data/services'
@@ -146,9 +146,9 @@ class ServiceConfigResource(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        print request.data
+        #print request.data
 
-        deploy_service(request.data['config']['username'], request.data['config']['passwd'], [request.data['config']['ipadd']],  request.data['config']['campos'])
+        deploy_service('kds', '11', '172.17.0.1',  request.data['config']['campos'])
 
         return Response(status=status.HTTP_201_CREATED)
 

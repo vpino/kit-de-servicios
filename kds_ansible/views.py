@@ -6,6 +6,7 @@ from ansible.vars import VariableManager
 from ansible.inventory import Inventory
 from ansible.executor.playbook_executor import PlaybookExecutor
 from ansible.utils.vars import load_extra_vars
+from ansible.executor.task_queue_manager import TaskQueueManager
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -52,7 +53,7 @@ def deploy_service(username, passwd, hosts, extras):
 		connection='ssh', 
 		module_path=None, 
 		forks=100, 
-		remote_user='root', 
+		remote_user='kds', 
 		private_key_file=None, 
 		ssh_common_args=None, 
 		ssh_extra_args=None, 
@@ -73,7 +74,7 @@ def deploy_service(username, passwd, hosts, extras):
 	#variable_manager.extra_vars = load_extra_vars(loader=loader, options=options)
 
 
-	passwords = {'kds': '11'}
+	passwords = {'become_pass': '11'}
 
 	pbex = PlaybookExecutor(
 		playbooks=[playbook_path],
@@ -83,7 +84,10 @@ def deploy_service(username, passwd, hosts, extras):
 		options=options, 
 		passwords=passwords)
 
+	# Maybe do something with stats here? If you want!
 
 	results = pbex.run()
+
+	
 		
 	

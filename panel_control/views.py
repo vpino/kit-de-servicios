@@ -9,7 +9,7 @@ from common.charms.repository import LocalCharmRepository
 from common.charms.directory import CharmDirectory
 from common.recipes.recipe import RecipeDir
 from common.utils import get_path
-from kds_ansible.views import deploy_service
+from common.ansible_manage import Runner
 import nmap 
 import netifaces
 import json
@@ -146,9 +146,25 @@ class ServiceConfigResource(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        #print request.data
+        # You may want this to run as user root instead
+        # or make this an environmental variable, or
+        # a CLI prompt. Whatever you want!
+        #become_user_password = 'foo-whatever' 
+        
+        runner = Runner(
+            hostnames=request.data['config']['ipadd'],
+            remote_user=request.data['config']['username'],
+            playbook='/ansible-examples/wordpress-nginx_rhel7/site.yml',
+            become_pass=request.data['config']['passwd'], 
+            run_data=request.data['config']['campos'],
+            verbosity=10
+        )
 
-        deploy_service('kds', '11', '172.17.0.1',  request.data['config']['campos'])
+        stats = runner.run()
+
+        # Maybe do something with stats here? If you want!
+
+        #deploy_service('kds', '11', '172.17.0.1',  request.data['config']['campos'])
 
         return Response(status=status.HTTP_201_CREATED)
 

@@ -154,7 +154,7 @@ class ServiceConfigResource(APIView):
         runner = Runner(
             hostnames=request.data['config']['ipadd'],
             remote_user=request.data['config']['username'],
-            playbook='/ansible-examples/wordpress-nginx_rhel7/site.yml',
+            playbook='/recetas/ansible-role-mailserver/site.yml',
             become_pass=request.data['config']['passwd'], 
             run_data=request.data['config']['campos'],
             verbosity=10

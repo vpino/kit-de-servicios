@@ -1,0 +1,32 @@
+---
+mailserver_run_dir: "{{ lookup('env', 'PWD') }}"
+mailserver_sqlgrey_mysql_password: "{{ lookup('password', mailserver_run_dir + '/private/credentials/sqlgrey-mysql-password') }}"
+mailserver_dspam_mysql_password: "{{ lookup('password', mailserver_run_dir + '/private/credentials/dspam-mysql-password') }}"
+mailserver_dspam_secret: "{{ lookup('password', mailserver_run_dir + '/private/credentials/dspam-secret') }}"
+
+mailserver_domain: localdomain
+mailserver_fqdn: localhost.localdomain
+mailserver_subdomain_list:
+  - www
+  - ftp
+  - mail
+mailserver_proxy_interfaces: ""
+mailserver_ssl_cert_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
+mailserver_ssl_key_file: /etc/ssl/private/ssl-cert-snakeoil.key
+mailserver_rbl_list:
+  - zen.spamhaus.org
+  - psbl.surriel.com
+  - dnsbl.sorbs.net
+mailserver_rhsbl_list:
+  - rhsbl.sorbs.net
+mailserver_aliases: {}
+mailserver_maildir_name: Maildir
+
+# Variables correspondientes a mysql
+
+roundcube_roundcube_mysql_password: '11'
+
+mysql_root_password: '11'
+mysql_bind_address: 127.0.0.1
+mysql_port: 3306
+roundcube_smtp_server: localhost

@@ -1,0 +1,3 @@
+---
+- name: restart mysql
+  service: name=mysql pattern=/etc/init.d/mysql  state=started

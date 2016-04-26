@@ -1,0 +1,58 @@
+---
+- name: ensure roundcube packages are installed
+  apt: 
+    pkg: "{{ item }}"
+    state: latest 
+    update_cache: yes 
+    cache_valid_time: 600
+  with_items:
+    - roundcube
+    - apache2
+
+- name: update /etc/roundcube/main.inc.php from template
+  template:
+    src: main.inc.php
+    dest: /etc/roundcube/main.inc.php
+    owner: root
+    group: www-data
+    mode: 0640
+
+- name: update /etc/apache2/conf-enabled/roundcube.conf from template
+  template:
+    src: roundcube.conf
+    dest: /etc/apache2/conf-enabled/roundcube.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: ensure roundcube database is present
+  mysql_db:
+    name: roundcube
+    state: present
+  notify:
+    - import roundcube database
+
+- name: ensure roundcube database user is present
+  mysql_user:
+    name: "roundcube"
+    host: localhost
+    password: "{{ mailserver_dspam_mysql_password }}"
+    priv: roundcube.*:ALL
+
+- name: update /etc/dbconfig-common/roundcube.conf from template
+  template:
+    src: etc/dbconfig-common/roundcube.conf
+    dest: /etc/dbconfig-common/roundcube.conf
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - regenerate /etc/roundcube/debian-db.php
+
+- name: ensure all roundcube services are started
+  service:
+    name: "{{ item.name }}"
+    pattern: "{{ item.pattern }}"
+    state: started
+  with_items:
+    - { name: apache2, pattern: /etc/init.d/apache2 }

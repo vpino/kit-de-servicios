@@ -1,0 +1,77 @@
+---
+- name: ensure dovecot packages are installed
+  apt: 
+    pkg: "{{ item }}" 
+    state: latest 
+    update_cache: yes 
+    cache_valid_time: 600
+  with_items:
+    - dovecot-antispam
+    - dovecot-core
+    - dovecot-imapd
+    - dovecot-lmtpd
+    - dovecot-managesieved
+    - dovecot-pop3d
+    - dovecot-sieve
+
+#  Aqui debo hacer los certificados autofirmados temporales
+- name: create self-signed certificates
+  command: /usr/bin/openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout {{ mailserver_ssl_key_file }} -out {{ mailserver_ssl_cert_file }} -subj "/C=VE/ST=Caracas/L=Caracas/O=CNTI/OU=Proyecto Canaima/CN=jsfrncscg@gmail.com"
+
+- name: update /etc/dovecote/dovecot.conf from template
+  template:
+    src: dovecot.conf
+    dest: /etc/dovecot/dovecot.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart dovecot
+
+- name: create maildir in /etc/skel
+  command: maildirmake.dovecot {{ mailserver_maildir_name }}
+           creates=/etc/skel/{{ mailserver_maildir_name }}
+
+- name: create maildir subfolders
+  command: maildirmake.dovecot .{{ item }}}
+           chdir=/etc/skel/{{ mailserver_maildir_name }}
+           creates=/etc/skel/{{ mailserver_maildir_name }}/.{{ item }}
+  with_items:
+    - Archive
+    - Drafts
+    - Sent
+    - Spam
+    - Trash
+
+
+- name: ensure /etc/skel/.sieve.d exists and has correct permissions
+  file:
+    path: /etc/skel/.sieve.d
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: update /etc/skel/.sieve.d/default from template
+  template:
+    src: default.sieve
+    dest: /etc/skel/.sieve.d/default.sieve
+    owner: root
+    group: root
+    mode: 0644
+
+- name: ensure /etc/skel/.dovecot.sieve exists and links to .sieve.d/default.sieve
+  file:
+    path: /etc/skel/.dovecot.sieve
+    src: .sieve.d/default.sieve
+    force: yes
+    state: link
+
+- name: ensure all dovecot services are started and enabled
+  service:
+    name: "{{ item.name }}"
+    pattern: "{{ item.pattern }}"
+    state: started
+  with_items:
+    - {name: dovecot, pattern: /etc/init.d/dovecot}
+

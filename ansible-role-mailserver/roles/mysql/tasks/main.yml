@@ -1,0 +1,69 @@
+---
+- name: ensure mysql packages are installed
+  apt: 
+    pkg: "{{ item }}"
+    state: latest 
+    update_cache: yes 
+    cache_valid_time: 600
+  with_items:
+    - python-software-properties
+    - python-mysqldb
+    - mysql-server
+    - mysql-client
+  notify: 
+  - restart mysql
+
+#- name: ensure anonymous users are not in the database
+#  mysql_user:
+#    name: ""
+#    host: "{{ item }}"
+#    state: absent
+#  with_items:
+#    - localhost
+#    - 127.0.0.1
+#    - ::1
+#    - "%"
+
+#- name: update mysql root password for local root account
+#  mysql_user: 
+#    name: root 
+#    host: localhost 
+#    password: "{{ mysql_root_password }}"
+#    priv: "*.*:ALL,GRANT"
+#    state: present
+
+# Need to do this for idempotency, see
+# http://ansible.cc/docs/modules.html#mysql-user
+#- name: update .my.cnf file with root password credentials
+#  template: 
+#    src: root/.my.cnf 
+#    dest: /root/.my.cnf 
+#    owner: root 
+#    group: root 
+#    mode: 0600
+
+#- name: update mysql root password for docker host
+#  mysql_user: 
+#    name: root 
+#    host: "{{ mariadb_docker_host }}"
+#    password: "{{ mariadb_mysql_root_password }}" 
+#    priv: "*.*:ALL,GRANT"
+#    state: present
+#  when: mariadb_dockerize_context is defined
+
+- name: ensure mysql is configured to bind to the specified address and port
+  ini_file:
+    dest: /etc/mysql/my.cnf
+    section: mysqld
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  register: my_cnf
+  with_items:
+    - { option: bind-address, value: "{{ mysql_bind_address }}" }
+    - { option: port, value: "{{ mysql_port }}" }
+
+- name: restart mysql if necessary
+  service:
+    name: mysql
+    state: restarted
+  when: my_cnf|changed

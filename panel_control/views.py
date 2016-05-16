@@ -10,10 +10,12 @@ from common.charms.directory import CharmDirectory
 from common.recipes.recipe import RecipeDir
 from common.utils import get_path
 from common.ansible_manage import Runner
+from tasks import add
 import nmap 
 import netifaces
 import json
 import os
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SERVICEDIR = BASE_DIR + '/data/services'
@@ -109,6 +111,10 @@ class ServiceConfigResource(APIView):
     #renderer_classes = (JSONRenderer, )
 
     def get(self, request, format=None):
+
+        result = add.delay(1,2)
+        print 'Task finished? ', result.ready()
+        print 'Task result: ', result.result
 
         recipe_Name = request.query_params.get('name', None)
         

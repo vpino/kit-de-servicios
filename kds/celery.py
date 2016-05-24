@@ -9,7 +9,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kds.settings')
 
 from django.conf import settings  # noqa
 
-
 app = Celery('kds')
 
 # Using a string here means the worker will not have to

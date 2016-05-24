@@ -112,10 +112,6 @@ class ServiceConfigResource(APIView):
 
     def get(self, request, format=None):
 
-        result = add.delay(1,2)
-        print 'Task finished? ', result.ready()
-        print 'Task result: ', result.result
-
         recipe_Name = request.query_params.get('name', None)
         
         if recipe_Name:
@@ -141,6 +137,7 @@ class ServiceConfigResource(APIView):
                 config['ipadd'] = ''
                 config['username'] = ''
                 config['passwd'] = ''
+                config['receta'] = ''
 
                 return Response (config)
 
@@ -152,21 +149,16 @@ class ServiceConfigResource(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        # You may want this to run as user root instead
-        # or make this an environmental variable, or
-        # a CLI prompt. Whatever you want!
-        #become_user_password = 'foo-whatever' 
-        
-        runner = Runner(
-            hostnames=request.data['config']['ipadd'],
-            remote_user=request.data['config']['username'],
-            playbook='/recetas/ansible-role-mailserver/site.yml',
-            become_pass=request.data['config']['passwd'], 
-            run_data=request.data['config']['campos'],
-            verbosity=10
-        )
+        result = add.delay(
+                request.data['config']['ipadd'], 
+                request.data['config']['username'], 
+                '/recetas/' + request.data['config']['receta'] + '/site.yml', 
+                request.data['config']['passwd'], 
+                request.data['config']['campos'], 
+                10)
 
-        stats = runner.run()
+        print 'Task finished? ', result.ready()
+        print 'Task result: ', result.get()
 
         # Maybe do something with stats here? If you want!
 

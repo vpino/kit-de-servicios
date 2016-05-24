@@ -10,7 +10,6 @@ from ansible.plugins.callback import CallbackBase
 #from kds.storage import Logs # A custom object to store to the database
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ROLESDIR = BASE_DIR + '/ansible-examples/wordpress-nginx_rhel7/site.yml'
 
 class Options(object):
     """
@@ -170,7 +169,7 @@ class Runner(object):
         # Remove created temporary files
         os.remove(self.hosts.name)
 
-        return stats
+        return t
 
 class PlayLogger:
     """Store log output in a single object.

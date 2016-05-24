@@ -16,6 +16,10 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	    /* Funcion para desplegar el servicio */
 		$scope.deployService = function(config) {
 	        
+	        console.log(config);
+
+	        console.log(config.campos);
+
 	        /* Ejecutamos la funcion save del servicio pasandole la lista
 	           de parametros */
 	        Recipe.save({

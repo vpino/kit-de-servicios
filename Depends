@@ -5,3 +5,8 @@ netifaces
 psutil
 py-cpuinfo
 ansible
+celery
+threadpool
+markupsafe
+amqp
+anyjson

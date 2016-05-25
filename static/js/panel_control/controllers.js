@@ -14,11 +14,20 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
         $scope.Params = Recipe.get({name:$routeParams.name});
  
 	    /* Funcion para desplegar el servicio */
-		$scope.deployService = function(config) {
-	        
-	        console.log(config);
+		$scope.deployService = function(config, action) {
+	       
+			config['action'] = action;
 
-	        console.log(config.campos);
+	       console.log(config);
+
+	       console.log(config.campos);
+
+	       console.log(config['action'])
+	        
+	        
+
+	        
+	        //console.log(config.campos);
 
 	        /* Ejecutamos la funcion save del servicio pasandole la lista
 	           de parametros */

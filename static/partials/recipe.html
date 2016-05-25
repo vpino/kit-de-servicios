@@ -2,34 +2,29 @@
 	
 	<center> <h1> Parametros </h1> </center>
 	
-	<form class="col s12">
-
-		<div class="input-field col s12">
-							
-			<input ng-model="Params.receta" ng-value="ansible-role-mailserver" id="default" type="hidden" class="validate">
-
-		</div>
+	<form class="col s12" name="kds">
 
 		<div class="input-field col s12">
 							
 			<i class="material-icons prefix">account_circle</i>
-			<input ng-model="Params.username"  id="username" type="text" class="validate">
+			<input ng-model="Params.username"  name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+">
 			<label> Nombre de usuario</label>
+			<span ng-show="!kds.$pristine && kds.username.$error.required"> El nombre de usuario es requerido.</span>
 
 		</div>
 
 		<div class="input-field col s12">
 							
 			<i class="material-icons prefix">vpn_key</i>
-			<input ng-model="Params.passwd" id="Params.passwd" type="password" class="validate">
+			<input ng-model="Params.passwd" name="Params.passwd" id="Params.passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9]+">
 			<label>Contraseña del usuario</label>
-
+			<span ng-show="!kds.$pristine && kds.Params.passwd.$error.required"> El nombre de usuario es requerido.</span>
 		</div>
 
 		<div class="input-field col s12">
 							
 			<i class="material-icons prefix">dns</i>
-			<input ng-model="Params.ipadd"  id="default" type="text" class="validate">
+			<input ng-model="Params.ipadd" name="Params.ipadd" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9]+">
 			<label>IP</label>
 
 		</div>
@@ -44,7 +39,7 @@
 					<div class="input-field col s12">
 							
 						<i class="material-icons prefix">description</i>
-						<input ng-model="service.default"  id="service.nombre" type="text" class="validate" id=''>
+						<input ng-model="service.default"  id="service.nombre" type="text" class="validate" id='' required pattern="[ñáéíóúA-Za-z 0-9]+">
 						<label class="active">{{service.nombre}}</label>
 
 					</div>
@@ -109,34 +104,43 @@
 
 		</div>
 
-		<center>
+		
+		<div class="col s12 "> 
 
-		<button type="submit" class="btn btn-primary" ng-click="deployService(Params)">Desplegar</button>
-
-			<div class="fixed-action-btn horizontal">
+			<div class="fixed-action-btn horizontal right-align" style="position: relative;">
 				
 				<a href="#!" class="btn-floating btn-large waves-light">
-					<i class="large material-icons">mode_edit</i>
+					<i class="large material-icons">menu</i>
 				</a>
 
 				<ul>
 					
 					<li>
-						<a ng-click="deployService(Params)" class="btn-floating waves-light"><i class="material-icons">add</i>
+
+						<a type="submit" class="btn-floating red" ng-click="deployService(Params, 'Instalar')" ng-disabled="!kds.$valid">
+							<i class="material-icons">
+							add
+							</i>
 						</a>
+
 					</li>
 
 					<li>
-						<a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i>
+
+						<a class="btn-floating red darken-1" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!kds.$valid">
+							<i class="material-icons">
+							mode_edit
+							</i>
 						</a>
+
 					</li>
 
 					<li>
-						<a class="btn-floating green"><i class="material-icons">publish</i></a>
-					</li>
+						<a class="btn-floating red" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!kds.$valid">
+							<i class="material-icons">
+							delete
+							</i>
 
-					<li>
-						<a class="btn-floating blue"><i class="material-icons">attach_file</i>
 						</a>
 					</li>
 
@@ -144,7 +148,8 @@
 
 			</div>
 
-		</center>
+		</div>
 		
 	</form>
+
 </div>

@@ -137,7 +137,8 @@ class ServiceConfigResource(APIView):
                 config['ipadd'] = ''
                 config['username'] = ''
                 config['passwd'] = ''
-                config['receta'] = ''
+                config['receta'] = recipe_Name
+                config['action'] = ''
 
                 return Response (config)
 

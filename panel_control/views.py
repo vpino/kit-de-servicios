@@ -165,5 +165,5 @@ class ServiceConfigResource(APIView):
 
         #deploy_service('kds', '11', '172.17.0.1',  request.data['config']['campos'])
 
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(result.get(), status=status.HTTP_201_CREATED)
 

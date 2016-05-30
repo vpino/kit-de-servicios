@@ -4,7 +4,7 @@
 	
 	<form class="col s12" name="kds">
 
-		<div class="input-field col s12">
+		<div ng-show="status" class="input-field col s12">
 							
 			<i class="material-icons prefix">account_circle</i>
 			<input ng-model="Params.username"  name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+">
@@ -13,18 +13,18 @@
 
 		</div>
 
-		<div class="input-field col s12">
+		<div ng-show="status" class="input-field col s12">
 							
 			<i class="material-icons prefix">vpn_key</i>
-			<input ng-model="Params.passwd" name="Params.passwd" id="Params.passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9]+">
+			<input ng-model="Params.passwd" name="Params.passwd" id="Params.passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
 			<label>Contraseña del usuario</label>
 			<span ng-show="!kds.$pristine && kds.Params.passwd.$error.required"> El nombre de usuario es requerido.</span>
 		</div>
 
-		<div class="input-field col s12">
+		<div ng-show="status" class="input-field col s12">
 							
 			<i class="material-icons prefix">dns</i>
-			<input ng-model="Params.ipadd" name="Params.ipadd" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9]+">
+			<input ng-model="Params.ipadd" name="Params.ipadd" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
 			<label>IP</label>
 
 		</div>
@@ -32,14 +32,14 @@
 
 		<div class="row" data-ng-repeat="service in Params.campos">
 
-			<div class="row"> 
+			<div class="row" ng-show="status"> 
 					
 				<div ng-if="service.tipo=='string'">
 
 					<div class="input-field col s12">
 							
 						<i class="material-icons prefix">description</i>
-						<input ng-model="service.default"  id="service.nombre" type="text" class="validate" id='' required pattern="[ñáéíóúA-Za-z 0-9]+">
+						<input ng-model="service.default"  id="service.nombre" type="text" class="validate" id='' required pattern="[ñáéíóúA-Za-z 0-9 .]+">
 						<label class="active">{{service.nombre}}</label>
 
 					</div>
@@ -104,6 +104,36 @@
 
 		</div>
 
+		<div ng-show="!msj">
+    	
+    	<h1> Ejecutando la receta, por favor espere .... </h1>
+
+			<div class="preloader-wrapper big active">
+				<div class="spinner-layer spinner-blue-only">
+					
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+
+					<div class="gap-patch">
+						<div class="circle"></div>
+					</div>
+				
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</div>
+
+    	</div>
+
+    	<div ng-show="msj">
+    	
+    	<h1> {{ respuesta }} </h1>
+
+			
+
+    	</div>
 		
 		<div class="col s12 "> 
 
@@ -117,31 +147,31 @@
 					
 					<li>
 
-						<a type="submit" class="btn-floating red" ng-click="deployService(Params, 'Instalar')" ng-disabled="!kds.$valid">
+						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Instalar')" ng-disabled="!kds.$valid">
 							<i class="material-icons">
 							add
 							</i>
-						</a>
+						</button>
 
 					</li>
 
 					<li>
 
-						<a class="btn-floating red darken-1" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!kds.$valid">
+						<button type="submit" class="btn-floating red darken-1" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!kds.$valid">
 							<i class="material-icons">
 							mode_edit
 							</i>
-						</a>
+						</button>
 
 					</li>
 
 					<li>
-						<a class="btn-floating red" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!kds.$valid">
+						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!kds.$valid">
 							<i class="material-icons">
 							delete
 							</i>
 
-						</a>
+						</button>
 					</li>
 
 				</ul>

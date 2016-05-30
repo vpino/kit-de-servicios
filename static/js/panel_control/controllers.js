@@ -10,6 +10,11 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 
     function recipeController($scope, $location, $routeParams, Recipe){
         
+        $scope.status = true;
+        $scope.msj = true;
+        $scope.respuesta = '';
+
+
     	/* Hacemo una consulta y le pasamos el nombre de la receta */
         $scope.Params = Recipe.get({name:$routeParams.name});
  
@@ -18,14 +23,8 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	       
 			config['action'] = action;
 
-	       console.log(config);
-
-	       console.log(config.campos);
-
-	       console.log(config['action'])
-	        
-	        
-
+			$scope.status = false;
+			$scope.msj = false;
 	        
 	        //console.log(config.campos);
 
@@ -37,11 +36,18 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	        function(resp, headers){
 	          //success callback
 	          console.log(resp);
-	          $location.path('/');
+	          $scope.msj = true;
+	          $scope.respuesta = resp;
+	          //$location.path('/');
+
 	        },
 	        function(err){
 	          // error callback
 	          console.log(err);
+        	  $scope.msj = true;
+        	  $scope.respuesta = resp;
+
+
 	        });
 	    }; 
 

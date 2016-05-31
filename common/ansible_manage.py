@@ -101,12 +101,15 @@ class Runner(object):
 
         # All the variables from all the various places
         self.variable_manager = VariableManager()
+
+        print self.run_data[0]
         
         self.variable_manager.extra_vars = self.run_data[0]
         #self.variable_manager.extra_vars = {
         #'mailserver_dspam_mysql_password': '11',
         #'mailserver_fqdn': 'kmail.canaima.net.ve',
-        #'mailserver_domain': 'canaima.net.ve'
+        #'mailserver_domain': 'canaima.net.ve',
+        #'action': 'Desintalar'
         #}
 
         # Parse hosts, I haven't found a good way to

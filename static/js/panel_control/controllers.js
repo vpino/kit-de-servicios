@@ -13,6 +13,8 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
         $scope.status = true;
         $scope.msj = true;
         $scope.respuesta = '';
+        $scope.band = false;
+
 
 
     	/* Hacemo una consulta y le pasamos el nombre de la receta */
@@ -21,11 +23,13 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	    /* Funcion para desplegar el servicio */
 		$scope.deployService = function(config, action) {
 	       
+	        console.log(config)
+	        
 			config['action'] = action;
 
 			$scope.status = false;
 			$scope.msj = false;
-	        
+
 	        //console.log(config.campos);
 
 	        /* Ejecutamos la funcion save del servicio pasandole la lista
@@ -37,6 +41,7 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	          //success callback
 	          console.log(resp);
 	          $scope.msj = true;
+	          $scope.band = true;
 	          $scope.respuesta = resp;
 	          //$location.path('/');
 
@@ -45,6 +50,7 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	          // error callback
 	          console.log(err);
         	  $scope.msj = true;
+        	  $scope.band = true;
         	  $scope.respuesta = resp;
 
 

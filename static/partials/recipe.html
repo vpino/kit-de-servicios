@@ -127,11 +127,27 @@
 
     	</div>
 
-    	<div ng-show="msj">
+    	<div ng-show="band">
     	
-    	<h1> {{ respuesta }} </h1>
+    		<div class="col s12">
+    			<h1> Tareas Ejecutadas Correctamente: {{ respuesta.ok }} </h1>
+    		</div>
 
-			
+    		<div class="col s12">
+    			<h1> Tareas que generaron cambios: {{ respuesta.changed }} </h1>
+    		</div>
+
+    		<div class="col s12">
+    			<h1> Tareas no ejecutadas: {{ respuesta.unreachable }} </h1>
+    		</div>
+
+    		<div class="col s12">
+    			<h1> Tareas Saltadas: {{ respuesta.skipped }} </h1>
+    		</div>
+
+    		<div class="col s12">
+    			<h1> Tareas fallidas: {{ respuesta.failures }} </h1>
+    		</div>
 
     	</div>
 		
@@ -166,7 +182,7 @@
 					</li>
 
 					<li>
-						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!kds.$valid">
+						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Desintalar')" ng-disabled="!kds.$valid">
 							<i class="material-icons">
 							delete
 							</i>

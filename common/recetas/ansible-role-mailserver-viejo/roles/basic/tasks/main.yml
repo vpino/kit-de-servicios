@@ -1,0 +1,33 @@
+---
+- name: ensure basic packages are installed
+  apt: 
+    pkg: "{{ item }}"
+    state: latest 
+    update_cache: yes 
+    cache_valid_time: 600
+  with_items:
+    - vim 
+    - htop 
+    - nmap 
+    - less 
+    - mtr 
+    - w3m 
+    - telnet
+  when: action == 'Instalar'
+
+- name: ensure basic packages are uninstalled
+  apt: 
+    pkg: "{{ item }}"
+    state: absent 
+    update_cache: yes 
+    cache_valid_time: 600
+  with_items:
+    - vim 
+    - htop 
+    - nmap 
+    - less 
+    - mtr 
+    - w3m 
+    - telnet
+  when: action == 'Desintalar'
+

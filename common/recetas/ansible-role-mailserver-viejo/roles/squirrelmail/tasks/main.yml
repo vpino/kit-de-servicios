@@ -1,0 +1,80 @@
+---
+- name: ensure squirrelmail packages are installed
+  apt: 
+    pkg: "{{ item }}"
+    state: latest 
+    update_cache: yes 
+    cache_valid_time: 600
+  with_items:
+    - squirrelmail
+    - apache2
+  when: action == 'Instalar'
+
+- name: update /etc/squirrelmail/config.php from template
+  template:
+    src: config.php
+    dest: /etc/squirrelmail/config.php
+    owner: root
+    group: www-data
+    mode: 0640
+  when: action == 'Instalar'
+
+- name: create symlink /usr/share/squirrelmail to /var/www/html/
+  command: ln -s /usr/share/squirrelmail/ /var/www/html/
+  when: action == 'Instalar'
+  
+#- name: create symlink /usr/share/squirrelmail to /var/www/html/
+#  file:
+#    src: /usr/share/squirrelmail/ 
+#    path: /var/www/html/
+#    force: yes
+#    state: link
+#  notify:
+#  - restart apache2
+
+- name: create directory for users in /home/usuarios
+  file: 
+    path: /home/usuarios
+    state: directory
+  when: action == 'Instalar'
+
+- name: create fake 'nologin' shell
+  file: 
+    path: /var/spool/mail/
+    owner: postfix 
+    group: postfix 
+    mode: 0777
+  when: action == 'Instalar'
+
+#- name: all privileges for user of postfix
+#  command: chown postfix:postfix /var/spool/mail
+
+#- name: permission 777 to the directory /var/spool/mail
+#  command: chmod -R 777 /var/spool/mail
+
+#- name: Add user to the correo
+#  command: useradd -m -d /home/usuarios/prueba prueba
+
+#- name: Add usermod /bin/user
+#  command: usermod -s /bin/prueba prueba && passwd prueba 
+
+- name: ensure all apache services are started
+  service:
+    name: "{{ item.name }}"
+    pattern: "{{ item.pattern }}"
+    state: started
+  with_items:
+    - { name: apache2, pattern: /etc/init.d/apache2 }
+  when: action == 'Instalar'
+
+- name: ensure squirrelmail packages are uninstalled
+  apt: 
+    pkg: "{{ item }}"
+    state: absent 
+    update_cache: yes 
+    cache_valid_time: 600
+  with_items:
+    - squirrelmail
+    - apache2
+  when: action == 'Desintalar'
+

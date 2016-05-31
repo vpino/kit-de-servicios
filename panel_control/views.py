@@ -150,7 +150,16 @@ class ServiceConfigResource(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        result = add.delay(
+        #result = add.delay(
+        #        request.data['config']['ipadd'], 
+        #        request.data['config']['username'], 
+        #        '/recetas/' + request.data['config']['receta'] + '/site.yml', 
+        #        request.data['config']['passwd'], 
+        #
+        #        request.data['config']['campos'], 
+        #        10)
+
+        runner = Runner(
                 request.data['config']['ipadd'], 
                 request.data['config']['username'], 
                 '/recetas/' + request.data['config']['receta'] + '/site.yml', 
@@ -158,12 +167,14 @@ class ServiceConfigResource(APIView):
                 request.data['config']['campos'], 
                 10)
 
-        print 'Task finished? ', result.ready()
-        print 'Task result: ', result.get()
+        a = runner.run()
+
+        #print 'Task finished? ', result.ready()
+        #print 'Task result: ', result.get()
 
         # Maybe do something with stats here? If you want!
 
         #deploy_service('kds', '11', '172.17.0.1',  request.data['config']['campos'])
 
-        return Response(result.get(), status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)
 

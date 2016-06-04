@@ -116,10 +116,10 @@ class ServiceConfigResource(APIView):
         
         if recipe_Name:
 
-            SERVICE = CharmDirectory(get_path([SERVICEDIR, recipe_Name]))
-            
-            if SERVICE:
-            
+            try:
+                
+                SERVICE = CharmDirectory(get_path([SERVICEDIR, recipe_Name]))
+                
                 config = {}
 
                 campos = []
@@ -142,32 +142,31 @@ class ServiceConfigResource(APIView):
 
                 return Response (config)
 
-            else:
-
-                return Response (status=status.HTTP_404_NOT_FOUND)
+            except:
+                
+               return Response (status=status.HTTP_404_NOT_FOUND)
 
         return Response (status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, *args, **kwargs):
 
-        #result = add.delay(
-        #        request.data['config']['ipadd'], 
-        #        request.data['config']['username'], 
-        #        '/recetas/' + request.data['config']['receta'] + '/site.yml', 
-        #        request.data['config']['passwd'], 
-        #
-        #        request.data['config']['campos'], 
-        #        10)
-
-        runner = Runner(
+        result = add.delay(
                 request.data['config']['ipadd'], 
                 request.data['config']['username'], 
                 '/recetas/' + request.data['config']['receta'] + '/site.yml', 
                 request.data['config']['passwd'], 
                 request.data['config']['campos'], 
-                10)
+                4)
 
-        a = runner.run()
+        #runner = Runner(
+        #        request.data['config']['ipadd'], 
+        #        request.data['config']['username'], 
+        #        '/recetas/' + request.data['config']['receta'] + '/site.yml', 
+        #        request.data['config']['passwd'], 
+        #        request.data['config']['campos'], 
+        #        10)
+
+        #a = runner.run()
 
         #print 'Task finished? ', result.ready()
         #print 'Task result: ', result.get()

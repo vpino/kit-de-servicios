@@ -120,6 +120,8 @@ BROKER_URL = 'amqp://kds:11@localhost/kds_vhost'
 BROKER_HEARTBEAT = 10
 CELERY_RESULT_BACKEND = 'rpc://'
 CELERY_RESULT_PERSISTENT = False
+CELERYD_CONCURRENCY = 4
+CELERYD_POOL = 'threads'
 
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)

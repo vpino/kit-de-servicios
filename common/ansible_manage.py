@@ -101,8 +101,6 @@ class Runner(object):
 
         # All the variables from all the various places
         self.variable_manager = VariableManager()
-
-        print self.run_data[0]
         
         self.variable_manager.extra_vars = self.run_data[0]
         #self.variable_manager.extra_vars = {

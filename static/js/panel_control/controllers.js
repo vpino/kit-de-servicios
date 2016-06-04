@@ -23,9 +23,17 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	    /* Funcion para desplegar el servicio */
 		$scope.deployService = function(config, action) {
 	       
-	        console.log(config)
+	        config.campos[0]['action'] = action;
 	        
-			config['action'] = action;
+	        angular.forEach(config.campos, function(campos) {
+		    
+		    config.campos[0][campos.field_name] =  campos.default;
+
+		  	});
+
+		  	console.log(config);
+	        
+			
 
 			$scope.status = false;
 			$scope.msj = false;
@@ -51,7 +59,7 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	          console.log(err);
         	  $scope.msj = true;
         	  $scope.band = true;
-        	  $scope.respuesta = resp;
+        	  $scope.respuesta = err;
 
 
 	        });

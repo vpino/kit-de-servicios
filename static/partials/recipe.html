@@ -51,7 +51,7 @@
 					<div class="input-field col s12">
 							
 						<i class="material-icons prefix">description</i>
-						<input ng-model="default"  id="default" type="text" class="validate" id='default'>
+						<input ng-model="service.default"  id="service.nombre" type="text" class="validate">
 						<label>Default</label>
 
 					</div>
@@ -129,26 +129,85 @@
 
     	<div ng-show="band">
     	
-    		<div class="col s12">
-    			<h1> Tareas Ejecutadas Correctamente: {{ respuesta.ok }} </h1>
-    		</div>
+	    	<ul class="collection col s12">
+			   
+			    <li class="collection-item avatar">
+					<i class="material-icons circle green">thumb_up</i>
 
-    		<div class="col s12">
-    			<h1> Tareas que generaron cambios: {{ respuesta.changed }} </h1>
-    		</div>
+					<span class="title">Tareas Ejecutadas Correctamente:</span>
 
-    		<div class="col s12">
-    			<h1> Tareas no ejecutadas: {{ respuesta.unreachable }} </h1>
-    		</div>
+					<p>F {{ respuesta.ok }} </p>
 
-    		<div class="col s12">
-    			<h1> Tareas Saltadas: {{ respuesta.skipped }} </h1>
-    		</div>
+					<a href="#!" class="secondary-content">
+						
+						<i class="material-icons">grade</i>
 
-    		<div class="col s12">
-    			<h1> Tareas fallidas: {{ respuesta.failures }} </h1>
-    		</div>
+					</a>
 
+			    </li>
+
+			    <li class="collection-item avatar">
+					<i class="material-icons circle green">restore</i>
+
+					<span class="title">Tareas que generaron cambios:</span>
+
+					<p>F {{ respuesta.changed }} </p>
+
+					<a href="#!" class="secondary-content">
+						
+						<i class="material-icons">grade</i>
+
+					</a>
+
+			    </li>
+
+			    <li class="collection-item avatar">
+					<i class="material-icons circle red">pause_circle_outline</i>
+
+					<span class="title">Tareas no ejecutadas:</span>
+
+					<p>F {{ respuesta.unreachable }} </p>
+
+					<a href="#!" class="secondary-content">
+						
+						<i class="material-icons">grade</i>
+
+					</a>
+
+			    </li>
+
+			    <li class="collection-item avatar">
+					<i class="material-icons circle green">swap_calls</i>
+
+					<span class="title"> Tareas Saltadas: </span>
+
+					<p>F {{ respuesta.skipped }} </p>
+
+					<a href="#!" class="secondary-content">
+						
+						<i class="material-icons">grade</i>
+
+					</a>
+
+			    </li>
+
+			    <li class="collection-item avatar">
+					<i class="material-icons circle red">error_outline</i>
+
+					<span class="title"> Tareas fallidas: </span>
+
+					<p>F {{ respuesta.failures }} </p>
+
+					<a href="#!" class="secondary-content">
+						
+						<i class="material-icons">grade</i>
+
+					</a>
+
+			    </li>
+
+			 </ul>
+           
     	</div>
 		
 		<div class="col s12 "> 

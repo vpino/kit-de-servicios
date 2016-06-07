@@ -1,0 +1,43 @@
+---
+
+- name: check basic package are installed
+  shell: dpkg -l | grep less | cut -d " " -f1
+  register: init
+  when: action == 'Instalar'
+
+- name: ensure basic packages are installed
+  apt: 
+    pkg: "{{ item }}"
+    state: latest 
+    update_cache: yes 
+    cache_valid_time: 600
+  with_items:
+    - vim 
+    #- htop 
+    #- nmap 
+    - less 
+    #- mtr 
+    #- w3m 
+    #- telnet
+  when: init|changed and init.stdout == "" and action == 'Instalar'
+
+- name: check package status basic
+  shell: dpkg -l | grep less | cut -d " " -f1
+  register: status
+  when: action == 'Desintalar'
+
+- name: ensure basic packages are uninstalled
+  apt: 
+    pkg: "{{ item }}"
+    state: absent 
+    update_cache: yes 
+    cache_valid_time: 600
+  with_items:
+    - vim 
+    - htop 
+    - nmap 
+    - less 
+    - mtr 
+    - w3m 
+    - telnet
+  when: status|changed and status.stdout != "" and action == 'Desintalar'

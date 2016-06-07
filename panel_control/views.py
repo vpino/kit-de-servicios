@@ -11,10 +11,8 @@ from common.recipes.recipe import RecipeDir
 from common.utils import get_path
 from common.ansible_manage import Runner
 from tasks import add
-import nmap 
-import netifaces
-import json
-import os
+from subprocess import check_output
+import nmap, shlex, netifaces, json, os
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -168,12 +166,34 @@ class ServiceConfigResource(APIView):
 
         #a = runner.run()
 
-        #print 'Task finished? ', result.ready()
-        #print 'Task result: ', result.get()
+        print 'Task finished? ', result.ready()
+        print 'Task result: ', result.get()
 
         # Maybe do something with stats here? If you want!
 
         #deploy_service('kds', '11', '172.17.0.1',  request.data['config']['campos'])
 
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(result.get(), status=status.HTTP_201_CREATED)
 
+class ServiceStatus(APIView):
+    """
+    List Status of Services
+    """
+
+    def get(self, request, format=None):
+        
+        command_line = shlex.split('ssh kds@172.17.0.1 dpkg -l vim | grep ii | cut -d "v" -f1')
+        
+        #command_line = 'sudo apt-get install python3 -y'
+        #args = shlex.split(command_line)
+        #subprocess.call(args)
+
+        command_line = check_output(command_line)
+
+        command_line = command_line.strip('\n')
+
+        if command_line:
+
+            return Response(command_line)
+
+        return Response("No esta instaladoooo")

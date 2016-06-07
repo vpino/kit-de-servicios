@@ -5,10 +5,10 @@
 /* Declaro el modulo ManageCOntrollers*/
 var ManageControllers = angular.module('ManageControllers', []);
 
-/* Declaro un controlador que manejara las acciones de los servicios*/
-ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', recipeController]);
+/* Declaro un controlador que manejara las acciones de los servicios */
+ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', 'Status', recipeController]);
 
-    function recipeController($scope, $location, $routeParams, Recipe){
+    function recipeController($scope, $location, $routeParams, Recipe, Status){
         
         $scope.status = true;
         $scope.msj = true;
@@ -16,9 +16,15 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
         $scope.band = false;
 
 
-
     	/* Hacemo una consulta y le pasamos el nombre de la receta */
         $scope.Params = Recipe.get({name:$routeParams.name});
+
+
+        $scope.consultState = function() {
+
+        	$scope.servicioStatus = Status.get({name:$routeParams.name, host:$scope.Params.ipadd});
+
+        }
  
 	    /* Funcion para desplegar el servicio */
 		$scope.deployService = function(config, action) {

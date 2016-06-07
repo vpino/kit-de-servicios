@@ -3,7 +3,7 @@ from django.contrib import admin
 from .views import IndexView
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
-from panel_control.views import PcList, ServiceMetadataResource, ServiceConfigResource
+from panel_control.views import PcList, ServiceMetadataResource, ServiceConfigResource, ServiceStatus
 from kds_client.views import HardwareInformation
 
 """
@@ -19,6 +19,7 @@ urlpatterns = [
 	#url(r'^$', homepage, name='index'),
 	url(r'^ServiceMetadataResource/(?P<service_name>[a-z]+)$', ServiceMetadataResource.as_view()),
 	url(r'^ServiceConfigResource/$', ServiceConfigResource.as_view()),
+	url(r'^ServiceStatus/$', ServiceStatus.as_view()),
 	url(r'^pclist/$', PcList.as_view()),
 	url(r'^hdInfo/$', HardwareInformation.as_view()),
 	url('^.*$', IndexView.as_view(), name='index'),

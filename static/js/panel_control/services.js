@@ -31,3 +31,26 @@ ManageServices.factory('Recipe', ['$resource',
     });
   }]);
 
+
+/* Declaramos una factory que se encargara de la consulta de servicios */
+ManageServices.factory('Status', ['$resource',
+  function($resource){
+    return $resource('/ServiceStatus/', {}, {
+      
+      /* Funcion que consulta si un servicio
+         esta o no instalado */
+      query: {
+        params: {name: '@name', host: '@host'},
+        method:'GET',  
+        isArray:true,
+        transformResponse: function(data){
+               return angular.fromJson(data).objects;
+           }
+        },
+
+      
+
+
+    });
+  }]);
+

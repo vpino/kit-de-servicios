@@ -182,18 +182,26 @@ class ServiceStatus(APIView):
 
     def get(self, request, format=None):
         
+        service_name = request.query_params.get('name', None)
+        host = request.query_params.get('host', None)
+
+        print service_name
+        print host
+
+        service = {}
+
+        service['estado'] = 'Desintalado'
+
         command_line = shlex.split('ssh kds@172.17.0.1 dpkg -l vim | grep ii | cut -d "v" -f1')
         
-        #command_line = 'sudo apt-get install python3 -y'
-        #args = shlex.split(command_line)
-        #subprocess.call(args)
-
         command_line = check_output(command_line)
 
         command_line = command_line.strip('\n')
 
         if command_line:
 
-            return Response(command_line)
+            service['estado'] = 'Instalado'
 
-        return Response("No esta instaladoooo")
+            return Response(service)
+
+        return Response(service)

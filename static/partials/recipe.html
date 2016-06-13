@@ -24,11 +24,13 @@
 		<div ng-show="status" class="input-field col s12">
 							
 			<i class="material-icons prefix">dns</i>
-			<input ng-model="Params.ipadd" name="Params.ipadd" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
-			<label>IP</label>
+			<input ng-model="Params.ipadd" name="Params.ipadd" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+"ng-blur="consultState()" >
+			<label>IP </label>
+
 
 		</div>
 
+		<h1> {{ servicioStatus.estado }} </h1>
 
 		<div class="row" data-ng-repeat="service in Params.campos">
 
@@ -222,7 +224,7 @@
 					
 					<li>
 
-						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Instalar')" ng-disabled="!kds.$valid">
+						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Instalar')" ng-disabled="!kds.$valid && !desintalado">
 							<i class="material-icons">
 							add
 							</i>
@@ -232,7 +234,7 @@
 
 					<li>
 
-						<button type="submit" class="btn-floating red darken-1" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!kds.$valid">
+						<button type="submit" class="btn-floating red darken-1" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!kds.$valid && !instalado">
 							<i class="material-icons">
 							mode_edit
 							</i>
@@ -241,13 +243,13 @@
 					</li>
 
 					<li>
-						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Desintalar')" ng-disabled="!kds.$valid">
+						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Desintalar')" ng-disabled="!kds.$valid && !instalado">
 							<i class="material-icons">
 							delete
 							</i>
 
 						</button>
-					</li>
+					</li>	
 
 				</ul>
 

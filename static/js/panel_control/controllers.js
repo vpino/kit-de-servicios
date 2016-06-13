@@ -15,7 +15,6 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
         $scope.respuesta = '';
         $scope.band = false;
 
-
     	/* Hacemo una consulta y le pasamos el nombre de la receta */
         $scope.Params = Recipe.get({name:$routeParams.name});
 
@@ -23,7 +22,15 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
         $scope.consultState = function() {
 
         	$scope.servicioStatus = Status.get({name:$routeParams.name, host:$scope.Params.ipadd});
+        	console.log($scope.servicioStatus);
 
+        	if ($scope.servicioStatus.status == 'Instalado'){
+
+        		$scope.instalado == true;
+        	} else {
+
+        		$scope.desintalado == true;
+        	}
         }
  
 	    /* Funcion para desplegar el servicio */

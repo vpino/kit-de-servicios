@@ -18,18 +18,22 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
     	/* Hacemo una consulta y le pasamos el nombre de la receta */
         $scope.Params = Recipe.get({name:$routeParams.name});
 
-
+        /* Funcion para consultar el estado del servicio en un host*/
         $scope.consultState = function() {
 
+        	/* Le pasamos 2 parametros:
+				1. El nombre del servicio.
+				2. La ip de la maquina.
+        	*/
         	$scope.servicioStatus = Status.get({name:$routeParams.name, host:$scope.Params.ipadd});
-        	console.log($scope.servicioStatus);
 
         	if ($scope.servicioStatus.status == 'Instalado'){
 
-        		$scope.instalado == true;
+        		$scope.instalado = true;
+
         	} else {
 
-        		$scope.desintalado == true;
+        		$scope.desintalado = true;
         	}
         }
  

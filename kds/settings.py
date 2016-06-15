@@ -115,7 +115,6 @@ REST_FRAMEWORK = {
 }
 
 # Clery Config
-
 BROKER_URL = 'amqp://kds:11@localhost/kds_vhost'
 BROKER_HEARTBEAT = 10
 CELERY_RESULT_BACKEND = 'rpc://'
@@ -128,3 +127,10 @@ CELERYD_POOL = 'threads'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+
+os.environ.setdefault('ANSIBLE_CONFIG', BASE_DIR+'ansible.cfg')
+
+#set ANSIBLE_CONFIG=BASE_DIR+'/ansible.cfg'
+
+#export ANSIBLE_CONFIG=BASE_DIR+'/ansible.cfg'

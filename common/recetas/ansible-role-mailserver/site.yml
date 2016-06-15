@@ -5,8 +5,8 @@
 
   roles:
     - basic
-    #- dovecot
-    #- postfix
+    - dovecot
+    - postfix
     #- roundcube
-    #- squirrelmail
+    - squirrelmail
   

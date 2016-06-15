@@ -12,10 +12,10 @@
     update_cache: yes 
     cache_valid_time: 600
   with_items:
-    - vim 
+    #- vim 
     #- htop 
     #- nmap 
-    #- less 
+    - less 
     #- mtr 
     #- w3m 
     #- telnet
@@ -33,10 +33,10 @@
     update_cache: yes 
     cache_valid_time: 600
   with_items:
-    - vim 
+    #- vim 
     #- htop 
     #- nmap 
-    #- less 
+    - less 
     #- mtr 
     #- w3m 
     #- telnet

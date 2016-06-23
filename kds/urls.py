@@ -5,6 +5,8 @@ from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 from panel_control.views import PcList, ServiceMetadataResource, ServiceConfigResource, ServiceStatus
 from kds_client.views import HardwareInformation
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 
 """
 router = routers.SimpleRouter()
@@ -26,4 +28,4 @@ urlpatterns = [
 
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+urlpatterns = format_suffix_patterns(urlpatterns) + staticfiles_urlpatterns()

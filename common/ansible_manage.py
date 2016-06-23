@@ -150,6 +150,7 @@ class Runner(object):
         self.pbex.run()
         stats = self.pbex._tqm._stats
 
+        print stats
         # Test if success for record_logs
         run_success = True
         hosts = sorted(stats.processed.keys())
@@ -226,9 +227,9 @@ class CallbackModule(CallbackBase):
             self._process_items(result)  # item_on_failed, item_on_skipped, item_on_ok
         else:
             if delegated_vars:
-                self.logger.append("fatal: [%s -> %s]: FAILED! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)))
+                msg += self.logger.append("fatal: [%s -> %s]: FAILED! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)))
             else:
-                self.logger.append("fatal: [%s]: FAILED! => %s" % (result._host.get_name(), self._dump_results(result._result)))
+                msg += self.logger.append("fatal: [%s]: FAILED! => %s" % (result._host.get_name(), self._dump_results(result._result)))
 
     def v2_runner_on_ok(self, result):
         self._clean_results(result._result, result._task.action)
@@ -237,14 +238,14 @@ class CallbackModule(CallbackBase):
             return
         elif result._result.get('changed', False):
             if delegated_vars:
-                msg = "changed: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
+                msg += "changed: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
             else:
-                msg = "changed: [%s]" % result._host.get_name()
+                msg += "changed: [%s]" % result._host.get_name()
         else:
             if delegated_vars:
-                msg = "ok: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
+                msg += "ok: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
             else:
-                msg = "ok: [%s]" % result._host.get_name()
+                msg += "ok: [%s]" % result._host.get_name()
 
         if result._task.loop and 'results' in result._result:
             self._process_items(result)  # item_on_failed, item_on_skipped, item_on_ok
@@ -255,28 +256,28 @@ class CallbackModule(CallbackBase):
         if result._task.loop and 'results' in result._result:
             self._process_items(result)  # item_on_failed, item_on_skipped, item_on_ok
         else:
-            msg = "skipping: [%s]" % result._host.get_name()
+            msg += "skipping: [%s]" % result._host.get_name()
             self.logger.append(msg)
 
     def v2_runner_on_unreachable(self, result):
         delegated_vars = result._result.get('_ansible_delegated_vars', None)
         if delegated_vars:
-            self.logger.append("fatal: [%s -> %s]: UNREACHABLE! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)))
+            msg += self.logger.append("fatal: [%s -> %s]: UNREACHABLE! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)))
         else:
-            self.logger.append("fatal: [%s]: UNREACHABLE! => %s" % (result._host.get_name(), self._dump_results(result._result)))
+            msg += self.logger.append("fatal: [%s]: UNREACHABLE! => %s" % (result._host.get_name(), self._dump_results(result._result)))
 
     def v2_runner_on_no_hosts(self, task):
-        self.logger.append("skipping: no hosts matched")
+        msg += self.logger.append("skipping: no hosts matched")
 
     def v2_playbook_on_task_start(self, task, is_conditional):
-        self.logger.append("TASK [%s]" % task.get_name().strip())
+        msg += self.logger.append("TASK [%s]" % task.get_name().strip())
 
     def v2_playbook_on_play_start(self, play):
         name = play.get_name().strip()
         if not name:
-            msg = "PLAY"
+            msg += "PLAY"
         else:
-            msg = "PLAY [%s]" % name
+            msg += "PLAY [%s]" % name
 
         self.logger.append(msg)
 
@@ -286,14 +287,14 @@ class CallbackModule(CallbackBase):
             return
         elif result._result.get('changed', False):
             if delegated_vars:
-                msg = "changed: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
+                msg += "changed: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
             else:
-                msg = "changed: [%s]" % result._host.get_name()
+                msg += "changed: [%s]" % result._host.get_name()
         else:
             if delegated_vars:
-                msg = "ok: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
+                msg += "ok: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
             else:
-                msg = "ok: [%s]" % result._host.get_name()
+                msg += "ok: [%s]" % result._host.get_name()
 
         msg += " => (item=%s)" % (result._result['item'])
 
@@ -310,9 +311,9 @@ class CallbackModule(CallbackBase):
             del result._result['exception']
 
         if delegated_vars:
-            self.logger.append("failed: [%s -> %s] => (item=%s) => %s" % (result._host.get_name(), delegated_vars['ansible_host'], result._result['item'], self._dump_results(result._result)))
+            msg += self.logger.append("failed: [%s -> %s] => (item=%s) => %s" % (result._host.get_name(), delegated_vars['ansible_host'], result._result['item'], self._dump_results(result._result)))
         else:
-            self.logger.append("failed: [%s] => (item=%s) => %s" % (result._host.get_name(), result._result['item'], self._dump_results(result._result)))
+            msg += self.logger.append("failed: [%s] => (item=%s) => %s" % (result._host.get_name(), result._result['item'], self._dump_results(result._result)))
 
     def v2_playbook_item_on_skipped(self, result):
         msg = "skipping: [%s] => (item=%s) " % (result._host.get_name(), result._result['item'])
@@ -335,6 +336,7 @@ class CallbackModule(CallbackBase):
                 "failed: %s" % (t['failures']),
             )
 
+            msg += msg
             self.logger.append(msg)
 
     def record_logs(self, user_id, success=False):

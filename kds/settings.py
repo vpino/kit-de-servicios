@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ws4redis',
     'rest_framework',
     'panel_control',
     'kds_client',
@@ -56,6 +57,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'kds.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -66,13 +68,16 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.core.context_processors.static',
+                'ws4redis.context_processors.default',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'kds.wsgi.application'
+
+WSGI_APPLICATION = 'ws4redis.django_runserver.application'
 
 
 # Database
@@ -134,3 +139,18 @@ os.environ.setdefault('ANSIBLE_CONFIG', BASE_DIR+'ansible.cfg')
 #set ANSIBLE_CONFIG=BASE_DIR+'/ansible.cfg'
 
 #export ANSIBLE_CONFIG=BASE_DIR+'/ansible.cfg'
+
+#REDIS CONFIG
+WEBSOCKET_URL = '/ws/'
+
+WS4REDIS_CONNECTION = {
+    'host': 'localhost',
+    'port': 6379
+    #'db': 17,
+    #'password': '',
+}
+
+WS4REDIS_EXPIRE = 7200
+
+WS4REDIS_PREFIX = 'ws'
+

@@ -6,10 +6,32 @@
 var ManageControllers = angular.module('ManageControllers', []);
 
 /* Declaro un controlador que manejara las acciones de los servicios */
-ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', 'Status', recipeController]);
+ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', 'Status', '$q', 'WSService', recipeController]);
 
-    function recipeController($scope, $location, $routeParams, Recipe, Status){
+    function recipeController($scope, $location, $routeParams, Recipe, Status, WSService, $q){
         
+        var promise = WSService.promise($q);
+
+        	promise.then(
+
+				function(evt) { 
+					console.log('resolve : ' + evt); 
+				}, 
+
+				function(evt) { 
+					console.log('reject : ' + evt); 
+				}, 
+                     
+				function(evt) {
+					console.log('notify: ' + evt);
+
+					//Update the scope
+					$scope.logger = evt;
+				     
+				    }
+
+        		);
+
         $scope.status = true;
         $scope.msj = true;
         $scope.respuesta = '';
@@ -48,10 +70,6 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 
 		  	});
 
-		  	console.log(config);
-	        
-			
-
 			$scope.status = false;
 			$scope.msj = false;
 
@@ -82,6 +100,32 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	        });
 	    }; 
 
+	    /* Funcion para consultar el WebSocket */
+		$scope.WSServiceConsult = function() {
+	       
+			var promise = WSService.promise($q);
+
+        	promise.then(
+
+				function(evt) { 
+					console.log('resolve : ' + evt); 
+				}, 
+
+				function(evt) { 
+					console.log('reject : ' + evt); 
+				}, 
+                     
+				function(evt) {
+					console.log('notify: ' + evt);
+
+					//Update the scope
+					$scope.logger = evt;
+				     
+				    }
+
+        		);
+
+		};
           
     }
 

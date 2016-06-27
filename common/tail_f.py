@@ -13,7 +13,9 @@ def TailLog(path_log, path_name):
 
 		log = open(path_log + path_name,'r')
 
-		while 1:
+		line = ''
+
+		while line != 'Finnish':
 		    where = log.tell()
 		    line = log.readline()
 		    if not line:

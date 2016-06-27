@@ -11,9 +11,10 @@ from common.charms.directory import CharmDirectory
 from common.recipes.recipe import RecipeDir
 from common.utils import get_path
 from common.ansible_manage import Runner
-from tasks import add
+from tasks import add, tail_logger
 from subprocess import check_output
 from common.tail_f import TailLog
+import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SERVICEDIR = BASE_DIR + '/data/services'
@@ -110,8 +111,7 @@ class ServiceConfigResource(APIView):
 
         recipe_Name = request.query_params.get('name', None)
         
-        tail = TailLog(BASE_DIR+"/", 'playbook-log')
-
+        #tail = TailLog(BASE_DIR+"/", 'playbook-log')
 
         if recipe_Name:
 
@@ -149,36 +149,43 @@ class ServiceConfigResource(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        #result = add.delay(
-        #       request.data['config']['ipadd'], 
-        #       request.data['config']['username'], 
-        #       '/recetas/' + request.data['config']['receta'] + '/site.yml', 
-        #       request.data['config']['passwd'], 
-        #       request.data['config']['campos'], 
-        #       4)
+        result = add.delay(
+               request.data['config']['ipadd'], 
+               request.data['config']['username'], 
+               '/recetas/' + request.data['config']['receta'] + '/site.yml', 
+               request.data['config']['passwd'], 
+               request.data['config']['campos'], 
+               4)
 
-        runner = Runner(
-                request.data['config']['ipadd'], 
-                request.data['config']['username'], 
-                '/recetas/' + request.data['config']['receta'] + '/site.yml', 
-                request.data['config']['passwd'], 
-                request.data['config']['campos'], 
-                10)
+        play_log = tail_logger.delay()
 
-        
 
-        a = runner.run()
+        #runner = Runner(
+        #        request.data['config']['ipadd'], 
+        #        request.data['config']['username'], 
+        #        '/recetas/' + request.data['config']['receta'] + '/site.yml', 
+        #        request.data['config']['passwd'], 
+        #        request.data['config']['campos'], 
+        #        10)
 
-        
+        #a = runner.run()
 
-        #print 'Task finished? ', result.ready()
-        #print 'Task result: ', result.get()
+        print 'Task log finished? ', play_log.ready()
+
+        print 'Task playbook finished? ', result.ready()
+        print 'Task result: ', result.get()
+
+        logger_tail = BASE_DIR + '/playbook-log'
+
+        preferences = open(logger_tail, 'a') # Indicamos el valor 'w'.
+        preferences.write('Finnish')
+        preferences.close()
 
         # Maybe do something with stats here? If you want!
 
         #deploy_service('kds', '11', '172.17.0.1',  request.data['config']['campos'])
 
-        return Response(a, status=status.HTTP_201_CREATED)
+        return Response(result.get(), status=status.HTTP_201_CREATED)
 
 
 class ServiceStatus(APIView):

@@ -48,9 +48,34 @@ ManageServices.factory('Status', ['$resource',
            }
         },
 
-      
-
-
     });
   }]);
 
+ManageServices.service('WSService', function() {
+
+        this.promise = function ($q) {
+            
+            // Create a deferred object
+            var deferred = $q.defer();
+
+            // Create the WebSocket client pointing to the correct API
+            var ws = new WebSocket("ws://localhost:8000/ws/foobar?subscribe-broadcast&publish-broadcast&echo");
+            
+            // Map the messages to action
+            ws.onopen = function()  { 
+              console.log( "WSService opened"); 
+            };
+            
+            ws.onmessage = function (evt) { 
+                console.log("onmessage:" + evt);
+                deferred.notify(evt);
+            };
+            
+            ws.onclose = function() { 
+              console.log("WSService closed"); 
+            };
+            
+            // Return the promise
+            return deferred.promise;
+        }
+    });

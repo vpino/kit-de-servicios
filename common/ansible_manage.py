@@ -7,7 +7,6 @@ from ansible.executor import playbook_executor
 from ansible.utils.display import Display
 from datetime import datetime
 from ansible.plugins.callback import CallbackBase
-#from kds.storage import Logs # A custom object to store to the database
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

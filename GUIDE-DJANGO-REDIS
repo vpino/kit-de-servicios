@@ -96,15 +96,15 @@ server {
         
         location / {
    		include /etc/nginx/uwsgi_params;
-	    	uwsgi_pass unix:/home/vpino/Escritorio/kit-servicios/kds/django.socket;
+	    	uwsgi_pass unix:/home/victor/Working/kit-servicios/kds/django.socket;
 		}
 
 		location /ws/ {
 		    proxy_http_version 1.1;
 		    proxy_set_header Upgrade $http_upgrade;
 		    proxy_set_header Connection "upgrade";
-		    #proxy_pass http://unix:/home/vpino/Escritorio/kit-servicios/kds/web.socket;
-		    proxy_pass http://localhost:6379;
+		    proxy_pass http://unix/home/victor/Working/kit-servicios/kds/web.socket;
+		    #proxy_pass http://localhost:6379;
 		}
     }
 

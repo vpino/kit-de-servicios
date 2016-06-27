@@ -1,3 +1,4 @@
+import nmap, shlex, netifaces, json, os
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from django.http import Http404
 from django.template import RequestContext
@@ -12,8 +13,7 @@ from common.utils import get_path
 from common.ansible_manage import Runner
 from tasks import add
 from subprocess import check_output
-import nmap, shlex, netifaces, json, os
-
+from common.tail_f import TailLog
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SERVICEDIR = BASE_DIR + '/data/services'
@@ -39,8 +39,6 @@ def homepage(request):
 
     return render_to_response('index.html',
                               context_instance=RequestContext(request))
-
-
 
 def get_active_hosts():
     """
@@ -112,6 +110,9 @@ class ServiceConfigResource(APIView):
 
         recipe_Name = request.query_params.get('name', None)
         
+        tail = TailLog(BASE_DIR+"/", 'playbook-log')
+
+
         if recipe_Name:
 
             try:
@@ -148,32 +149,37 @@ class ServiceConfigResource(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        result = add.delay(
+        #result = add.delay(
+        #       request.data['config']['ipadd'], 
+        #       request.data['config']['username'], 
+        #       '/recetas/' + request.data['config']['receta'] + '/site.yml', 
+        #       request.data['config']['passwd'], 
+        #       request.data['config']['campos'], 
+        #       4)
+
+        runner = Runner(
                 request.data['config']['ipadd'], 
                 request.data['config']['username'], 
                 '/recetas/' + request.data['config']['receta'] + '/site.yml', 
                 request.data['config']['passwd'], 
                 request.data['config']['campos'], 
-                4)
+                10)
 
-        #runner = Runner(
-        #        request.data['config']['ipadd'], 
-        #        request.data['config']['username'], 
-        #        '/recetas/' + request.data['config']['receta'] + '/site.yml', 
-        #        request.data['config']['passwd'], 
-        #        request.data['config']['campos'], 
-        #        10)
+        
 
-        #a = runner.run()
+        a = runner.run()
 
-        print 'Task finished? ', result.ready()
-        print 'Task result: ', result.get()
+        
+
+        #print 'Task finished? ', result.ready()
+        #print 'Task result: ', result.get()
 
         # Maybe do something with stats here? If you want!
 
         #deploy_service('kds', '11', '172.17.0.1',  request.data['config']['campos'])
 
-        return Response(result.get(), status=status.HTTP_201_CREATED)
+        return Response(a, status=status.HTTP_201_CREATED)
+
 
 class ServiceStatus(APIView):
     """

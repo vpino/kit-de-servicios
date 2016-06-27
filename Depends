@@ -10,3 +10,4 @@ threadpool
 markupsafe
 amqp
 anyjson
+django-websocket-redis

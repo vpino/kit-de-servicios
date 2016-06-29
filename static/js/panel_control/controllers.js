@@ -6,11 +6,19 @@
 var ManageControllers = angular.module('ManageControllers', []);
 
 /* Declaro un controlador que manejara las acciones de los servicios */
-ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', 'Status', '$q', 'WSService', recipeController]);
+ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', 'Status', 'WSService', recipeController]);
 
-    function recipeController($scope, $location, $routeParams, Recipe, Status, WSService, $q){
+    function recipeController($scope, $location, $routeParams, Recipe, Status, WSService){
         
-        var promise = WSService.promise($q);
+        $scope.status = true;
+        $scope.msj = true;
+        $scope.respuesta = '';
+        $scope.band = false;
+        $scope.msj_logger = true;
+
+        $scope.logger = ''
+        
+        var promise = WSService.logplay();
 
         	promise.then(
 
@@ -23,19 +31,15 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 				}, 
                      
 				function(evt) {
+					
 					console.log('notify: ' + evt);
 
 					//Update the scope
-					$scope.logger = evt;
+					$scope.logger = $scope.logger.concat(evt);
 				     
-				    }
+				}
 
-        		);
-
-        $scope.status = true;
-        $scope.msj = true;
-        $scope.respuesta = '';
-        $scope.band = false;
+        	);
 
     	/* Hacemo una consulta y le pasamos el nombre de la receta */
         $scope.Params = Recipe.get({name:$routeParams.name});
@@ -72,6 +76,7 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 
 			$scope.status = false;
 			$scope.msj = false;
+			$scope.msj_logger = false;
 
 	        //console.log(config.campos);
 

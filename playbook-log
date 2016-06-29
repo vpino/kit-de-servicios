@@ -1,15 +1,1 @@
-Logger.
-PLAY [Install Mail Server with postfix, dovecot, sqmail or roundcube]
-TASK [setup]
-ok: [172.17.0.1]
-ok: [172.17.0.1]
-TASK [basic : check basic package are installed]
-changed: [172.17.0.1]
-changed: [172.17.0.1]
-TASK [basic : ensure basic packages are installed]
-skipping: [172.17.0.1] => (item=[]) 
-TASK [basic : check package status basic]
-skipping: [172.17.0.1]
-TASK [basic : ensure basic packages are uninstalled]
-skipping: [172.17.0.1] => (item=[]) 
-Finnish
+Finnish.

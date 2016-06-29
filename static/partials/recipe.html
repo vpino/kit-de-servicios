@@ -107,6 +107,8 @@
 		</div>
 
 		<div ng-show="!msj">
+
+			
     	
     	<h1> Ejecutando la receta, por favor espere .... </h1>
 
@@ -129,12 +131,8 @@
 
     	</div>
 
-    	<div>
-    		
-    		<h1> {{logger}} </h1>
-    		
-    	</div>
-
+    	<pre ng-show="!msj_logger" class=" language-markup"><code class=" language-markup">{{logger}}</code></pre>
+    
     	<div ng-show="band">
     	
 	    	<ul class="collection col s12">

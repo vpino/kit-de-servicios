@@ -149,6 +149,12 @@ class ServiceConfigResource(APIView):
 
     def post(self, request, *args, **kwargs):
 
+        logger_tail = BASE_DIR + '/playbook-log'
+
+        preferences = open(logger_tail, 'w') # Indicamos el valor 'w'.
+        preferences.write(' ')
+        preferences.close()
+
         result = add.delay(
                request.data['config']['ipadd'], 
                request.data['config']['username'], 
@@ -159,31 +165,27 @@ class ServiceConfigResource(APIView):
 
         play_log = tail_logger.delay()
 
+        """
+        runner = Runner(
+                request.data['config']['ipadd'], 
+                request.data['config']['username'], 
+                '/recetas/' + request.data['config']['receta'] + '/site.yml', 
+                request.data['config']['passwd'], 
+                request.data['config']['campos'], 
+                10)
 
-        #runner = Runner(
-        #        request.data['config']['ipadd'], 
-        #        request.data['config']['username'], 
-        #        '/recetas/' + request.data['config']['receta'] + '/site.yml', 
-        #        request.data['config']['passwd'], 
-        #        request.data['config']['campos'], 
-        #        10)
-
-        #a = runner.run()
+        a = runner.run()
 
         print 'Task log finished? ', play_log.ready()
 
         print 'Task playbook finished? ', result.ready()
         print 'Task result: ', result.get()
 
-        logger_tail = BASE_DIR + '/playbook-log'
+        """
 
         preferences = open(logger_tail, 'a') # Indicamos el valor 'w'.
-        preferences.write('Finnish')
+        preferences.write('Finnish.\n')
         preferences.close()
-
-        # Maybe do something with stats here? If you want!
-
-        #deploy_service('kds', '11', '172.17.0.1',  request.data['config']['campos'])
 
         return Response(result.get(), status=status.HTTP_201_CREATED)
 
@@ -198,23 +200,28 @@ class ServiceStatus(APIView):
         service_name = request.query_params.get('name', None)
         host = request.query_params.get('host', None)
 
-        print service_name
-        print host
+        if service_name && host != None:
 
-        service = {}
+            consult = 'ssh kds@' + host + 'dpkg -l vim | grep ii | cut -d "v" -f1'
 
-        service['estado'] = 'Desintalado'
+            service = {}
 
-        command_line = shlex.split('ssh kds@172.17.0.1 dpkg -l vim | grep ii | cut -d "v" -f1')
-        
-        command_line = check_output(command_line)
+            service['estado'] = 'Desintalado'
 
-        command_line = command_line.strip('\n')
+            command_line = shlex.split(consult)
+            
+            command_line = check_output(command_line)
 
-        if command_line:
+            command_line = command_line.strip('\n')
 
-            service['estado'] = 'Instalado'
+            if command_line:
+
+                service['estado'] = 'Instalado'
+
+                return Response(service)
 
             return Response(service)
 
+        service['estado'] = 'Ingrese una ip valida'
+        
         return Response(service)

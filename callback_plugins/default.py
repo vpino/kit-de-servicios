@@ -46,6 +46,10 @@ class CallbackModule(CallbackBase):
     CALLBACK_NAME = 'default'
     MENSAJE = ''
 
+    preferences = open(BASE_DIR, 'w') # Indicamos el valor 'w'.
+    preferences.write('Logger.\n')
+    preferences.close()
+
     def v2_runner_on_failed(self, result, ignore_errors=False):
         delegated_vars = result._result.get('_ansible_delegated_vars', None)
         if 'exception' in result._result:

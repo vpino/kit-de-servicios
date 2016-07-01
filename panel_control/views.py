@@ -199,10 +199,12 @@ class ServiceStatus(APIView):
         
         service_name = request.query_params.get('name', None)
         host = request.query_params.get('host', None)
+        paquete = request.query_params.get('paquete', None)
+        service = {}
 
-        if service_name && host != None:
+        if service_name and host != '':
 
-            consult = 'ssh kds@' + host + 'dpkg -l vim | grep ii | cut -d "v" -f1'
+            consult = 'ssh kds@' + str(host) + ' dpkg -l vim | ' +   str(paquete)  + '  ii | cut -d "v" -f1'
 
             service = {}
 

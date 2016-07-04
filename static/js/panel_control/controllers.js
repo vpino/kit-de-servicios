@@ -136,7 +136,11 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 
 ManageControllers.controller('statusServiceController', ['$scope', '$location', '$routeParams', 'Status', statusServiceController]);
 
-	function statusServiceController($scope, $location, $routeParams, Status
+	function statusServiceController($scope, $location, $routeParams, Status){
+
+       	$scope.ip = '';
+
+       	$scope.name = $routeParams.name;
 
 		/* Funcion para consultar el estado del servicio en un host*/
         $scope.consultState = function() {
@@ -145,7 +149,15 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 				1. El nombre del servicio.
 				2. La ip de la maquina.
         	*/
-        	$scope.servicioStatus = Status.get({name:$routeParams.name, host:$scope.Params.ipadd});
+
+        	$scope.instalado = false;
+        	$scope.desintalado = false;
+
+        	console.log($scope.ip);
+
+        	$scope.servicioStatus = Status.get({name:$routeParams.name, host:$scope.ip});
+
+        	console.log($scope.servicioStatus);
 
         	if ($scope.servicioStatus.status == 'Instalado'){
 
@@ -157,7 +169,17 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
         	}
         }
 
-
-
-
 	}
+
+ManageControllers.controller('consultServiceController', ['$scope', '$location', '$routeParams', 'Status', consultServiceController]);
+
+	function consultServiceController($scope, $location, $routeParams, Status){
+
+		$scope.name = $routeParams.name;
+		
+    	$scope.servicioStatus = Status.get({name:$routeParams.name, host:$routeParams.host});
+
+    	console.log($scope.servicioStatus);
+
+    }
+

@@ -15,17 +15,17 @@ panelApp.config(['$resourceProvider', function($resourceProvider) {
 panelApp.config(['$routeProvider', '$locationProvider',
 function($routeProvider, $locationProvider) {
   $routeProvider.
-    when('/prueba/:name', {
+    when('/panel/:name', {
       templateUrl: 'static/partials/panel.html',
-      controller: 'recipeController'
+      controller: 'statusServiceController'
     }).
     when('/recipe/:name', {
       templateUrl: 'static/partials/recipe.html',
       controller: 'recipeController'
     }).
-    when('/otra', {
-      templateUrl: 'static/partials/otro.html',
-      controller: ''
+    when('/consult/:name/:host', {
+      templateUrl: 'static/partials/consult.html',
+      controller: 'consultServiceController'
     }).
     otherwise({
       redirectTo: '/'

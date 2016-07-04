@@ -208,7 +208,6 @@ class ServiceStatus(APIView):
             host: Ip donde el servicio va hacer instalado.
 
         """
-
         service_name = request.query_params.get('name', None)
         host = request.query_params.get('host', None)
         
@@ -235,7 +234,7 @@ class ServiceStatus(APIView):
                     d['run'] = 'Offline'
 
                     #Comprobaremos si el servicio esta instalado.
-                    consult = 'ssh kds@' + str(host) + ' dpkg -l ' + str(d['service']) + ' grep  ii | cut -d "v" -f1'
+                    consult = 'ssh kds@' + str(host) + ' dpkg -l ' + str(d['service']) + ' grep ii | cut -d "v" -f1'
 
                     #Tipo de error:CalledProcessError
 
@@ -243,33 +242,35 @@ class ServiceStatus(APIView):
                     
                     command_install = check_output(command_install)
 
-                    command_install = command_line.strip('\n')
+                    command_install = command_install.strip('\n')
 
-                    if command_line:
+                    if command_install:
 
                         d['status'] = 'Instalado'
 
                     #Comprobaremos si el servicio esta corriendo.
 
-                    consult = 'ssh kds@' + str(host) + ' /etc/init.d/' +  str(d['service']) + ' status | grep active | cut -d " " -f5'
+                    consult = 'ssh kds@' + str(host) + ' echo 11 | sudo -S service ' +  str(d['service']) + ' status | grep active | cut -d "active" -f5'
 
-                    command_running = shlex.split(consult)
-                    
-                    command_running = check_output(command_running)
+                    command_running = os.system(consult)
 
-                    command_running = command_line.strip('\n')
+                    #command_running = shlex.split(consult)
 
-                    if command_running:
+                    #command_running = check_output(command_running)
+
+                    #command_running = command_running.strip('\n')
+
+                    if command_running == 'active':
 
                         d['run'] = 'Online'
 
-
                     servicios.append(d)
+
+                config['services'] = servicios
+
 
             except Exception,e: 
                 config['error'] = str(e)
-
-                print str(e)
 
                 return Response(config)
 

@@ -7,7 +7,7 @@
 	<div class="input-field col s10">
 						
 			<i class="material-icons prefix">dns</i>
-			<input ng-model="Params.ipadd" name="Params.ipadd" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+"ng-blur="consultState()" >
+			<input ng-model="ip" name="ip" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+"ng-blur="" >
 			<label>IP donde desea instalar </label>
 
 	</div>
@@ -15,18 +15,23 @@
 	<div class="col s2">
 
 		
-		<i class="medium material-icons waves-effect waves-light teal lighten-2" ng-click="">done</i>
+		<i class="medium material-icons waves-effect waves-light teal lighten-2" ng-click="consultState(ip)">done</i>
 		
 		
 	</div>
 
 	<br><br><br><br><br>
 
+			<a ng-href="/consult/{{name}}/{{ip}}">
+				<i class="material-icons" ng-disabled="!desintalado">add</i>
+			</a>
+
+
 	<div class="col s12">
 		
 		<div class=" chip">
 	    Instalar
-	    <i class="material-icons" ng-disabled="!band">add</i>
+	    <i class="material-icons" ng-disabled="!desintalado">add</i>
 	  	</div>
 
 	</div>
@@ -37,7 +42,7 @@
 		
 		<div class=" chip">
 	    Actualizar
-	    <i class="material-icons" ng-disabled="!band">mode_edit</i>
+	    <i class="material-icons" ng-disabled="!instalado">mode_edit</i>
 	  	</div>
 
 	</div>
@@ -48,7 +53,7 @@
 		
 		<div class=" chip">
 	    Consultar
-	    <i class="material-icons" ng-disabled="!band">search</i>
+	    <i class="material-icons" ng-disabled="!instalado">search</i>
 	  	</div>
 
 	</div>
@@ -59,7 +64,7 @@
 		
 		<div class=" chip">
 	    Desintalar
-	    <i class="material-icons" ng-disabled="!band">delete</i>
+	    <i class="material-icons" ng-disabled="!instalado">delete</i>
 	  	</div>
 
 	</div>

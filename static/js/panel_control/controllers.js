@@ -15,32 +15,7 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
         $scope.respuesta = '';
         $scope.band = false;
         $scope.msj_logger = true;
-
-        $scope.logger = ''
-        
-        var promise = WSService.logplay();
-
-        	promise.then(
-
-				function(evt) { 
-					console.log('resolve : ' + evt); 
-				}, 
-
-				function(evt) { 
-					console.log('reject : ' + evt); 
-				}, 
-                     
-				function(evt) {
-					
-					console.log('notify: ' + evt);
-
-					//Update the scope
-					$scope.logger = $scope.logger.concat(evt);
-				     
-				}
-
-        	);
-
+  
     	/* Hacemo una consulta y le pasamos el nombre de la receta */
         $scope.Params = Recipe.get({name:$routeParams.name});
 
@@ -65,6 +40,31 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
  
 	    /* Funcion para desplegar el servicio */
 		$scope.deployService = function(config, action) {
+
+			$scope.logger = ''
+        
+        	var promise = WSService.logplay();
+
+        	promise.then(
+
+				function(evt) { 
+					console.log('resolve : ' + evt); 
+				}, 
+
+				function(evt) { 
+					console.log('reject : ' + evt); 
+				}, 
+                     
+				function(evt) {
+					
+					console.log('notify: ' + evt);
+
+					//Update the scope
+					$scope.logger = $scope.logger.concat(evt);
+				     
+				}
+
+        	);
 	       
 	        config.campos[0]['action'] = action;
 	        
@@ -134,3 +134,30 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
           
     }
 
+ManageControllers.controller('statusServiceController', ['$scope', '$location', '$routeParams', 'Status', statusServiceController]);
+
+	function statusServiceController($scope, $location, $routeParams, Status
+
+		/* Funcion para consultar el estado del servicio en un host*/
+        $scope.consultState = function() {
+
+        	/* Le pasamos 2 parametros:
+				1. El nombre del servicio.
+				2. La ip de la maquina.
+        	*/
+        	$scope.servicioStatus = Status.get({name:$routeParams.name, host:$scope.Params.ipadd});
+
+        	if ($scope.servicioStatus.status == 'Instalado'){
+
+        		$scope.instalado = true;
+
+        	} else {
+
+        		$scope.desintalado = true;
+        	}
+        }
+
+
+
+
+	}

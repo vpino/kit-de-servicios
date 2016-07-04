@@ -16,3 +16,12 @@ options:
     default: kmail.canaima.net.ve
     description: nombre dominio completo del servicio de correo
     type: string
+
+consult:
+  postfix:
+    name: postfix
+    description: no se pa que es
+
+  dovecot:
+    name: dovecot
+    description: no se pa que es

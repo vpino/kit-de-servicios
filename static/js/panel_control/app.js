@@ -15,6 +15,10 @@ panelApp.config(['$resourceProvider', function($resourceProvider) {
 panelApp.config(['$routeProvider', '$locationProvider',
 function($routeProvider, $locationProvider) {
   $routeProvider.
+    when('/prueba/:name', {
+      templateUrl: 'static/partials/panel.html',
+      controller: 'recipeController'
+    }).
     when('/recipe/:name', {
       templateUrl: 'static/partials/recipe.html',
       controller: 'recipeController'

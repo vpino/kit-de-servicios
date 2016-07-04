@@ -1,0 +1,69 @@
+<div class="row">
+	
+	<center> <h3> Gestion del Servicio </h3> </center>
+
+	<br>
+
+	<div class="input-field col s10">
+						
+			<i class="material-icons prefix">dns</i>
+			<input ng-model="Params.ipadd" name="Params.ipadd" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+"ng-blur="consultState()" >
+			<label>IP donde desea instalar </label>
+
+	</div>
+
+	<div class="col s2">
+
+		
+		<i class="medium material-icons waves-effect waves-light teal lighten-2" ng-click="">done</i>
+		
+		
+	</div>
+
+	<br><br><br><br><br>
+
+	<div class="col s12">
+		
+		<div class=" chip">
+	    Instalar
+	    <i class="material-icons" ng-disabled="!band">add</i>
+	  	</div>
+
+	</div>
+
+	<br><br>
+
+	<div class="col s12">
+		
+		<div class=" chip">
+	    Actualizar
+	    <i class="material-icons" ng-disabled="!band">mode_edit</i>
+	  	</div>
+
+	</div>
+
+	<br><br>
+
+	<div class="col s12">
+		
+		<div class=" chip">
+	    Consultar
+	    <i class="material-icons" ng-disabled="!band">search</i>
+	  	</div>
+
+	</div>
+
+	<br><br>
+
+	<div class="col s12">
+		
+		<div class=" chip">
+	    Desintalar
+	    <i class="material-icons" ng-disabled="!band">delete</i>
+	  	</div>
+
+	</div>
+
+	<br><br>
+
+</div>

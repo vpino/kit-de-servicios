@@ -1,10 +1,19 @@
 <div class="row">
-	
-	<center> <h1> Parametros </h1> </center>
-	
-	<form class="col s12" name="kds">
 
-		<div ng-show="status" class="input-field col s12">
+	<form class="col s12" name="kds" ng-if="Params.username == ''">
+
+		<center> <h1> Parametros </h1> </center>
+
+		<div class="input-field col s12">
+							
+			<i class="material-icons prefix">dns</i>
+			<input ng-model="Params.ipadd" name="Params.ipadd" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+"ng-blur="consultState()" >
+			<label>IP </label>
+
+
+		</div>
+
+		<div class="input-field col s12">
 							
 			<i class="material-icons prefix">account_circle</i>
 			<input ng-model="Params.username"  name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+">
@@ -13,7 +22,7 @@
 
 		</div>
 
-		<div ng-show="status" class="input-field col s12">
+		<div class="input-field col s12">
 							
 			<i class="material-icons prefix">vpn_key</i>
 			<input ng-model="Params.passwd" name="Params.passwd" id="Params.passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
@@ -21,14 +30,7 @@
 			<span ng-show="!kds.$pristine && kds.Params.passwd.$error.required"> El nombre de usuario es requerido.</span>
 		</div>
 
-		<div ng-show="status" class="input-field col s12">
-							
-			<i class="material-icons prefix">dns</i>
-			<input ng-model="Params.ipadd" name="Params.ipadd" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+"ng-blur="consultState()" >
-			<label>IP </label>
-
-
-		</div>
+		
 
 		<h1> {{ servicioStatus.estado }} </h1>
 

@@ -14,7 +14,8 @@ from common.ansible_manage import Runner
 from tasks import add, tail_logger
 from subprocess import check_output
 from common.tail_f import TailLog
-import os
+from common.yml_parse import parseYaml
+import os, traceback
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SERVICEDIR = BASE_DIR + '/data/services'
@@ -113,17 +114,18 @@ class ServiceConfigResource(APIView):
         
         #tail = TailLog(BASE_DIR+"/", 'playbook-log')
 
-        if recipe_Name:
+        if recipe_Name != '':
 
             try:
                 
                 SERVICE = CharmDirectory(get_path([SERVICEDIR, recipe_Name]))
-                
+                                
                 config = {}
 
                 campos = []
 
                 for k, v in SERVICE.config._data.iteritems():
+
                     d = {}
                     d['field_name'] = k
                     d['nombre'] = v.get('name', None)
@@ -151,7 +153,7 @@ class ServiceConfigResource(APIView):
 
         logger_tail = BASE_DIR + '/playbook-log'
 
-        preferences = open(logger_tail, 'w') # Indicamos el valor 'w'.
+        preferences = open(logger_tail, 'w')
         preferences.write(' ')
         preferences.close()
 
@@ -166,6 +168,8 @@ class ServiceConfigResource(APIView):
         play_log = tail_logger.delay()
 
         """
+        Esta es la manera de ejecutar la receta sin celery:
+
         runner = Runner(
                 request.data['config']['ipadd'], 
                 request.data['config']['username'], 
@@ -183,7 +187,7 @@ class ServiceConfigResource(APIView):
 
         """
 
-        preferences = open(logger_tail, 'a') # Indicamos el valor 'w'.
+        preferences = open(logger_tail, 'a') 
         preferences.write('Finnish.\n')
         preferences.close()
 
@@ -197,33 +201,76 @@ class ServiceStatus(APIView):
 
     def get(self, request, format=None):
         
+        """
+        Variables pasadas por el cliente:
+        
+            service_name: Nombre del servicio.
+            host: Ip donde el servicio va hacer instalado.
+
+        """
+
         service_name = request.query_params.get('name', None)
         host = request.query_params.get('host', None)
-        paquete = request.query_params.get('paquete', None)
-        service = {}
+        
+        #
+        config = {}
+        #Diccionario que contiene toda la info de los servicios de la receta.
+        servicios = []
 
+        #Verificamos que hallan pasado el nombre del servicio y el host
         if service_name and host != '':
 
-            consult = 'ssh kds@' + str(host) + ' dpkg -l vim | ' +   str(paquete)  + '  ii | cut -d "v" -f1'
+            try:
 
-            service = {}
+                #Guardamos en una variable la data del servicio contenida en un yaml
+                SERVICE = parseYaml(SERVICEDIR + '/' + service_name , '/config.yaml' )
+                
+                #Procedemos a llenar la data del servicio.
+                for k, v in SERVICE['consult'].iteritems():
+                    d = {}
+                    d['service'] = k
+                    d['nombre'] = v.get('name', None)
+                    d['description'] = v.get('description', None)
+                    d['status'] = 'Desintalado'
+                    d['run'] = 'Offline'
 
-            service['estado'] = 'Desintalado'
+                    #Comprobaremos si el servicio esta instalado.
+                    consult = 'ssh kds@' + str(host) + ' dpkg -l ' + str(d['service']) + ' grep  ii | cut -d "v" -f1'
 
-            command_line = shlex.split(consult)
-            
-            command_line = check_output(command_line)
+                    #Tipo de error:CalledProcessError
 
-            command_line = command_line.strip('\n')
+                    command_install = shlex.split(consult)
+                    
+                    command_install = check_output(command_install)
 
-            if command_line:
+                    command_install = command_line.strip('\n')
 
-                service['estado'] = 'Instalado'
+                    if command_line:
 
-                return Response(service)
+                        d['status'] = 'Instalado'
 
-            return Response(service)
+                    #Comprobaremos si el servicio esta corriendo.
 
-        service['estado'] = 'Ingrese una ip valida'
-        
-        return Response(service)
+                    consult = 'ssh kds@' + str(host) + ' /etc/init.d/' +  str(d['service']) + ' status | grep active | cut -d " " -f5'
+
+                    command_running = shlex.split(consult)
+                    
+                    command_running = check_output(command_running)
+
+                    command_running = command_line.strip('\n')
+
+                    if command_running:
+
+                        d['run'] = 'Online'
+
+
+                    servicios.append(d)
+
+            except Exception,e: 
+                config['error'] = str(e)
+
+                print str(e)
+
+                return Response(config)
+
+        return Response(config)

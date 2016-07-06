@@ -16,9 +16,19 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
         $scope.band = false;
         $scope.msj_logger = true;
   
-    	/* Hacemo una consulta y le pasamos el nombre de la receta */
-        $scope.Params = Recipe.get({name:$routeParams.name});
+    	/* Funcion que retorna los parametros de una receta
 
+			1. Recibe como parametro el nombre de la receta
+			   a consultar.
+    	 
+    	 */
+        Recipe.get({name:$routeParams.name})
+        .$promise.then(function(data) {
+
+        		$scope.Params = data;
+      			
+    	});
+        	
         /* Funcion para consultar el estado del servicio en un host*/
         $scope.consultState = function() {
 
@@ -26,16 +36,18 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 				1. El nombre del servicio.
 				2. La ip de la maquina.
         	*/
-        	$scope.servicioStatus = Status.get({name:$routeParams.name, host:$scope.Params.ipadd});
+        	$scope.instalado = false;
+        	$scope.desintalado = false;
 
-        	if ($scope.servicioStatus.status == 'Instalado'){
+        	/* Consultamos el status del servicio en la ip especificada*/
+        	Status.get({name:$routeParams.name, host:$scope.ip})
+        	.$promise.then(function(data) {
 
-        		$scope.instalado = true;
-
-        	} else {
-
-        		$scope.desintalado = true;
-        	}
+        		$scope.servicioStatus = data;
+      			
+      			//console.log($scope.servicioStatus);
+    		});
+        	
         }
  
 	    /* Funcion para desplegar el servicio */
@@ -134,13 +146,16 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
           
     }
 
-ManageControllers.controller('statusServiceController', ['$scope', '$location', '$routeParams', 'Status', statusServiceController]);
+ManageControllers.controller('statusServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', statusServiceController]);
 
-	function statusServiceController($scope, $location, $routeParams, Status){
+	function statusServiceController($scope, $location, $routeParams, Status, dataService){
 
        	$scope.ip = '';
 
        	$scope.name = $routeParams.name;
+
+       	$scope.servicioStatus = {};
+       	$scope.servicioStatus.error = '';
 
 		/* Funcion para consultar el estado del servicio en un host*/
         $scope.consultState = function() {
@@ -149,37 +164,77 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 				1. El nombre del servicio.
 				2. La ip de la maquina.
         	*/
-
         	$scope.instalado = false;
         	$scope.desintalado = false;
 
-        	console.log($scope.ip);
+        	/* Consultamos el status del servicio en la ip especificada*/
+        	Status.get({name:$routeParams.name, host:$scope.ip})
+        	.$promise.then(function(data) {
 
-        	$scope.servicioStatus = Status.get({name:$routeParams.name, host:$scope.ip});
+        		$scope.servicioStatus = data;
 
-        	console.log($scope.servicioStatus);
+        		$scope.servicioStatus.recipe = $routeParams.name;
 
-        	if ($scope.servicioStatus.status == 'Instalado'){
+        		$scope.servicioStatus.ip = $scope.ip;
 
-        		$scope.instalado = true;
+        		console.log($scope.servicioStatus)
 
-        	} else {
+        		dataService.setData($scope.servicioStatus);
+  
+  				/* Hacemos una validacion para saber que botones (instalar, desintalar etc) 
+  				    mostrar en la interfaz*/
+        		angular.forEach($scope.servicioStatus.services, function(services) {
+				
+			  		if(services.status == 'Instalado'){
 
-        		$scope.desintalado = true;
-        	}
+			  			$scope.instalado = true;
+
+			  		} else {
+
+			  			$scope.desintalado = true;
+
+			  		}
+
+				});
+			
+    		});
+        	
         }
 
 	}
 
-ManageControllers.controller('consultServiceController', ['$scope', '$location', '$routeParams', 'Status', consultServiceController]);
+ManageControllers.controller('consultServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', consultServiceController]);
 
-	function consultServiceController($scope, $location, $routeParams, Status){
+	function consultServiceController($scope, $location, $routeParams, Status, dataService){
 
 		$scope.name = $routeParams.name;
 		
-    	$scope.servicioStatus = Status.get({name:$routeParams.name, host:$routeParams.host});
+		$scope.servicioStatus = dataService.getData();
 
     	console.log($scope.servicioStatus);
+
+    	/* Funcion para reiniciar los servicios */
+    	$scope.restartService = function() {
+
+			/* Ejecutamos la funcion save del servicio pasandole la lista
+	           de parametros */
+	       Status.save({
+	            data: $scope.servicioStatus
+	        },
+	        function(resp, headers){
+	          //success callback
+	          console.log(resp);
+	        
+	          //$location.path('/');
+
+	        },
+	        function(err){
+	          // error callback
+	          console.log(err);
+
+	        });
+
+    	}
 
     }
 

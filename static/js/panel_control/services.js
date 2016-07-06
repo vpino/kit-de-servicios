@@ -48,6 +48,12 @@ ManageServices.factory('Status', ['$resource',
            }
         },
 
+      /* Funcion que reinicia los servicios */
+      save: {
+            params: {data: '@data'},
+            method: 'POST'
+        }
+
     });
   }]);
 
@@ -82,3 +88,17 @@ ManageServices.service('WSService', function($q) {
     }
 
 });
+
+ManageServices.service('dataService', function () {
+
+        var data = {};
+
+        return {
+            getData: function () {
+                return data;
+            },
+            setData: function(value) {
+                data = value;
+            }
+        };
+    })

@@ -1,29 +1,29 @@
 
 <div class="row">
 
-	<center> <h1> Monotorio de los Servicios </h1> </center>
+	<center> <h2> Monitoreo </h2> </center>
 
-	<h3> {{name}} </h3>
+	<h3> {{servicioStatus.name}} </h3>
 
 	<br><br>
 
 	<div class="row" data-ng-repeat="service in servicioStatus.services">
 
 			<p ng-if="service.run=='Online'">
-      			<input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
-      			<label for="filled-in-box">{{ service.nombre }} </label>
+      			<input type="checkbox" class="filled-in" id="{{service.nombre}}" checked="checked" />
+      			<label for="{{service.nombre}}">{{ service.nombre }} </label>
     		</p>
 
     		<p ng-if="service.run=='Offline'">
-      			<input type="checkbox" class="filled-in" id="filled-in-box"/>
-      			<label for="filled-in-box">{{ service.nombre }} </label>
+      			<input type="checkbox" class="filled-in" id="{{service.nombre}}"/>
+      			<label for="{{service.nombre}}">{{ service.nombre }} </label>
     		</p>
 
 	</div>
 
 	<center> 
 
-		<a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>Reinciar los Servicios</a>
+		<a class="waves-effect waves-light btn" ng-click="restartService()"><i class="material-icons left">cloud</i>Reinciar los Servicios</a>
 		<a class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Cancelar</a>
 
 	</center>

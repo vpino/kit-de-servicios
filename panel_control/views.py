@@ -12,10 +12,9 @@ from common.recipes.recipe import RecipeDir
 from common.utils import get_path
 from common.ansible_manage import Runner
 from tasks import add, tail_logger
-from subprocess import check_output
+from subprocess import CalledProcessError, check_output
 from common.tail_f import TailLog
 from common.yml_parse import parseYaml
-import os, traceback
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SERVICEDIR = BASE_DIR + '/data/services'
@@ -153,6 +152,7 @@ class ServiceConfigResource(APIView):
 
         logger_tail = BASE_DIR + '/playbook-log'
 
+        """
         preferences = open(logger_tail, 'w')
         preferences.write(' ')
         preferences.close()
@@ -168,7 +168,7 @@ class ServiceConfigResource(APIView):
         play_log = tail_logger.delay()
 
         """
-        Esta es la manera de ejecutar la receta sin celery:
+        #Esta es la manera de ejecutar la receta sin celery:
 
         runner = Runner(
                 request.data['config']['ipadd'], 
@@ -180,18 +180,18 @@ class ServiceConfigResource(APIView):
 
         a = runner.run()
 
+        """
         print 'Task log finished? ', play_log.ready()
 
         print 'Task playbook finished? ', result.ready()
         print 'Task result: ', result.get()
 
-        """
-
         preferences = open(logger_tail, 'a') 
         preferences.write('Finnish.\n')
         preferences.close()
+        """
 
-        return Response(result.get(), status=status.HTTP_201_CREATED)
+        return Response(a, status=status.HTTP_201_CREATED)
 
 
 class ServiceStatus(APIView):
@@ -216,6 +216,8 @@ class ServiceStatus(APIView):
         #Diccionario que contiene toda la info de los servicios de la receta.
         servicios = []
 
+        config['error'] = ''
+
         #Verificamos que hallan pasado el nombre del servicio y el host
         if service_name and host != '':
 
@@ -235,9 +237,7 @@ class ServiceStatus(APIView):
 
                     #Comprobaremos si el servicio esta instalado.
                     consult = 'ssh kds@' + str(host) + ' dpkg -l ' + str(d['service']) + ' grep ii | cut -d "v" -f1'
-
-                    #Tipo de error:CalledProcessError
-
+              
                     command_install = shlex.split(consult)
                     
                     command_install = check_output(command_install)
@@ -248,30 +248,61 @@ class ServiceStatus(APIView):
 
                         d['status'] = 'Instalado'
 
-                    #Comprobaremos si el servicio esta corriendo.
+                        #Comprobaremos si el servicio esta corriendo.
+                        consult = 'ssh kds@' + str(host) + ' echo 11 | sudo -S service ' +  str(d['service']) + ' status | grep active | cut -d " " -f5'
 
-                    consult = 'ssh kds@' + str(host) + ' echo 11 | sudo -S service ' +  str(d['service']) + ' status | grep active | cut -d "active" -f5'
+                        command_running = os.system(consult)
 
-                    command_running = os.system(consult)
+                        if command_running == 'active':
 
-                    #command_running = shlex.split(consult)
-
-                    #command_running = check_output(command_running)
-
-                    #command_running = command_running.strip('\n')
-
-                    if command_running == 'active':
-
-                        d['run'] = 'Online'
+                            d['run'] = 'Online'
 
                     servicios.append(d)
 
                 config['services'] = servicios
 
+            except IOError, e:
 
-            except Exception,e: 
-                config['error'] = str(e)
+                config['error'] = "El Servicio que intenta instalar no esta disponible."
+
+                return Response(config)
+
+            except CalledProcessError, e: 
+                config['error'] = "La ip digitada es incorrecta."
 
                 return Response(config)
 
         return Response(config)
+
+
+    def post(self, request, *args, **kwargs):
+
+        print request.data
+
+        config = {}
+        servicios = []
+
+        if request.data != '':
+
+            for service in request.data['data']['services']:
+
+                d = {}
+                d['service'] = service['nombre']
+                d['run'] = service['run']
+
+                print request.data['data']['ip']
+
+                #Comprobaremos si el servicio esta corriendo.
+                consult = 'ssh kds@' + request.data['data']['ip'] + ' echo 11 | sudo -S service ' +  service['nombre'] + ' restart | grep -E "failed" | cut -d ":" -f2 | cut -d " " -f3'
+
+                command_install = os.system(consult)
+
+                d['run']= command_install
+
+                servicios.append(d)
+
+            config['services'] = servicios
+        
+        return Response(config)
+
+        

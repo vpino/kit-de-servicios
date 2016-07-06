@@ -19,11 +19,11 @@ function($routeProvider, $locationProvider) {
       templateUrl: 'static/partials/panel.html',
       controller: 'statusServiceController'
     }).
-    when('/recipe/:name', {
+    when('/recipe/:name/:host', {
       templateUrl: 'static/partials/recipe.html',
       controller: 'recipeController'
     }).
-    when('/consult/:name/:host', {
+    when('/consult/:name', {
       templateUrl: 'static/partials/consult.html',
       controller: 'consultServiceController'
     }).

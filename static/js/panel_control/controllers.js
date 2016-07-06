@@ -6,9 +6,9 @@
 var ManageControllers = angular.module('ManageControllers', []);
 
 /* Declaro un controlador que manejara las acciones de los servicios */
-ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', 'Status', 'WSService', recipeController]);
+ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', 'WSService', recipeController]);
 
-    function recipeController($scope, $location, $routeParams, Recipe, Status, WSService){
+    function recipeController($scope, $location, $routeParams, Recipe, WSService){
         
         $scope.status = true;
         $scope.msj = true;
@@ -26,30 +26,10 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
         .$promise.then(function(data) {
 
         		$scope.Params = data;
+        		$scope.Params.ipadd = $routeParams.host
       			
     	});
         	
-        /* Funcion para consultar el estado del servicio en un host*/
-        $scope.consultState = function() {
-
-        	/* Le pasamos 2 parametros:
-				1. El nombre del servicio.
-				2. La ip de la maquina.
-        	*/
-        	$scope.instalado = false;
-        	$scope.desintalado = false;
-
-        	/* Consultamos el status del servicio en la ip especificada*/
-        	Status.get({name:$routeParams.name, host:$scope.ip})
-        	.$promise.then(function(data) {
-
-        		$scope.servicioStatus = data;
-      			
-      			//console.log($scope.servicioStatus);
-    		});
-        	
-        }
- 
 	    /* Funcion para desplegar el servicio */
 		$scope.deployService = function(config, action) {
 
@@ -187,6 +167,7 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 				
 			  		if(services.status == 'Instalado'){
 
+			  			console.log(services.status)
 			  			$scope.instalado = true;
 
 			  		} else {
@@ -211,7 +192,7 @@ ManageControllers.controller('consultServiceController', ['$scope', '$location',
 		
 		$scope.servicioStatus = dataService.getData();
 
-    	console.log($scope.servicioStatus);
+		$scope.servicioStatus.error = '';
 
     	/* Funcion para reiniciar los servicios */
     	$scope.restartService = function() {
@@ -222,15 +203,18 @@ ManageControllers.controller('consultServiceController', ['$scope', '$location',
 	            data: $scope.servicioStatus
 	        },
 	        function(resp, headers){
-	          //success callback
-	          console.log(resp);
+				/* success callback */
+				console.log(resp);
 	        
-	          //$location.path('/');
+	        	$scope.servicioStatus = resp;
+	        	//$location.path('/');
 
 	        },
 	        function(err){
-	          // error callback
-	          console.log(err);
+				/* error callback */
+				console.log(err);
+
+				$scope.servicioStatus = err;
 
 	        });
 

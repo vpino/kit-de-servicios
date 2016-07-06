@@ -1,4 +1,4 @@
-import nmap, shlex, netifaces, json, os
+import nmap, shlex, netifaces, json, os, subprocess
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from django.http import Http404
 from django.template import RequestContext
@@ -12,7 +12,6 @@ from common.recipes.recipe import RecipeDir
 from common.utils import get_path
 from common.ansible_manage import Runner
 from tasks import add, tail_logger
-from subprocess import CalledProcessError, check_output
 from common.tail_f import TailLog
 from common.yml_parse import parseYaml
 
@@ -152,7 +151,6 @@ class ServiceConfigResource(APIView):
 
         logger_tail = BASE_DIR + '/playbook-log'
 
-        """
         preferences = open(logger_tail, 'w')
         preferences.write(' ')
         preferences.close()
@@ -168,7 +166,7 @@ class ServiceConfigResource(APIView):
         play_log = tail_logger.delay()
 
         """
-        #Esta es la manera de ejecutar la receta sin celery:
+        Esta es la manera de ejecutar la receta sin celery:
 
         runner = Runner(
                 request.data['config']['ipadd'], 
@@ -182,16 +180,14 @@ class ServiceConfigResource(APIView):
 
         """
         print 'Task log finished? ', play_log.ready()
-
         print 'Task playbook finished? ', result.ready()
         print 'Task result: ', result.get()
 
         preferences = open(logger_tail, 'a') 
         preferences.write('Finnish.\n')
         preferences.close()
-        """
-
-        return Response(a, status=status.HTTP_201_CREATED)
+        
+        return Response(result.get(), status=status.HTTP_201_CREATED)
 
 
 class ServiceStatus(APIView):
@@ -222,7 +218,6 @@ class ServiceStatus(APIView):
         if service_name and host != '':
 
             try:
-
                 #Guardamos en una variable la data del servicio contenida en un yaml
                 SERVICE = parseYaml(SERVICEDIR + '/' + service_name , '/config.yaml' )
                 
@@ -236,23 +231,29 @@ class ServiceStatus(APIView):
                     d['run'] = 'Offline'
 
                     #Comprobaremos si el servicio esta instalado.
-                    consult = 'ssh kds@' + str(host) + ' dpkg -l ' + str(d['service']) + ' grep ii | cut -d "v" -f1'
-              
-                    command_install = shlex.split(consult)
+                    consult = 'ssh kds@' + str(host) + ' dpkg -l ' + str(d['service']) + ' | grep ' + str(d['service']) + ' | cut -d " " -f1'
                     
-                    command_install = check_output(command_install)
+                    print consult
 
-                    command_install = command_install.strip('\n')
+                    command_install = subprocess.Popen(consult, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                    
+                    command_install = command_install.stdout.read().strip('\n')
 
-                    if command_install:
+                    command_install = command_install.split(':')
+
+                    print command_install[1]
+
+                    if command_install[1] == 'un':
 
                         d['status'] = 'Instalado'
 
                         #Comprobaremos si el servicio esta corriendo.
                         consult = 'ssh kds@' + str(host) + ' echo 11 | sudo -S service ' +  str(d['service']) + ' status | grep active | cut -d " " -f5'
 
-                        command_running = os.system(consult)
-
+                        command_running = subprocess.Popen(consult, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                    
+                        command_running = command_running.stdout.read().strip('\n')
+                    
                         if command_running == 'active':
 
                             d['run'] = 'Online'
@@ -277,32 +278,48 @@ class ServiceStatus(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        print request.data
-
         config = {}
         servicios = []
 
+        config['error'] = ''
+
         if request.data != '':
+            
+            try:
+                
+                for service in request.data['data']['services']:
 
-            for service in request.data['data']['services']:
+                    d = {}
+                    d['service'] = service['service']
+                    d['run'] = service['run']
 
-                d = {}
-                d['service'] = service['nombre']
-                d['run'] = service['run']
+                    #Comprobaremos si el servicio esta corriendo.
+                    consult = 'ssh kds@' + request.data['data']['ip'] + ' echo 11 | sudo -S service ' +  service['service'] + ' restart | grep -E "failed" | cut -d ":" -f2 | cut -d " " -f3'
 
-                print request.data['data']['ip']
+                    command_restart = os.system(consult)
+                    
+                    if command_restart:
 
-                #Comprobaremos si el servicio esta corriendo.
-                consult = 'ssh kds@' + request.data['data']['ip'] + ' echo 11 | sudo -S service ' +  service['nombre'] + ' restart | grep -E "failed" | cut -d ":" -f2 | cut -d " " -f3'
+                        service['run'] = 'Online'
 
-                command_install = os.system(consult)
+                    else:
 
-                d['run']= command_install
+                        service['run'] = 'Offline'
 
-                servicios.append(d)
+                        config['error'] = "No se pudo reiniciar los servicios"
 
-            config['services'] = servicios
-        
+                    servicios.append(d)
+
+                config['services'] = servicios
+                config['ip'] = request.data['data']['ip']
+                config['recipe'] = request.data['data']['recipe']
+
+            except IOError, e:
+
+                config['error'] = e
+
+                return Response(config)
+
         return Response(config)
 
         

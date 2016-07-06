@@ -1,17 +1,8 @@
 <div class="row">
 
-	<form class="col s12" name="kds"">
+	<form class="col s12" name="kds">
 
 		<center> <h1> Parametros </h1> </center>
-
-		<div class="input-field col s12">
-							
-			<i class="material-icons prefix">dns</i>
-			<input ng-model="Params.ipadd" name="Params.ipadd" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+"ng-blur="consultState()" >
-			<label>IP </label>
-
-
-		</div>
 
 		<div class="input-field col s12">
 							
@@ -30,10 +21,6 @@
 			<span ng-show="!kds.$pristine && kds.Params.passwd.$error.required"> El nombre de usuario es requerido.</span>
 		</div>
 
-		
-
-		<h1> {{ servicioStatus.estado }} </h1>
-
 		<div class="row" data-ng-repeat="service in Params.campos">
 
 			<div class="row" ng-show="status"> 
@@ -47,45 +34,6 @@
 						<label class="active">{{service.nombre}}</label>
 
 					</div>
-
-				</div>
-
-				<div ng-if="service.tipo=='boolean'">
-
-					<div class="input-field col s12">
-							
-						<i class="material-icons prefix">description</i>
-						<input ng-model="service.default"  id="service.nombre" type="text" class="validate">
-						<label>Default</label>
-
-					</div>
-
-					<div class="input-field col s12"> 
-						<i class="material-icons prefix">vpn_key</i>
-						<input id="nombre" type="text" class="validate" id='nombre' ng-model="nombre" >
-						<label>Nombre</label>
-
-					</div>
-
-					<div class="input-field col s12">
-
-						<i class="material-icons prefix">textsms</i>
-						<input id="field_name" type="text" class="validate" id='field_name' ng-model="field_name" >
-						<label>Field Name</label>
-
-					</div>
-
-					<div class="input-field col s12">
-						<p>
-					    	<input type="checkbox" id="True" />
-					    	<label for="True">True</label>
-
-					    	<input type="checkbox" id="False" />
-					    	<label for="False">False</label>
-					   
-					    </p>
-
-				    </div>
 
 				</div>
 
@@ -103,7 +51,6 @@
 
 				</div>
 				
-
 			</div>
 
 		</div>
@@ -230,32 +177,13 @@
 					
 					<li>
 
-						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Instalar')" ng-disabled="!(kds.$valid && desintalado)">
+						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Instalar')" ng-disabled="!(kds.$valid)">
 							<i class="material-icons">
 							add
 							</i>
 						</button>
 
 					</li>
-
-					<li>
-
-						<button type="submit" class="btn-floating red darken-1" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!(kds.$valid && instalado)">
-							<i class="material-icons">
-							mode_edit
-							</i>
-						</button>
-
-					</li>
-
-					<li>
-						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Desintalar')" ng-disabled="!(kds.$valid && instalado)">
-							<i class="material-icons">
-							delete
-							</i>
-
-						</button>
-					</li>	
 
 				</ul>
 

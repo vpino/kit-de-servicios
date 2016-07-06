@@ -3,22 +3,40 @@
 
 	<center> <h2> Monitoreo </h2> </center>
 
-	<h3> {{servicioStatus.name}} </h3>
+	<h3> {{servicioStatus.recipe}} </h3>
 
 	<br><br>
+
 
 	<div class="row" data-ng-repeat="service in servicioStatus.services">
 
 			<p ng-if="service.run=='Online'">
-      			<input type="checkbox" class="filled-in" id="{{service.nombre}}" checked="checked" />
-      			<label for="{{service.nombre}}">{{ service.nombre }} </label>
+
+				<i class="small material-icons">done_all</i>
+      			<label> {{ service.service }} </label>
+      			
     		</p>
 
     		<p ng-if="service.run=='Offline'">
-      			<input type="checkbox" class="filled-in" id="{{service.nombre}}"/>
-      			<label for="{{service.nombre}}">{{ service.nombre }} </label>
+    		    <i class="small material-icons">report_problem</i>
+      			<label>  {{ service.service }}  </label>
     		</p>
 
+	</div>
+
+	<div ng-if="!!servicioStatus.error">
+		
+		<div class="card-panel">
+			
+			<p> 
+				<i class="medium material-icons waves-effect waves-light">
+					report_problem
+				</i>
+				{{servicioStatus.error}}
+			 </p>
+
+		</div>
+		
 	</div>
 
 	<center> 

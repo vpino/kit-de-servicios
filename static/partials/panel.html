@@ -12,14 +12,10 @@
 
 	</div>
 
-
-
 	<div class="col s2">
-
 		
 		<i class="medium material-icons waves-effect waves-light teal lighten-2" ng-click="consultState(ip)">done</i>
-		
-		
+				
 	</div>
 
 	<br><br><br><br><br>
@@ -35,10 +31,9 @@
 				</i>
 				{{servicioStatus.error}}
 			 </p>
+
 		</div>
 		
-		
-
 	</div>
 
 	<div ng-if="servicioStatus.error == '' ">
@@ -46,8 +41,10 @@
 		<div class="col s12" ng-show="desintalado">
 			
 			<div class="chip">
-		    Instalar
-		    <i class="material-icons" ng-disabled="!desintalado">add</i>
+			    Instalar
+			    <a ng-href="/recipe/{{name}}/{{ip}}">
+			    	<i class="material-icons" ng-disabled="!desintalado">add</i>
+			    </a>
 		  	</div>
 
 		</div>
@@ -68,10 +65,10 @@
 		<div class="col s12" ng-show="instalado">
 			
 			<div class="chip">
-		    Consultar
-		    <a ng-href="/consult/{{name}}/{{ip}}">
-					<i class="material-icons" ng-disabled="!instalado">search</i>
-			</a>
+		    	Consultar
+			    <a ng-href="/consult/{{name}}/{{ip}}">
+						<i class="material-icons" ng-disabled="!instalado">search</i>
+				</a>
 		  	</div>
 
 		</div>

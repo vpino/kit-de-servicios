@@ -167,13 +167,13 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 				
 			  		if(services.status == 'Instalado'){
 
-			  			console.log(services.status)
 			  			$scope.instalado = true;
+			  			$scope.desintalado = false;
 
 			  		} else {
 
 			  			$scope.desintalado = true;
-
+			  			$scope.instalado = false;
 			  		}
 
 				});

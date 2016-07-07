@@ -239,11 +239,7 @@ class ServiceStatus(APIView):
                     
                     command_install = command_install.stdout.read().strip('\n')
 
-                    command_install = command_install.split(':')
-
-                    print command_install[1]
-
-                    if command_install[1] == 'un':
+                    if command_install == 'ii':
 
                         d['status'] = 'Instalado'
 
@@ -268,7 +264,8 @@ class ServiceStatus(APIView):
 
                 return Response(config)
 
-            except CalledProcessError, e: 
+            except Exception, e: 
+
                 config['error'] = "La ip digitada es incorrecta."
 
                 return Response(config)

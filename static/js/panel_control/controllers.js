@@ -138,7 +138,7 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
        	$scope.servicioStatus.error = '';
 
 		/* Funcion para consultar el estado del servicio en un host*/
-        $scope.consultState = function() {
+        $scope.queryState = function() {
 
         	/* Le pasamos 2 parametros:
 				1. El nombre del servicio.
@@ -184,9 +184,9 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 
 	}
 
-ManageControllers.controller('consultServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', consultServiceController]);
+ManageControllers.controller('queryServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', queryServiceController]);
 
-	function consultServiceController($scope, $location, $routeParams, Status, dataService){
+	function queryServiceController($scope, $location, $routeParams, Status, dataService){
 
 		$scope.name = $routeParams.name;
 		

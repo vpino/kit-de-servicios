@@ -1,5 +1,4 @@
-Logger.
-PLAY [Install Mail Server with postfix, dovecot, sqmail or roundcube]
+ PLAY [Install Mail Server with postfix, dovecot, sqmail or roundcube]
 TASK [setup]
 ok: [172.17.0.2]
 ok: [172.17.0.2]

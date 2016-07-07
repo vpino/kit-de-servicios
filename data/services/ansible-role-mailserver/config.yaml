@@ -11,11 +11,24 @@ options:
     description: nombre dominio completo del servicio de correo
     type: string
 
-consult:
+update:
+  user:
+    name: nombre
+    default: jaimito
+    description: Nombre del correo 
+    type: string
+
+  passwd:
+    name: contraseña
+    default: ''
+    description: Contraseña del correo 
+    type: password
+    
+query:
   postfix:
-    name: postfix
+    package: postfix
     description: no se pa que es
 
   dovecot:
-    name: dovecot
+    package: dovecot-imapd
     description: no se pa que es

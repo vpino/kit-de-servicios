@@ -209,6 +209,7 @@ class ServiceStatus(APIView):
         
         #
         config = {}
+
         #Diccionario que contiene toda la info de los servicios de la receta.
         servicios = []
 
@@ -222,37 +223,41 @@ class ServiceStatus(APIView):
                 SERVICE = parseYaml(SERVICEDIR + '/' + service_name , '/config.yaml' )
                 
                 #Procedemos a llenar la data del servicio.
-                for k, v in SERVICE['consult'].iteritems():
+                for k, v in SERVICE['query'].iteritems():
                     d = {}
                     d['service'] = k
-                    d['nombre'] = v.get('name', None)
+                    d['package'] = v.get('package', None)
                     d['description'] = v.get('description', None)
                     d['status'] = 'Desintalado'
                     d['run'] = 'Offline'
 
                     #Comprobaremos si el servicio esta instalado.
-                    consult = 'ssh kds@' + str(host) + ' dpkg -l ' + str(d['service']) + ' | grep ' + str(d['service']) + ' | cut -d " " -f1'
+                    query = 'ssh kds@' + str(host) + ' dpkg -l ' + str(d['package']) + ' | grep ' + str(d['package']) + ' | cut -d " " -f1'
+                  
+                    command_install = subprocess.Popen(query, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     
-                    print consult
+                    check_success, check_err = command_install.communicate()
 
-                    command_install = subprocess.Popen(consult, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-                    
-                    command_install = command_install.stdout.read().strip('\n')
-
-                    if command_install == 'ii':
+                    if check_success.strip('\n') == 'ii':
 
                         d['status'] = 'Instalado'
 
                         #Comprobaremos si el servicio esta corriendo.
-                        consult = 'ssh kds@' + str(host) + ' echo 11 | sudo -S service ' +  str(d['service']) + ' status | grep active | cut -d " " -f5'
+                        query = 'ssh kds@' + str(host) + ' echo 11 | sudo -S service ' +  str(d['service']) + ' status | grep active | cut -d " " -f5'
 
-                        command_running = subprocess.Popen(consult, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                        command_running = subprocess.Popen(query, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     
-                        command_running = command_running.stdout.read().strip('\n')
+                        running_success, running_err = command_running.communicate()
                     
-                        if command_running == 'active':
+                        if running_success.strip('\n') == 'active':
 
                             d['run'] = 'Online'
+
+                    if check_err != '':
+
+                        if check_err.split(':')[0] == 'ssh':
+
+                            config['error'] = "La ip digitada es incorrecta y/o presenta problemas."
 
                     servicios.append(d)
 
@@ -261,12 +266,6 @@ class ServiceStatus(APIView):
             except IOError, e:
 
                 config['error'] = "El Servicio que intenta instalar no esta disponible."
-
-                return Response(config)
-
-            except Exception, e: 
-
-                config['error'] = "La ip digitada es incorrecta."
 
                 return Response(config)
 
@@ -291,11 +290,13 @@ class ServiceStatus(APIView):
                     d['run'] = service['run']
 
                     #Comprobaremos si el servicio esta corriendo.
-                    consult = 'ssh kds@' + request.data['data']['ip'] + ' echo 11 | sudo -S service ' +  service['service'] + ' restart | grep -E "failed" | cut -d ":" -f2 | cut -d " " -f3'
+                    query = 'ssh kds@' + request.data['data']['ip'] + ' echo 11 | sudo -S service ' +  service['service'] + ' restart | grep -E "failed" | cut -d ":" -f2 | cut -d " " -f3'
 
-                    command_restart = os.system(consult)
+                    command_restart = subprocess.Popen(query, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     
-                    if command_restart:
+                    restart_success, restart_err = command_restart.communicate()
+                    
+                    if restart_success != '':
 
                         service['run'] = 'Online'
 
@@ -303,7 +304,7 @@ class ServiceStatus(APIView):
 
                         service['run'] = 'Offline'
 
-                        config['error'] = "No se pudo reiniciar los servicios"
+                        config['error'] = config['error'] + restart_err
 
                     servicios.append(d)
 

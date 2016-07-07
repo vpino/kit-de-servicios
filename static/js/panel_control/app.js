@@ -23,9 +23,13 @@ function($routeProvider, $locationProvider) {
       templateUrl: 'static/partials/recipe.html',
       controller: 'recipeController'
     }).
-    when('/consult/:name', {
-      templateUrl: 'static/partials/consult.html',
-      controller: 'consultServiceController'
+    when('/update/:name/:host', {
+      templateUrl: 'static/partials/update.html',
+      controller: 'recipeController'
+    }).
+    when('/query/:name/:host', {
+      templateUrl: 'static/partials/query.html',
+      controller: 'queryServiceController'
     }).
     otherwise({
       redirectTo: '/'

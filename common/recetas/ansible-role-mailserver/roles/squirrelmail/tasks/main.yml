@@ -43,7 +43,7 @@
     state: directory
   when: action == 'Instalar'
 
-- name: create fake 'nologin' shell
+- name: Changed permission to /var/spool/mail/
   file: 
     path: /var/spool/mail/
     owner: postfix 
@@ -51,17 +51,21 @@
     mode: 0777
   when: action == 'Instalar'
 
-#- name: all privileges for user of postfix
-#  command: chown postfix:postfix /var/spool/mail
+- name: all privileges for user of postfix
+  command: chown postfix:postfix /var/spool/mail
+  when: action == 'Instalar'
 
-#- name: permission 777 to the directory /var/spool/mail
-#  command: chmod -R 777 /var/spool/mail
+- name: permission 777 to the directory /var/spool/mail
+  command: chmod -R 777 /var/spool/mail
+  when: action == 'Instalar'
 
-#- name: Add user to the correo
-#  command: useradd -m -d /home/usuarios/prueba prueba
+- name: Add user to the correo
+  command: useradd -m -d /home/usuarios/{{user}} {{user}}
+  when: action == 'Actualizar'
 
-#- name: Add usermod /bin/user
-#  command: usermod -s /bin/prueba prueba && passwd prueba 
+- name: Add usermod /bin/user
+  shell: usermod -s /bin/{{user}} {{user}} && echo "{{ user }}:{{ passwd }}" | sudo chpasswd  
+  when: action == 'Actualizar'
 
 - name: ensure all apache services are started
   service:

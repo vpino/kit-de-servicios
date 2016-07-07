@@ -1,0 +1,68 @@
+<div class="row">
+
+	<form class="col s12" name="kds">
+
+		<center> <h1> Modulo de Update </h1> </center>
+
+		<div class="row" data-ng-repeat="campo in Params.campos">
+
+			<div class="row" ng-show="status"> 
+					
+				<div ng-if="campo.tipo=='string'">
+
+					<div class="input-field col s12">
+							
+						<i class="material-icons prefix">description</i>
+						<input ng-model="campo.default"  id="campo.nombre" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+						<label class="active">{{campo.nombre}}</label>
+
+					</div>
+
+				</div>
+
+				<div ng-if="campo.tipo=='password'">
+
+					<i class="material-icons prefix">vpn_key</i>
+					<input ng-model="campo.default" name="campo.nombre" id="campo.nombre" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+					<label>{{campo.nombre}}</label>
+
+				    </div>
+
+				</div>
+				
+			</div>
+
+		</div>
+
+    	<pre ng-show="!msj_logger" class=" language-markup"><code class=" language-markup">{{logger}}</code></pre>
+    
+		
+		<div class="col s12 "> 
+
+			<div class="fixed-action-btn horizontal right-align" style="position: relative;">
+				
+				<a href="#!" class="btn-floating btn-large waves-light">
+					<i class="large material-icons">menu</i>
+				</a>
+
+				<ul>
+					
+					<li>
+
+						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!(kds.$valid)">
+							<i class="material-icons">
+							add
+							</i>
+						</button>
+
+					</li>
+
+				</ul>
+
+			</div>
+
+		</div>
+		
+	</form>
+
+</div>

@@ -13,7 +13,7 @@ ManageServices.factory('Recipe', ['$resource',
       /* Funcion que retorna un json con los parametros que 
          necesita una receta*/
       query: {
-        params: {name: '@name'},
+        params: {name: '@name', action: '@action'},
       	method:'GET',  
       	isArray:true,
         transformResponse: function(data){

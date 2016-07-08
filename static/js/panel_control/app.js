@@ -23,7 +23,7 @@ function($routeProvider, $locationProvider) {
       templateUrl: 'static/partials/recipe.html',
       controller: 'recipeController'
     }).
-    when('/update/:name/:host', {
+    when('/update/:name/:host/:action', {
       templateUrl: 'static/partials/update.html',
       controller: 'recipeController'
     }).

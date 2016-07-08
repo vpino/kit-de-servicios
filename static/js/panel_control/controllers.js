@@ -22,7 +22,7 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 			   a consultar.
     	 
     	 */
-        Recipe.get({name:$routeParams.name})
+        Recipe.get({name:$routeParams.name, action:$routeParams.action})
         .$promise.then(function(data) {
 
         		$scope.Params = data;
@@ -39,18 +39,19 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 
         	promise.then(
 
+        		 /* Funcion que retorna la conexion con el socket */
 				function(evt) { 
 					console.log('resolve : ' + evt); 
 				}, 
 
+				 /* Funcion que retorna el cierre del socket */
 				function(evt) { 
 					console.log('reject : ' + evt); 
 				}, 
-                     
+                    
+                /* Funcion que retorna las notificaciones del socket */ 
 				function(evt) {
 					
-					console.log('notify: ' + evt);
-
 					//Update the scope
 					$scope.logger = $scope.logger.concat(evt);
 				     

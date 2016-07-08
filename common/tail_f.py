@@ -23,3 +23,5 @@ def TailLog(path_log, path_name):
 		        log.seek(where)
 		    else:
 		        redisPublishMessage(line), 
+
+		return 'Finnish'

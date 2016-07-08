@@ -22,7 +22,6 @@
 	
 	<div ng-if="!!servicioStatus.error">
 		
-		
 		<div class="card-panel">
 			
 			<p> 
@@ -42,7 +41,7 @@
 			
 			<div class="chip">
 			    Instalar
-			    <a ng-href="/recipe/{{name}}/{{ip}}">
+			    <a ng-href="/recipe/{{name}}/{{ip}}/install">
 			    	<i class="material-icons" ng-disabled="!desintalado">add</i>
 			    </a>
 		  	</div>
@@ -55,7 +54,7 @@
 			
 			<div class="chip">
 		    Actualizar
-		    	<a ng-href="/update/{{name}}/{{ip}}">
+		    	<a ng-href="/update/{{name}}/{{ip}}/update">
 		    		<i class="material-icons" ng-disabled="!instalado">mode_edit</i>
 		    	</a>
 		  	</div>

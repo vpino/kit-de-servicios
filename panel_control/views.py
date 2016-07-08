@@ -108,36 +108,63 @@ class ServiceConfigResource(APIView):
 
     def get(self, request, format=None):
 
-        recipe_Name = request.query_params.get('name', None)
-        
+        service_name = request.query_params.get('name', None)
+        action = request.query_params.get('action', None)
+
+        print action
         #tail = TailLog(BASE_DIR+"/", 'playbook-log')
 
-        if recipe_Name != '':
+        if service_name != '':
 
             try:
-                
-                SERVICE = CharmDirectory(get_path([SERVICEDIR, recipe_Name]))
-                                
+                    
                 config = {}
 
                 campos = []
 
-                for k, v in SERVICE.config._data.iteritems():
+                if action == 'install':
 
-                    d = {}
-                    d['field_name'] = k
-                    d['nombre'] = v.get('name', None)
-                    d['default'] = v.get('default', None)
-                    d['tipo'] = v.get('type', None)
-                    d['items'] = v.get('items', None)
-                    campos.append(d)
+                    SERVICE = CharmDirectory(get_path([SERVICEDIR, service_name]))
 
-                config['campos'] = campos
-                config['ipadd'] = ''
-                config['username'] = ''
-                config['passwd'] = ''
-                config['receta'] = recipe_Name
-                config['action'] = ''
+                    for k, v in SERVICE.config._data.iteritems():
+
+                        d = {}
+                        d['field_name'] = k
+                        d['nombre'] = v.get('name', None)
+                        d['default'] = v.get('default', None)
+                        d['tipo'] = v.get('type', None)
+                        d['items'] = v.get('items', None)
+                        campos.append(d)
+
+                    config['campos'] = campos
+                    config['ipadd'] = ''
+                    config['username'] = ''
+                    config['passwd'] = ''
+                    config['receta'] = service_name
+                    config['action'] = ''
+
+                if action == 'update':
+
+                    SERVICE = parseYaml(SERVICEDIR + '/' + service_name , '/config.yaml' )
+
+                    print SERVICE
+
+                    for k, v in SERVICE['update'].iteritems():
+
+                        d = {}
+
+                        d['field_name'] = k
+                        d['nombre'] = v.get('name', None)
+                        d['default'] = v.get('default', None)
+                        d['tipo'] = v.get('type', None)
+                        d['items'] = v.get('items', None)
+                        campos.append(d)
+
+                    config['campos'] = campos
+                    config['username'] = ''
+                    config['passwd'] = ''
+                    config['receta'] = service_name
+                    config['action'] = ''
 
                 return Response (config)
 
@@ -184,7 +211,7 @@ class ServiceConfigResource(APIView):
         print 'Task result: ', result.get()
 
         preferences = open(logger_tail, 'a') 
-        preferences.write('Finnish.\n')
+        preferences.write('Finnish\n')
         preferences.close()
         
         return Response(result.get(), status=status.HTTP_201_CREATED)
@@ -220,7 +247,7 @@ class ServiceStatus(APIView):
 
             try:
                 #Guardamos en una variable la data del servicio contenida en un yaml
-                SERVICE = parseYaml(SERVICEDIR + '/' + service_name , '/config.yaml' )
+                SERVICE = parseYaml(SERVICEDIR + '/' + service_name , '/config.yaml')
                 
                 #Procedemos a llenar la data del servicio.
                 for k, v in SERVICE['query'].iteritems():

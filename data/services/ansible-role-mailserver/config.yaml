@@ -12,14 +12,17 @@ options:
     type: string
 
 update:
+  module:
+    name: Agregar usuario
+
   user:
-    name: nombre
+    name: Direccion de correo
     default: jaimito
     description: Nombre del correo 
     type: string
 
   passwd:
-    name: contraseña
+    name: Contraseña
     default: ''
     description: Contraseña del correo 
     type: password

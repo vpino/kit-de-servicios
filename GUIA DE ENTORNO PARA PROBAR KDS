@@ -16,7 +16,7 @@ git checkout experimental
 
 4. Instalar las dependencias
 
-apt install virtualenv redis-server python-all-devs python-apt
+apt install virtualenv redis-server rabbitmq-server python-all-devs python-apt 
 
 5. Crear un entorno de virtualenv
 
@@ -34,7 +34,7 @@ pip install -r Depends
 
 Lo cual instalara todas las dependencias necesarias para ejecutar kit de servicio en su entorno.
 
-9. Una ves terminado para correr kds necesitamos correr varios servicios que son celery, redis-server y el runserver de django
+9. Una ves terminado para correr kds necesitamos correr varios servicios que son celery, redis-server, rabbitmq-server y el runserver de django
 
 - El primer servicio que tenemos que correr es redis para esto ejecutamos en la terminal:
 
@@ -46,7 +46,30 @@ python manage.py runserver
 
 NOTA= Esto se debe hacer con el entorno activado.
 
-- El tercero es el WORKER de celery, para esto abrimos otra termina y activamos otro entorno (REPETIMOS EL PASO 7 EN OTRA TERMINAL)
+
+- EL tercero 
+
+==== Configure RabbitMQ for Celery ====
+
+Antes de poder utilizar RabbitMQ para Ansible, tenemos que hacer algunas configuraciones para RabbitMQ. En pocas palabras, tenemos que crear una máquina virtual y un usuario y establecer permisos al usuario para que pueda acceder a la máquina virtual.
+
+==== add user 'kds' with password '11' ===
+
+$ rabbitmqctl add_user kds 11
+
+==== add virtual host 'kds_vhost' === 
+
+$ rabbitmqctl add_vhost kds_vhost
+
+==== add user tag 'kds_tag' for user 'kds' ===
+
+$ rabbitmqctl set_user_tags kds kds_tag
+
+==== set permission for user 'kds' on virtual host 'kds_vhost' ===
+
+$ rabbitmqctl set_permissions -p kds_vhost kds ".*" ".*" ".*"
+
+- El cuarto es el WORKER de celery, para esto abrimos otra termina y activamos otro entorno (REPETIMOS EL PASO 7 EN OTRA TERMINAL)
 
 - Una ves activado ejecutamos dentro de la carpeta del repositorio clonado de KDS:
 

@@ -1,0 +1,10 @@
+Terminología:
+
+Change Sources
+
+	La mayoría de ChangeSources escuchan mensajes de un script gancho de algún tipo. Algunas fuentes sondean activamente el repositorio sobre una base regular. Todos los cambios se alimentan a los programadores.
+
+Schedulers
+
+	Los que deciden cuando se deben realizar compilaciones. Recogen Los cambios en solicitudes de construccion, que a su vez están en cola para la entrega a los constructores hasta que un buildslave está disponible.
+

@@ -27,6 +27,10 @@
 - name: create symlink /usr/share/squirrelmail to /var/www/html/
   command: ln -s /usr/share/squirrelmail/ /var/www/html/
   when: action == 'Instalar'
+
+- name: delete symlink /var/www/html/squirrelmail
+  command: unlink /var/www/html/squirrelmail
+  when: action == 'Desintalar'
   
 #- name: create symlink /usr/share/squirrelmail to /var/www/html/
 #  file:

@@ -29,7 +29,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 BASE_DIR = BASE_DIR + '/playbook-log'
 
-preferences = open(BASE_DIR, 'w') # Indicamos el valor 'w'.
+preferences = open(BASE_DIR, 'w')
 preferences.write('Logger.\n')
 preferences.close()
 
@@ -46,7 +46,7 @@ class CallbackModule(CallbackBase):
     CALLBACK_NAME = 'default'
     MENSAJE = ''
 
-    preferences = open(BASE_DIR, 'w') # Indicamos el valor 'w'.
+    preferences = open(BASE_DIR, 'w')
     preferences.write('Logger.\n')
     preferences.close()
 
@@ -61,7 +61,7 @@ class CallbackModule(CallbackBase):
             else:
                 msg = "An exception occurred during task execution. The full traceback is:\n" + result._result['exception']
                 
-            preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+            preferences = open(BASE_DIR, 'a')
             preferences.write(msg+"\n")
             preferences.close()
             self._display.display(msg, color=C.COLOR_ERROR)
@@ -74,12 +74,21 @@ class CallbackModule(CallbackBase):
 
         else:
             if delegated_vars:
+                msg = "fatal: [%s -> %s]: FAILED! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result))
+                preferences = open(BASE_DIR, 'a')
+                preferences.write(msg+"\n")
+                preferences.write("Finnish")
+                preferences.close()
                 self._display.display("fatal: [%s -> %s]: FAILED! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)), color=C.COLOR_ERROR)
-                preferences.write("fatal: [%s -> %s]: FAILED! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)))
+                
             else:
+                msg = "fatal: [%s]: FAILED! => %s" % (result._host.get_name(), self._dump_results(result._result))
+                preferences = open(BASE_DIR, 'a')
+                preferences.write(msg+"\n")
+                preferences.write("Finnish")
+                preferences.close()
                 self._display.display("fatal: [%s]: FAILED! => %s" % (result._host.get_name(), self._dump_results(result._result)), color=C.COLOR_ERROR)
-                preferences.write("fatal: [%s]: FAILED! => %s" % (result._host.get_name(), self._dump_results(result._result)))
-
+                
         if result._task.ignore_errors:
             self._display.display("...ignoring", color=C.COLOR_SKIP)
 
@@ -92,12 +101,12 @@ class CallbackModule(CallbackBase):
         elif result._result.get('changed', False):
             if delegated_vars:
                 msg = "changed: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
-                preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+                preferences = open(BASE_DIR, 'a')
                 preferences.write(msg+"\n")
                 preferences.close()
             else:
                 msg = "changed: [%s]" % result._host.get_name()
-                preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+                preferences = open(BASE_DIR, 'a')
                 preferences.write(msg+"\n")
                 preferences.close()
 
@@ -105,12 +114,12 @@ class CallbackModule(CallbackBase):
         else:
             if delegated_vars:
                 msg = "ok: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
-                preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+                preferences = open(BASE_DIR, 'a')
                 preferences.write(msg+"\n")
                 preferences.close()
             else:
                 msg = "ok: [%s]" % result._host.get_name()
-                preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+                preferences = open(BASE_DIR, 'a')
                 preferences.write(msg+"\n")
                 preferences.close()
             color = C.COLOR_OK
@@ -122,7 +131,7 @@ class CallbackModule(CallbackBase):
             if (self._display.verbosity > 0 or '_ansible_verbose_always' in result._result) and not '_ansible_verbose_override' in result._result:
                 msg += " => %s" % (self._dump_results(result._result),)
 
-            preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+            preferences = open(BASE_DIR, 'a')
             preferences.write(msg+"\n")
             preferences.close()
             self._display.display(msg, color=color)
@@ -138,7 +147,7 @@ class CallbackModule(CallbackBase):
                 if (self._display.verbosity > 0 or '_ansible_verbose_always' in result._result) and not '_ansible_verbose_override' in result._result:
                     msg += " => %s" % self._dump_results(result._result)
                 
-                preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+                preferences = open(BASE_DIR, 'a')
                 preferences.write(msg+"\n")
                 preferences.close()
                 self._display.display(msg, color=C.COLOR_SKIP)
@@ -157,6 +166,9 @@ class CallbackModule(CallbackBase):
             self._display.display("fatal: [%s]: UNREACHABLE! => %s" % (result._host.get_name(), self._dump_results(result._result)), color=C.COLOR_UNREACHABLE)
     
     def v2_playbook_on_no_hosts_matched(self):
+        preferences = open(BASE_DIR, 'a')
+        preferences.write("skipping: no hosts matched"+"\n")
+        preferences.close()
         self._display.display("skipping: no hosts matched", color=C.COLOR_SKIP)
 
     def v2_playbook_on_no_hosts_remaining(self):

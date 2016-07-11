@@ -2,7 +2,7 @@
 
 	<form class="col s12" name="kds" novalidate>
 
-		<center> <h2> Modulo de Update </h2> </center>
+		<center> <h2> Modulo de Eliminacion de Servicio </h2> </center>
 
 		<div ng-show="msj_logger">
 
@@ -64,85 +64,6 @@
 
 		</div>
 
-		<div class="row" data-ng-repeat="campo in Params.campos">
-
-			<div class="row" ng-show="status"> 
-					
-				<div ng-if="campo.field_name=='module'">
-					
-					<h4> {{campo.nombre}}: </h4>
-
-				</div>
-
-				<div ng-if="campo.tipo=='string'">
-
-					<div class="input-field col s12">
-							
-						<i class="material-icons prefix">description</i>
-						<input ng-model="campo.default"  name="{{campo.nombre}}" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
-						<label class="active">{{campo.nombre}}</label>
-
-
-						<div class="card-panel" ng-show="kds.campo.nombre.$pristine && kds.campo.nombre.$error.required">
-			
-							<p> 
-								<i class="medium material-icons waves-effect waves-light">
-									report_problem
-								</i>
-								El campo es requerido
-							 </p>
-
-						</div>
-
-					</div>
-
-				</div>
-
-				<div ng-if="campo.tipo=='password'">
-
-					<div class="input-field col s12">
-
-						<i class="material-icons prefix">vpn_key</i>
-						<input ng-model="campo.default" name="{{campo.nombre}}" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
-						<label class="active"> Contraseña </label>
-
-						<div class="card-panel" ng-show="!kds.campo.nombre.$pristine && kds.campo.nombre.$error.required">
-			
-							<p> 
-								<i class="medium material-icons waves-effect waves-light">
-									report_problem
-								</i>
-								El campo es requerido
-							 </p>
-
-						</div>
-				    
-				    </div>
-
-				    <div class="input-field col s12">
-
-						<i class="material-icons prefix">vpn_key</i>
-						<input ng-model="confirmPw" type="password" name="confirmPw" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="campo.default" >
-						<label class="active">Confirmar Contraseña </label>
-				   
-				   		<div class="card-panel" ng-show="!kds.confirmPw.$pristine && kds.confirmPw.$error.compareTo">
-			
-							<p> 
-								<i class="medium material-icons waves-effect waves-light">
-									report_problem
-								</i>
-								Las contraseñas no coinciden
-							 </p>
-
-						</div>
-
-				    </div>
-
-				</div>
-				
-			</div>
-
-		</div>
 
 		<div ng-show="!msj_logger" >
 			
@@ -245,7 +166,7 @@
            
     	</div>
 		
-		<br><br>
+		<br><br><br><br><br>
 
 		<div class="col s12 "> 
 
@@ -259,9 +180,9 @@
 					
 					<li>
 
-						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!(kds.$valid)">
+						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Desintalar')" ng-disabled="!(kds.$valid)">
 							<i class="material-icons">
-							add
+							delete
 							</i>
 						</button>
 

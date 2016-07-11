@@ -59,13 +59,15 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 
         	);
 	       
-	        config.campos[0]['action'] = action;
-	        
-	        angular.forEach(config.campos, function(campos) {
-		    
-		    config.campos[0][campos.field_name] =  campos.default;
+			config.campos[0]['action'] = action;
+				        
+			angular.forEach(config.campos, function(campos) {
 
-		  	});
+			config.campos[0][campos.field_name] =  campos.default;
+
+			});
+
+			console.log(config.campos[0])
 
 			$scope.status = false;
 			$scope.msj = false;

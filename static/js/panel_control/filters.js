@@ -1,9 +1,18 @@
 'use strict';
 
-/* Filters */
+var ManageFilters = angular.module('ManageFilters', []);
 
-angular.module('phonecatFilters', []).filter('checkmark', function() {
-  return function(input) {
-    return input ? '\u2713' : '\u2718';
-  };
-});
+ManageFilters.filter('spaceless', spaceless);
+
+    /* Funcion que sustituye espacio por guiones */
+    function spaceless() {
+
+	    return function(input) {
+        
+	        if (input) {
+	            return input.replace(/\s+/g, '-');    
+	        }
+	        
+	    }
+
+    }

@@ -17,7 +17,7 @@ update:
 
   user:
     name: Direccion de correo
-    default: jaimito
+    default: 
     description: Nombre del correo 
     type: string
 

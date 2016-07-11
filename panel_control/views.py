@@ -111,7 +111,6 @@ class ServiceConfigResource(APIView):
         service_name = request.query_params.get('name', None)
         action = request.query_params.get('action', None)
 
-        print action
         #tail = TailLog(BASE_DIR+"/", 'playbook-log')
 
         if service_name != '':
@@ -157,6 +156,20 @@ class ServiceConfigResource(APIView):
                         d['tipo'] = v.get('type', None)
                         d['items'] = v.get('items', None)
                         campos.append(d)
+
+                    config['campos'] = campos
+                    config['username'] = ''
+                    config['passwd'] = ''
+                    config['receta'] = service_name
+                    config['action'] = ''
+
+                if action == 'delete':
+
+                    SERVICE = parseYaml(SERVICEDIR + '/' + service_name , '/config.yaml' )
+                    
+                    d = {}
+                    d['nombre'] = 'delete'
+                    campos.append(d)
 
                     config['campos'] = campos
                     config['username'] = ''

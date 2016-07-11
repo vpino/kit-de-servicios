@@ -18,8 +18,6 @@ def parseYaml(path, filename):
 	# use safe_load instead load
 	dataMap = ordered_load(f, yaml.SafeLoader)
 
-	print dataMap
-
 	f.close()
 
 	return dataMap

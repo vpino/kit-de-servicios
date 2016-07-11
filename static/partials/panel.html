@@ -79,8 +79,10 @@
 		<div class="col s12" ng-show="instalado">
 			
 			<div class="chip">
-		    Desintalar
-		    <i class="material-icons" ng-disabled="!instalado">delete</i>
+		    	Desintalar
+			    <a ng-href="/delete/{{name}}/{{ip}}/delete">
+						<i class="material-icons" ng-disabled="!instalado">delete</i>
+				</a>
 		  	</div>
 
 		</div>

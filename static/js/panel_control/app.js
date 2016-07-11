@@ -6,7 +6,8 @@ var panelApp = angular.module('panelApp', [
   'ngRoute',
   'ManageServices',
   'ManageControllers',
-  'ManageDirectives'
+  'ManageDirectives',
+  'ManageFilters'
   ]);
 
 panelApp.config(['$resourceProvider', function($resourceProvider) {
@@ -20,7 +21,7 @@ function($routeProvider, $locationProvider) {
       templateUrl: 'static/partials/panel.html',
       controller: 'statusServiceController'
     }).
-    when('/recipe/:name/:host', {
+    when('/recipe/:name/:host/:action', {
       templateUrl: 'static/partials/recipe.html',
       controller: 'recipeController'
     }).
@@ -31,6 +32,10 @@ function($routeProvider, $locationProvider) {
     when('/query/:name/:host', {
       templateUrl: 'static/partials/query.html',
       controller: 'queryServiceController'
+    }).
+    when('/delete/:name/:host/:action', {
+      templateUrl: 'static/partials/delete.html',
+      controller: 'recipeController'
     }).
     otherwise({
       redirectTo: '/'

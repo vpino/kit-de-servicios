@@ -147,8 +147,6 @@ class ServiceConfigResource(APIView):
 
                     SERVICE = parseYaml(SERVICEDIR + '/' + service_name , '/config.yaml' )
 
-                    print SERVICE
-
                     for k, v in SERVICE['update'].iteritems():
 
                         d = {}

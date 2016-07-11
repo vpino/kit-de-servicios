@@ -1,6 +1,7 @@
 <div class="row">
+<script src="https://code.angularjs.org/1.3.0-rc.2/angular.js"></script>
 
-	<form class="col s12" name="kds">
+	<form class="col s12" name="kds" novalidate>
 
 		<center> <h2> Modulo de Update </h2> </center>
 
@@ -18,8 +19,21 @@
 				<i class="material-icons prefix">vpn_key</i>
 				<input ng-model="Params.passwd" name="Params.passwd" id="Params.passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
 				<label>Contraseña del usuario</label>
-				<span ng-show="!kds.$pristine && kds.Params.passwd.$error.required"> El nombre de usuario es requerido.</span>
+				
 			</div>
+
+			<div class="input-field col s12">
+								
+				<i class="material-icons prefix">vpn_key</i>
+				<input ng-model="confirmPassword" name="confirmPassword" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="Params.passwd" >
+				<label>Confirmar contraseña </label>
+				
+				<span ng-show="!kds.confirmPassword.$pristine && kds.confirmPassword.$error.compareTo">
+					Las contraseñas no coinciden
+				</span>
+			</div>
+
+
 
 		</div>
 
@@ -50,17 +64,21 @@
 					<div class="input-field col s12">
 
 						<i class="material-icons prefix">vpn_key</i>
-						<input ng-model="campo.default" name="campo.nombre" id="campo.nombre" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
-						<label class="active">{{campo.nombre}}</label>
+						<input ng-model="campo.default" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+						<label class="active"> Contraseña </label>
 				    
 				    </div>
 
 				    <div class="input-field col s12">
 
 						<i class="material-icons prefix">vpn_key</i>
-						<input ng-model="confirmar" name="campo.nombre" id="campo.nombre" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
-						<label class="active">{{campo.nombre}}</label>
-				    
+						<input ng-model="confirmPw" type="password" name="confirmPw" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="campo.default" >
+						<label class="active">Confirmar Contraseña </label>
+				   
+				    	<span ng-show="!kds.confirmPw.$pristine && kds.confirmPw.$error.compareTo">
+							Las contraseñas no coinciden
+						</span>
+
 				    </div>
 
 				</div>

@@ -5,7 +5,8 @@
 var panelApp = angular.module('panelApp', [
   'ngRoute',
   'ManageServices',
-  'ManageControllers'
+  'ManageControllers',
+  'ManageDirectives'
   ]);
 
 panelApp.config(['$resourceProvider', function($resourceProvider) {

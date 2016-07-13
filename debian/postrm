@@ -1,0 +1,38 @@
+#!/bin/bash -e
+#
+# ==============================================================================
+# PAQUETE: kit-servicios
+# ARCHIVO: postrm
+# DESCRIPCIÓN: Revierte los cambios hechos por el paquete en los scripts del
+#              mantenedor, de forma tal de asegurarse que el sistema quede
+#              como estaba antes de su instalación.
+# COPYRIGHT:
+#  (C) 2016 Victor Pino <victopin0@gmail.com>
+# LICENCIA: GPL3
+# ==============================================================================
+#
+# Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
+# términos de la Licencia Pública General de GNU (versión 3).
+
+case "$1" in
+    purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+
+	echo "Eliminando el enlace simbolico de celeryd"
+	unlink /etc/default/celeryd
+
+	echo "Eliminando el divert de celeryd"
+	dpkg-divert --rename --remove /etc/default/celeryd
+	
+    ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+
+
+#DEBHELPER#
+
+exit 0

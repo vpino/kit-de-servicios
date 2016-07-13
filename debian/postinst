@@ -1,0 +1,68 @@
+#!/bin/bash -e
+#
+# ==============================================================================
+# PAQUETE: kit-servicios
+# ARCHIVO: postinst
+# DESCRIPCIÓN: Configura el sistema despues la instalación del paquete.
+# COPYRIGHT:
+#  (C) 2016 Victor Pino <victopin0@gmail.com>
+# LICENCIA: GPL3
+# ==============================================================================
+#
+# Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
+# términos de la Licencia Pública General de GNU (versión 3).
+
+case "$1" in
+    configure)
+        
+        echo "Colocando /etc/default/celeryd en /etc/kds/diverted/celeryd"
+        dpkg-divert --divert /etc/kds/diverted/celeryd --rename /etc/default/celeryd
+
+        echo "Instalando configuracion personalizada para Celeryd"
+        ln /etc/kds/celeryd /etc/default/celeryd
+
+        "Añadiendo usuario kds en el sistema"
+        adduser --system --shell /bin/bash --gecos 'KDS system user' \
+            --group --disabled-password --quiet --no-create-home kds
+
+        echo "Eliminando los logs"
+        rm -rf /var/log/celery
+        rm -rf /var/run/celery
+        
+        echo "Configurando rabbitmq-server"
+
+        rabbitmqctl add_user kds 11
+
+        echo "==== add virtual host 'kds_vhost' === "
+
+        rabbitmqctl add_vhost kds_vhost
+
+        echo "==== add user tag 'kds_tag' for user 'kds' ==="
+
+        rabbitmqctl set_user_tags kds kds_tag
+
+        echo "==== set permission for user 'kds' on virtual host 'kds_vhost' ==="
+
+        rabbitmqctl set_permissions -p kds_vhost kds ".*" ".*" ".*"
+
+        echo "Reiniciando los servicios"
+
+		service nginx restart
+		service uwsgi restart || true
+        service rabbitmq-server restart
+        service celeryd restart
+        service redis-server restart
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

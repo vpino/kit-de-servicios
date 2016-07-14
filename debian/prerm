@@ -16,8 +16,8 @@ case "$1" in
     remove|upgrade|deconfigure)
         service nginx stop
 		service uwsgi stop
-        service celeryd stop
-        service rabbitmq-server stop
+        /etc/init.d/celeryd stop
+        /etc/init.d/rabbitmq-server stop
         service redis-server stop
     ;;
 

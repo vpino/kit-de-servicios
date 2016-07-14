@@ -17,8 +17,16 @@
 case "$1" in
     purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 
-	echo "Eliminando el enlace simbolico de celeryd"
-	unlink /etc/default/celeryd
+    if [ -L /etc/default/celeryd  ]; then
+
+        if [ -e /etc/default/celeryd ]; then
+            
+            echo "Eliminando el enlace simbolico de celeryd"
+            unlink /etc/default/celeryd
+
+        fi
+
+    fi
 
 	echo "Eliminando el divert de celeryd"
 	dpkg-divert --rename --remove /etc/default/celeryd

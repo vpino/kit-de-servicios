@@ -29,7 +29,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name="kit-servicios",
-    packages=['kds'],
+    packages=['kit-servicios'],
     version="0.1",
     install_requires=[
         "Django==1.8.5",

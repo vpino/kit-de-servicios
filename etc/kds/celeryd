@@ -14,15 +14,16 @@ ENABLED="true"
 # Name of nodes to start here we have a single node
 CELERYD_NODES="w1"
 
-CELERY_BIN="/usr/bin/celery"
+CELERY_BIN="/usr/share/python/kit-servicios/bin/celery"
 
 # Where to chdir at start.
-CELERYD_CHDIR="/usr/lib/python2.7/dist-packages/kit-servicios/"
+
+CELERYD_CHDIR="/usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/"
 
 # Extra arguments to celeryd
 CELERYD_OPTS="--time-limit=300 --concurrency=100 --pool=threads"
 
-CELERY_APP="kds.celery.py"
+CELERY_APP="kds.celery"
 
 # %n will be replaced with the nodename.
 CELERYD_LOG_FILE="/var/log/celery/%n.log"

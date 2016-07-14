@@ -21,14 +21,19 @@ case "$1" in
         echo "Instalando configuracion personalizada para Celeryd"
         ln /etc/kds/celeryd /etc/default/celeryd
 
-        "Añadiendo usuario kds en el sistema"
-        adduser --system --shell /bin/bash --gecos 'KDS system user' \
-            --group --disabled-password --quiet --no-create-home kds
+        if [ -f  /var/log/celery ] ; then
 
-        echo "Eliminando los logs"
-        rm -rf /var/log/celery
-        rm -rf /var/run/celery
+            echo "Eliminando los logs"
+            rm -rf /var/log/celery
+            rm -rf /var/run/celery
+
+        fi
         
+        echo "Echo Agregando usuario"
+        adduser --system --shell /bin/bash --gecos 'KDS system user' --group --disabled-password --quiet --no-create-home kds
+
+        /etc/init.d/rabbitmq-server restart
+
         echo "Configurando rabbitmq-server"
 
         rabbitmqctl add_user kds 11
@@ -45,12 +50,24 @@ case "$1" in
 
         rabbitmqctl set_permissions -p kds_vhost kds ".*" ".*" ".*"
 
-        echo "Reiniciando los servicios"
+        echo "Eliminar archivo /etc/nginx/sites-available/default"
+        if [ -f /etc/nginx/sites-available/default ] ; then
 
+            rm -rf /etc/nginx/sites-available/default
+
+        fi
+
+        if [ -d /usr/share/python/kit-servicios/ ]; then
+        
+            echo "Modificando los permisos de la carpeta del proyecto"
+            chmod 755 /usr/share/python/kit-servicios/
+
+        fi
+        
+        echo "Reiniciando los servicios"
 		service nginx restart
 		service uwsgi restart || true
-        service rabbitmq-server restart
-        service celeryd restart
+        /etc/init.d/celeryd restart 
         service redis-server restart
     ;;
 

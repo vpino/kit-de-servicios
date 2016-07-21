@@ -10,12 +10,15 @@ Package: kit-servicios
 Architecture: all
 Pre-Depends: dpkg (>= 1.16.1), python2.7 | python2.6, ${misc:Pre-Depends}
 Depends: ${misc:Depends}, ${python:Depends},
- celeryd,
+ supervisor,
  python-all-dev,
  python-setuptools,
  uwsgi-plugin-python, 
  uwsgi,
+ uwsgi-emperor,
+ uwsgi-plugin-python3,
  nginx,
+ nginx-full,
  rabbitmq-server,
  redis-server,
  virtualenv

@@ -15,11 +15,11 @@
 case "$1" in
     configure)
         
-        echo "Colocando /etc/default/celeryd en /etc/kds/diverted/celeryd"
-        dpkg-divert --divert /etc/kds/diverted/celeryd --rename /etc/default/celeryd
+        #echo "Colocando /etc/default/celeryd en /etc/kds/diverted/celeryd"
+        #dpkg-divert --divert /etc/kds/diverted/celeryd --rename /etc/default/celeryd
 
-        echo "Instalando configuracion personalizada para Celeryd"
-        ln /etc/kds/celeryd /etc/default/celeryd
+        #echo "Instalando configuracion personalizada para Celeryd"
+        #ln /etc/kds/celeryd /etc/default/celeryd
 
         if [ -f  /var/log/celery ] ; then
 
@@ -64,11 +64,24 @@ case "$1" in
 
         fi
         
+        echo "Permisos a la carpeta del proyecto"
+        chown -R www-data:www-data /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/
+
         echo "Reiniciando los servicios"
 		service nginx restart
 		service uwsgi restart || true
-        /etc/init.d/celeryd restart 
+        #/etc/init.d/celeryd restart 
         service redis-server restart
+        
+        #Demonio encargado de supervisar celery
+        supervisorctl reread
+        supervisorctl update
+
+        #Demonio encargado de el modo emperador de uwsgi
+        systemctl daemon-reload
+        systemctl enable nginx emperor.uwsgi
+        systemctl start nginx emperor.uwsgi
+
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

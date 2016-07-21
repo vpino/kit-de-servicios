@@ -28,8 +28,14 @@ case "$1" in
 
     fi
 
+    echo "Eliminamos el usuario de rabbitmq"
+    rabbitmqctl delete_user kds
+
+    echo "Eliminamos el vhost"
+    rabbitmqctl delete_vhost kds_vhost
+
 	echo "Eliminando el divert de celeryd"
-	dpkg-divert --rename --remove /etc/default/celeryd
+	#dpkg-divert --rename --remove /etc/default/celeryd
 	
     ;;
 

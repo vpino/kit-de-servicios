@@ -1,3 +1,9 @@
+kit-servicios (0.1.2) unstable; urgency=medium
+
+  * [c849079] Arreglando postrm
+
+ -- Victor Pino <victopin0@gmail.com>  Thu, 21 Jul 2016 12:26:46 -0400
+
 kit-servicios (0.1.1) unstable; urgency=medium
 
   * Arreglando el empaquetado

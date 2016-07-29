@@ -12,25 +12,56 @@
 # Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
 # términos de la Licencia Pública General de GNU (versión 3).
 
+
 case "$1" in
     configure)
+
+        echo "Colocando /etc/default/celeryd en /etc/kds/diverted/celeryd"
+        dpkg-divert --divert /etc/kds/diverted/default/celeryd --rename /etc/default/celeryd
+
+        if [ ! -L  /etc/default/celeryd ] ; then
+
+            echo "Instalando configuracion personalizada para Celeryd default"
+            ln /etc/kds/default/celeryd /etc/default/celeryd
+
+        fi
+
+        echo "Colocando /etc/init.d/celeryd en /etc/kds/diverted/init.d/celeryd"
+        dpkg-divert --divert /etc/kds/diverted/init.d/celeryd --rename /etc/init.d/celeryd
+
+        if [ ! -L  /etc/init.d/celeryd ] ; then
+
+            echo "Instalando configuracion personalizada para Celeryd init"
+            ln /etc/kds/init.d/celeryd /etc/init.d/celeryd
+
+        fi
         
-        #echo "Colocando /etc/default/celeryd en /etc/kds/diverted/celeryd"
-        #dpkg-divert --divert /etc/kds/diverted/celeryd --rename /etc/default/celeryd
-
-        #echo "Instalando configuracion personalizada para Celeryd"
-        #ln /etc/kds/celeryd /etc/default/celeryd
-
         if [ -f  /var/log/celery ] ; then
 
             echo "Eliminando los logs"
             rm -rf /var/log/celery
-            rm -rf /var/run/celery
 
         fi
         
-        echo "Echo Agregando usuario"
-        adduser --system --shell /bin/bash --gecos 'KDS system user' --group --disabled-password --quiet --no-create-home kds
+        echo "Creando usuario KDS-CELERY"
+        adduser --system --shell /bin/bash --gecos 'KDS-CELERY system user' --group --disabled-password --quiet --no-create-home kds-celery
+
+        echo "Creando usuario KDS"
+        adduser --system --shell /bin/bash --gecos 'KDS system user' --group --disabled-password --quiet --home /home/kds kds
+
+        # Source debconf library.
+        . /usr/share/debconf/confmodule
+
+        db_get kit-servicios/user_pass
+      
+        if [ "$RET" ]; then
+            echo "kds:$RET" | chpasswd
+        else
+            echo "kds:k1ts3rv1c10s" | chpasswd
+        fi
+        
+        echo "Generando llave ssh al usuario kds"
+        ssh-keygen -t rsa -f /home/kds/.ssh/id_rsa -q -P ""
 
         /etc/init.d/rabbitmq-server restart
 
@@ -63,25 +94,28 @@ case "$1" in
             chmod 755 /usr/share/python/kit-servicios/
 
         fi
-        
+
         echo "Permisos a la carpeta del proyecto"
         chown -R www-data:www-data /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/
+
+        chmod 777 /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/ansible.log
+        chmod 777 /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/playbook-log
+
+        echo "Configurando permisos y grupos de celeryd"
+        chmod x+ /etc/init.d/celeryd
+        chown root:root /etc/init.d/celeryd
+        chmod 777 /etc/init.d/celeryd
+
+        echo "Creando archivos de log de celeryd"
+        touch /var/log/celery/w1.log
+        touch /var/run/celery/w1.pid
 
         echo "Reiniciando los servicios"
 		service nginx restart
 		service uwsgi restart || true
-        #/etc/init.d/celeryd restart 
+        /etc/init.d/celeryd restart 
         service redis-server restart
-        
-        #Demonio encargado de supervisar celery
-        supervisorctl reread
-        supervisorctl update
-
-        #Demonio encargado de el modo emperador de uwsgi
-        systemctl daemon-reload
-        systemctl enable nginx emperor.uwsgi
-        systemctl start nginx emperor.uwsgi
-
+      
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

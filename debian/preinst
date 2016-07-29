@@ -19,7 +19,9 @@ case "$1" in
 		service apache2 stop
 	fi
 
-	mkdir -p /etc/kds/diverted
+	mkdir -p /etc/kds/diverted/default
+
+    mkdir -p /etc/kds/diverted/init.d
 
     ;;
 

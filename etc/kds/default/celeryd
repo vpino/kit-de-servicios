@@ -30,7 +30,7 @@ CELERYD_LOG_FILE="/var/log/celery/%n.log"
 CELERYD_PID_FILE="/var/run/celery/%n.pid"
 
 # Workers should run as an unprivileged user.
-CELERYD_USER="kds"
-CELERYD_GROUP="kds"
+CELERYD_USER="kds-celery"
+CELERYD_GROUP="kds-celery"
 
 CELERY_CREATE_DIRS=1

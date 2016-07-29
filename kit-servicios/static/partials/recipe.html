@@ -4,79 +4,115 @@
 
 		<center> <h1> Parametros </h1> </center>
 
-		<div class="input-field col s12">
-							
-			<i class="material-icons prefix">account_circle</i>
-			<input ng-model="Params.username"  name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+">
-			<label> Nombre de usuario</label>
-			<span ng-show="!kds.$pristine && kds.username.$error.required"> El nombre de usuario es requerido.</span>
+		<div ng-show="msj_logger">
 
-		</div>
+			<div class="input-field col s12">
+								
+				<i class="material-icons prefix">account_circle</i>
+				<input ng-model="Params.username"  name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+">
+				<label> Nombre de usuario</label>
+				<span ng-show="!kds.$pristine && kds.username.$error.required"> El nombre de usuario es requerido.</span>
 
-		<div class="input-field col s12">
-							
-			<i class="material-icons prefix">vpn_key</i>
-			<input ng-model="Params.passwd" name="Params.passwd" id="Params.passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
-			<label>Contraseña del usuario</label>
-			<span ng-show="!kds.$pristine && kds.Params.passwd.$error.required"> El nombre de usuario es requerido.</span>
-		</div>
+			</div>
 
-		<div class="row" data-ng-repeat="service in Params.campos">
+			<div class="input-field col s12">
+								
+				<i class="material-icons prefix">vpn_key</i>
+				<input ng-model="Params.passwd" name="Params.passwd" id="Params.passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+				<label>Contraseña del usuario</label>
+				<span ng-show="!kds.$pristine && kds.Params.passwd.$error.required"> El nombre de usuario es requerido.</span>
+			</div>
 
-			<div class="row" ng-show="status"> 
-					
-				<div ng-if="service.tipo=='string'">
+			<div class="row" data-ng-repeat="service in Params.campos">
 
-					<div class="input-field col s12">
-							
-						<i class="material-icons prefix">description</i>
-						<input ng-model="service.default"  id="service.nombre" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
-						<label class="active">{{service.nombre}}</label>
+				<div class="row" ng-show="status"> 
+						
+					<div ng-if="service.tipo=='string'">
+
+						<div class="input-field col s12">
+								
+							<i class="material-icons prefix">description</i>
+							<input ng-model="service.default"  id="service.nombre" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+							<label class="active">{{service.nombre}}</label>
+
+						</div>
 
 					</div>
 
+					<div ng-if="service.tipo=='list'">
+
+						<div class="input-field col s12" data-ng-repeat="item in service.default">
+
+							<p>
+								<input name="group1" type="radio" id="{{item}}" />
+								<label for="{{item}}">{{item}}</label>
+							  
+						    </p>
+
+					    </div>
+
+					</div>
+					
 				</div>
 
-				<div ng-if="service.tipo=='list'">
-
-					<div class="input-field col s12" data-ng-repeat="item in service.default">
-
-						<p>
-							<input name="group1" type="radio" id="{{item}}" />
-							<label for="{{item}}">{{item}}</label>
-						  
-					    </p>
-
-				    </div>
-
-				</div>
-				
 			</div>
 
 		</div>
 
-		<div ng-show="!msj">
+		<div ng-show="!msj_logger">
 
+			<div class="card-panel">
 			
-    	
-    	<h1> Ejecutando la receta, por favor espere .... </h1>
+				<p> 
+					<i class="medium material-icons waves-effect waves-light">
+						repeat
+					</i>
+					Acciones a tiempo real del sistema 
+				 </p>
 
-			<div class="preloader-wrapper big active">
-				<div class="spinner-layer spinner-blue-only">
+				 <div class="preloader-wrapper small active">
 					
-					<div class="circle-clipper left">
-						<div class="circle"></div>
+					<div class="spinner-layer spinner-blue-only">
+						
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div>
+
+						<div class="gap-patch">
+							<div class="circle"></div>
+						</div>
+					
+						<div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
 					</div>
 
-					<div class="gap-patch">
-						<div class="circle"></div>
-					</div>
-				
-					<div class="circle-clipper right">
-						<div class="circle"></div>
+				</div>
+
+			</div>
+
+    		<!-- 
+
+    			<h1> Ejecutando la receta, por favor espere .... </h1>
+
+				<div class="preloader-wrapper big active">
+					<div class="spinner-layer spinner-blue-only">
+						
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div>
+
+						<div class="gap-patch">
+							<div class="circle"></div>
+						</div>
+					
+						<div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
 					</div>
 				</div>
-			</div>
+				
+			-->
 
     	</div>
 

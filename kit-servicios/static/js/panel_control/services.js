@@ -65,7 +65,7 @@ ManageServices.service('WSService', function($q) {
           var deferred = $q.defer();
 
           // Create the WebSocket client pointing to the correct API
-          var ws = new WebSocket("ws://localhost:8000/ws/foobar?subscribe-broadcast&publish-broadcast&echo");
+          var ws = new WebSocket("ws://localhost:80/ws/foobar?subscribe-broadcast&publish-broadcast&echo");
             
 
           // Map the messages to action

@@ -2,21 +2,17 @@ Source: kit-servicios
 Section: web
 Priority: optional
 Maintainer: Victor Pino <victopin0@gmail.com>
-Build-Depends: debhelper (>= 9), cdbs (>= 0.4.130), dh-python, python-all, dh-virtualenv (>= 0.7), python-setuptools, python-all-dev, libpq-dev 
+Build-Depends: debhelper (>= 9), po-debconf, cdbs (>= 0.4.130), dh-python, python-all, dh-virtualenv (>= 0.7), python-setuptools, python-all-dev, libpq-dev 
 Standards-Version: 3.9.6
 Homepage: http://canaima.softwarelibre.gob.ve
 
 Package: kit-servicios
 Architecture: all
-Pre-Depends: dpkg (>= 1.16.1), python2.7 | python2.6, ${misc:Pre-Depends}
-Depends: ${misc:Depends}, ${python:Depends},
- supervisor,
- python-all-dev,
+Pre-Depends: dpkg (>= 1.16.1), python2.7 | python2.6, libpcre3, libpcre3-dev
+Depends: python-all-dev,
  python-setuptools,
- uwsgi-plugin-python, 
+ ${misc:Depends},
  uwsgi,
- uwsgi-emperor,
- uwsgi-plugin-python3,
  nginx,
  nginx-full,
  rabbitmq-server,

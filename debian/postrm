@@ -17,14 +17,21 @@
 case "$1" in
     purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 
-    if [ -L /etc/default/celeryd  ]; then
+    . /usr/share/debconf/confmodule
+    echo "Eliminando la data de la BD de debconf"
+    db_purge
 
-        if [ -e /etc/default/celeryd ]; then
-            
-            echo "Eliminando el enlace simbolico de celeryd"
+    if [ -L  /etc/init.d/celeryd ] ; then
+
+            echo "Eliminando el enlace simbolico de celeryd init"
+            unlink /etc/init.d/celeryd
+
+    fi
+    
+    if [ -L  /etc/default/celeryd ] ; then
+
+            echo "Eliminando el enlace simbolico de celeryd default" 
             unlink /etc/default/celeryd
-
-        fi
 
     fi
 
@@ -34,8 +41,11 @@ case "$1" in
     echo "Eliminamos el vhost"
     rabbitmqctl delete_vhost kds_vhost
 
-	echo "Eliminando el divert de celeryd"
-	#dpkg-divert --rename --remove /etc/default/celeryd
+	echo "Eliminando el divert de celeryd default"
+	dpkg-divert --remove --rename /etc/default/celeryd
+
+    echo "Eliminando el divert de celeryd init.d"
+    dpkg-divert --remove --rename /etc/init.d/celeryd
 	
     ;;
 

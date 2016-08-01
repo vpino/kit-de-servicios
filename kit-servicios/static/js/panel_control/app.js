@@ -37,6 +37,10 @@ function($routeProvider, $locationProvider) {
       templateUrl: 'static/partials/delete.html',
       controller: 'recipeController'
     }).
+     when('/key/', {
+      templateUrl: 'static/partials/key.html',
+      controller: 'keyController'
+    }).
     otherwise({
       redirectTo: '/'
     });

@@ -102,3 +102,25 @@ ManageServices.service('dataService', function () {
             }
         };
     })
+
+
+/* Declaramos una factory que se encargara retorna la llave ssh del servidor */
+ManageServices.factory('Keyssh', ['$resource',
+  function($resource){
+    return $resource('/ServiceKeyResource/', {}, {
+      
+      /* Funcion que consulta si un servicio
+         esta o no instalado */
+      query: {
+        params: {},
+        method:'GET',  
+        isArray:true,
+        transformResponse: function(data){
+               return angular.fromJson(data).objects;
+           }
+        }
+
+    });
+    
+  }]);
+

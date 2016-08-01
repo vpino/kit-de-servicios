@@ -225,3 +225,19 @@ ManageControllers.controller('queryServiceController', ['$scope', '$location', '
 
     }
 
+ManageControllers.controller('keyController', ['$scope', 'Keyssh', keyController]);
+
+	function keyController($scope, Keyssh){
+
+    	/* Consultamos La llave ssh */
+    	Keyssh.get().$promise.then(function(data) {
+
+    		$scope.key = data;
+
+    		console.log($scope.key)
+		
+		});
+    	
+    }
+
+	

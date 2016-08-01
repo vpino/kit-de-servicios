@@ -67,9 +67,6 @@ class PcList(APIView):
     List all pcs, conectados al servidor
     """
 
-    #Especificamos como retornara la data, en este caso formato json
-    #renderer_classes = (JSONRenderer, )
-
     def get(self, request, format=None):
         
         pc = get_active_hosts()
@@ -82,9 +79,6 @@ class ServiceMetadataResource(APIView):
     """
     List all Recipes
     """
-
-    #Especificamos como retornara la data, en este caso formato json
-    #renderer_classes = (JSONRenderer, )
 
     def get(self, request, service_name, format=None):
         
@@ -102,10 +96,7 @@ class ServiceConfigResource(APIView):
     """
     List all parametros para ejecutar el playbook
     """
-
-    #Especificamos como retornara la data, en este caso formato json
-    #renderer_classes = (JSONRenderer, )
-
+    
     def get(self, request, format=None):
 
         service_name = request.query_params.get('name', None)
@@ -357,5 +348,19 @@ class ServiceStatus(APIView):
                 return Response(config)
 
         return Response(config)
+
+class ServiceKeyResource(APIView):
+    """
+    List Key ssh
+    """
+
+    def get(self, request, format=None):
+        
+        key = {}
+
+        with open('/home/kds/.ssh/id_rsa.pub', 'r') as key_ssh:
+            key['ssh'] = key_ssh.read().replace('\n', '')
+       
+        return Response(key)
 
         

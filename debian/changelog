@@ -1,3 +1,9 @@
+kit-servicios (0.1.5) unstable; urgency=medium
+
+  * [2e7b821] upgrade .deb
+
+ -- Victor Pino <victopin0@gmail.com>  Wed, 03 Aug 2016 13:42:47 -0400
+
 kit-servicios (0.1.4) unstable; urgency=medium
 
   * [bfc1623] Añadiendo vista de key ssh y arreglando el empaquetado

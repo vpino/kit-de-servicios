@@ -19,10 +19,14 @@ case "$1" in
 		service apache2 stop
 	fi
 
-	mkdir -p /etc/kds/diverted/default
+    if [[ -d /etc/kds/ && ! -d /etc/kds/diverted/default/ ]]; then
+        mkdir -p /etc/kds/diverted/default
+    fi
 
-    mkdir -p /etc/kds/diverted/init.d
-
+    if [[ -d /etc/kds/ && ! -d /etc/kds/diverted/init.d/ ]]; then
+        mkdir -p /etc/kds/diverted/init.d
+    fi
+	
     ;;
 
     abort-upgrade)

@@ -15,25 +15,33 @@
 # términos de la Licencia Pública General de GNU (versión 3).
 
 case "$1" in
-    purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+    remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+
+    serviceCommand() {
+        if service --status-all | grep -Fq ${1}; then
+            service ${1} ${2}
+        fi
+    }
 
     . /usr/share/debconf/confmodule
     echo "Eliminando la data de la BD de debconf"
     db_purge
 
-    if [ -L  /etc/init.d/celeryd ] ; then
+    if [ -e /etc/init.d/celeryd ] ; then
 
             echo "Eliminando el enlace simbolico de celeryd init"
             unlink /etc/init.d/celeryd
 
     fi
     
-    if [ -L  /etc/default/celeryd ] ; then
+    if [ -e /etc/default/celeryd ] ; then
 
             echo "Eliminando el enlace simbolico de celeryd default" 
             unlink /etc/default/celeryd
 
     fi
+
+    serviceCommand rabbitmq-server restart
 
     echo "Eliminamos el usuario de rabbitmq"
     rabbitmqctl delete_user kds
@@ -46,7 +54,24 @@ case "$1" in
 
     echo "Eliminando el divert de celeryd init.d"
     dpkg-divert --remove --rename /etc/init.d/celeryd
+
+    echo "Eliminando el usuario KDS"
+    deluser kds
+    
+    if [ -d /home/kds/ ]; then
+
+        echo "Eliminando el /home/kds"
+        rm -rf /home/kds/
+
+    fi 
+    
+    
 	
+
+    ;;
+
+    purge)
+
     ;;
 
     *)

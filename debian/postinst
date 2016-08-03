@@ -16,10 +16,23 @@
 case "$1" in
     configure)
 
+        serviceCommand() {
+            if service --status-all | grep -Fq ${1}; then
+                service ${1} ${2}
+            fi
+        }
+
         echo "Colocando /etc/default/celeryd en /etc/kds/diverted/celeryd"
         dpkg-divert --divert /etc/kds/diverted/default/celeryd --rename /etc/default/celeryd
 
-        if [ ! -L  /etc/default/celeryd ] ; then
+        if [ -e /etc/default/celeryd ] ; then
+
+            echo "Elimiando posible enlance simbolico /etc/default/celeryd"
+            unlink  /etc/default/celeryd
+
+        fi
+
+        if [ ! -e /etc/default/celeryd ] ; then
 
             echo "Instalando configuracion personalizada para Celeryd default"
             ln /etc/kds/default/celeryd /etc/default/celeryd
@@ -29,7 +42,14 @@ case "$1" in
         echo "Colocando /etc/init.d/celeryd en /etc/kds/diverted/init.d/celeryd"
         dpkg-divert --divert /etc/kds/diverted/init.d/celeryd --rename /etc/init.d/celeryd
 
-        if [ ! -L  /etc/init.d/celeryd ] ; then
+        if [ -e /etc/init.d/celeryd ] ; then
+
+            echo "Elimiando posible enlance simbolico /etc/init.d/celeryd"
+            unlink /etc/init.d/celeryd
+
+        fi
+
+        if [ ! -e /etc/init.d/celeryd ] ; then
 
             echo "Instalando configuracion personalizada para Celeryd init"
             ln /etc/kds/init.d/celeryd /etc/init.d/celeryd
@@ -42,26 +62,19 @@ case "$1" in
             rm -rf /var/log/celery
 
         fi
-        
-        echo "Creando usuario KDS-CELERY"
-        adduser --system --shell /bin/bash --gecos 'KDS-CELERY system user' --group --disabled-password --quiet --no-create-home kds-celery
-
-        echo "Creando usuario KDS"
-        adduser --system --shell /bin/bash --gecos 'KDS system user' --group --disabled-password --quiet --home /home/kds kds
-
+                
         # Source debconf library.
         . /usr/share/debconf/confmodule
+       
+        if [[ ! -d /home/kds/.ssh/ && -d /home/kds/ ]]; then
 
-        db_get kit-servicios/user_pass
-      
-        if [ "$RET" ]; then
-            echo "kds:$RET" | chpasswd
-        else
-            echo "kds:k1ts3rv1c10s" | chpasswd
-        fi
+            mkdir /home/kds/.ssh/
+            chown kds:kds -R /home/kds/
+
+        fi 
         
         echo "Generando llave ssh al usuario kds"
-        ssh-keygen -t rsa -f /home/kds/.ssh/id_rsa -q -P ""
+        su -s /bin/bash -c  'ssh-keygen -t rsa -f /home/kds/.ssh/id_rsa -q -P ""' kds
 
         /etc/init.d/rabbitmq-server restart
 
@@ -95,26 +108,41 @@ case "$1" in
 
         fi
 
-        echo "Permisos a la carpeta del proyecto"
-        chown -R www-data:www-data /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/
+        if [ -d /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/ ]; then
 
-        chmod 777 /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/ansible.log
-        chmod 777 /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/playbook-log
+            echo "Permisos a la carpeta del proyecto"
+            chown -R www-data:www-data /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/
 
+            chmod 777 /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/ansible.log
+            chmod 777 /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/playbook-log
+
+        fi
+         
         echo "Configurando permisos y grupos de celeryd"
-        chmod x+ /etc/init.d/celeryd
+        chmod +x /etc/init.d/celeryd
         chown root:root /etc/init.d/celeryd
         chmod 777 /etc/init.d/celeryd
 
         echo "Creando archivos de log de celeryd"
-        touch /var/log/celery/w1.log
-        touch /var/run/celery/w1.pid
+        
+        if [ -f /var/log/celery/w1.log ]; then
+
+            rm -f /var/log/celery/w1.log
+            rm -f /var/run/celery/w1.pid
+
+        else
+
+            touch /var/log/celery/w1.log
+            touch /var/run/celery/w1.pid
+
+        fi
 
         echo "Reiniciando los servicios"
-		service nginx restart
-		service uwsgi restart || true
+        serviceCommand apache2 stop
+        serviceCommand nginx restart
+		serviceCommand uwsgi restart || true
         /etc/init.d/celeryd restart 
-        service redis-server restart
+        serviceCommand redis-server restart
       
     ;;
 

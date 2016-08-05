@@ -55,14 +55,7 @@ case "$1" in
             ln /etc/kds/init.d/celeryd /etc/init.d/celeryd
 
         fi
-        
-        if [ -f  /var/log/celery ] ; then
-
-            echo "Eliminando los logs"
-            rm -rf /var/log/celery
-
-        fi
-                
+                       
         # Source debconf library.
         . /usr/share/debconf/confmodule
        
@@ -130,7 +123,7 @@ case "$1" in
             rm -f /var/log/celery/w1.log
             rm -f /var/run/celery/w1.pid
 
-        else
+        elif [ -d /var/log/celery/ ]; then
 
             touch /var/log/celery/w1.log
             touch /var/run/celery/w1.pid

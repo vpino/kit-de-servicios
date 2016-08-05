@@ -160,8 +160,6 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 
         		$scope.servicioStatus.ip = $scope.ip;
 
-        		console.log($scope.servicioStatus)
-
         		dataService.setData($scope.servicioStatus);
   
   				/* Hacemos una validacion para saber que botones (instalar, desintalar etc) 

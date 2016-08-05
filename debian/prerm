@@ -17,7 +17,7 @@ case "$1" in
         service nginx stop
 		service uwsgi stop
         service redis-server stop
-        /etc/init.d/celeryd stop
+        #/etc/init.d/celeryd stop
     ;;
 
     failed-upgrade)

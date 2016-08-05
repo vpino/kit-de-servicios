@@ -11,7 +11,7 @@ db_input high kit-servicios/kds_user_pass || true
 db_go || true
 
 echo "Creando usuario KDS"
-adduser --system --shell /bin/bash --gecos 'KDS system user' --group --disabled-password --quiet --home /home/kds kds
+adduser --gecos 'KDS system user' --disabled-password --quiet kds || true
       
 db_get kit-servicios/kds_user_pass
       

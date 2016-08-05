@@ -1,3 +1,9 @@
+kit-servicios (0.1.6) unstable; urgency=medium
+
+  * [7479ad5] Arreglando el empaquetado
+
+ -- Victor Pino <victopin0@gmail.com>  Fri, 05 Aug 2016 16:54:31 -0400
+
 kit-servicios (0.1.5) unstable; urgency=medium
 
   * [2e7b821] upgrade .deb

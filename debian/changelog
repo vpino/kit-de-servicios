@@ -1,3 +1,9 @@
+kit-servicios (0.1.7) unstable; urgency=medium
+
+  * [04878e9] Actualizando empaquetado y frontend
+
+ -- Victor Pino <victopin0@gmail.com>  Tue, 09 Aug 2016 17:08:49 -0400
+
 kit-servicios (0.1.6) unstable; urgency=medium
 
   * [7479ad5] Arreglando el empaquetado

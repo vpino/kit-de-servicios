@@ -44,10 +44,10 @@ case "$1" in
     serviceCommand rabbitmq-server restart
 
     echo "Eliminamos el usuario de rabbitmq"
-    rabbitmqctl delete_user kds
+    rabbitmqctl delete_user kds || true
 
     echo "Eliminamos el vhost"
-    rabbitmqctl delete_vhost kds_vhost
+    rabbitmqctl delete_vhost kds_vhost || true
 
 	echo "Eliminando el divert de celeryd default"
 	dpkg-divert --remove --rename /etc/default/celeryd
@@ -56,18 +56,8 @@ case "$1" in
     dpkg-divert --remove --rename /etc/init.d/celeryd
 
     echo "Eliminando el usuario KDS"
-    deluser kds
-    
-    if [ -d /home/kds/ ]; then
-
-        echo "Eliminando el /home/kds"
-        rm -rf /home/kds/
-
-    fi 
-    
-    
-	
-
+    deluser --remove-home -f kds || true 
+     
     ;;
 
     purge)

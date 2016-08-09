@@ -178,12 +178,6 @@ class ServiceConfigResource(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        logger_tail = BASE_DIR + '/playbook-log'
-
-        preferences = open(logger_tail, 'w')
-        preferences.write(' ')
-        preferences.close()
-
         result = add.delay(
                request.data['config']['ipadd'], 
                request.data['config']['username'], 
@@ -192,30 +186,9 @@ class ServiceConfigResource(APIView):
                request.data['config']['campos'], 
                4)
 
-        play_log = tail_logger.delay()
-
-        """
-        Esta es la manera de ejecutar la receta sin celery:
-
-        runner = Runner(
-                request.data['config']['ipadd'], 
-                request.data['config']['username'], 
-                '/recetas/' + request.data['config']['receta'] + '/site.yml', 
-                request.data['config']['passwd'], 
-                request.data['config']['campos'], 
-                10)
-
-        a = runner.run()
-
-        """
-        print 'Task log finished? ', play_log.ready()
         print 'Task playbook finished? ', result.ready()
         print 'Task result: ', result.get()
-
-        preferences = open(logger_tail, 'a') 
-        preferences.write('Finnish\n')
-        preferences.close()
-        
+             
         return Response(result.get(), status=status.HTTP_201_CREATED)
 
 

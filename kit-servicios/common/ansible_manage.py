@@ -163,7 +163,7 @@ class Runner(object):
         # the playbook callback file
         self.pbex._tqm.send_callback(
             'record_logs', 
-            user_id='11', 
+            user_id='kds', 
             success=run_success
         )
 
@@ -337,15 +337,3 @@ class CallbackModule(CallbackBase):
 
             msg += msg
             self.logger.append(msg)
-
-    def record_logs(self, user_id, success=False):
-        """
-        Special callback added to this callback plugin
-        Called by Runner objet
-        :param user_id:
-        :return:
-        """
-
-        return 'kds'
-        #log_storage = Logs()
-        #return log_storage.save_log(user_id, self.logger.log, self.logger.runtime, success)

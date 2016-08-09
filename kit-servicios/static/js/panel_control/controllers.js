@@ -135,6 +135,8 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 
        	$scope.ip = '';
 
+       	$scope.confirm = true;
+
        	$scope.name = $routeParams.name;
 
        	$scope.servicioStatus = {};
@@ -149,6 +151,7 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
         	*/
         	$scope.instalado = false;
         	$scope.desintalado = false;
+        	$scope.confirm = false;
 
         	/* Consultamos el status del servicio en la ip especificada*/
         	Status.get({name:$routeParams.name, host:$scope.ip})
@@ -178,6 +181,8 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 			  		}
 
 				});
+
+        	$scope.confirm = true;
 			
     		});
         	

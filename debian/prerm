@@ -14,10 +14,12 @@
 
 case "$1" in
     remove|upgrade|deconfigure)
-        service nginx stop
-		service uwsgi stop
-        service redis-server stop
-        #/etc/init.d/celeryd stop
+        service nginx stop || true
+		service uwsgi stop || true
+        service redis-server stop || true
+        ps auxww | grep 'celery worker' | awk '{print $2}' | xargs kill -9 || true
+        ps auxww | grep celeryd | awk '{print $2}' | xargs kill -9 || true
+        /etc/init.d/celeryd stop || true
     ;;
 
     failed-upgrade)

@@ -17,6 +17,7 @@ Depends: python-all-dev,
  uwsgi-plugin-python,
  rabbitmq-server,
  redis-server,
+ celeryd,
  virtualenv
 Description: Proyecto Kit de servicios
  Este paquete instala el componente Kit de servicios

@@ -15,7 +15,6 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -27,9 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,7 +54,6 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'kds.urls'
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -76,20 +72,16 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'ws4redis.django_runserver.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -103,7 +95,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
@@ -133,12 +124,7 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
-
 os.environ.setdefault('ANSIBLE_CONFIG', BASE_DIR+'ansible.cfg')
-
-#set ANSIBLE_CONFIG=BASE_DIR+'/ansible.cfg'
-
-#export ANSIBLE_CONFIG=BASE_DIR+'/ansible.cfg'
 
 #REDIS CONFIG
 WEBSOCKET_URL = '/ws/'
@@ -153,4 +139,3 @@ WS4REDIS_CONNECTION = {
 WS4REDIS_EXPIRE = 7200
 
 WS4REDIS_PREFIX = 'ws'
-

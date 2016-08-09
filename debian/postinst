@@ -64,28 +64,28 @@ case "$1" in
             mkdir /home/kds/.ssh/
             chown kds:kds -R /home/kds/
 
+            echo "Generando llave ssh al usuario kds"
+            su -s /bin/bash -c  'ssh-keygen -t rsa -f /home/kds/.ssh/id_rsa -q -P ""' kds
+
         fi 
         
-        echo "Generando llave ssh al usuario kds"
-        su -s /bin/bash -c  'ssh-keygen -t rsa -f /home/kds/.ssh/id_rsa -q -P ""' kds
-
-        /etc/init.d/rabbitmq-server restart
+        serviceCommand rabbitmq-server restart
 
         echo "Configurando rabbitmq-server"
 
-        rabbitmqctl add_user kds 11
+        rabbitmqctl add_user kds 11 || true
 
         echo "==== add virtual host 'kds_vhost' === "
 
-        rabbitmqctl add_vhost kds_vhost
+        rabbitmqctl add_vhost kds_vhost || true
 
         echo "==== add user tag 'kds_tag' for user 'kds' ==="
 
-        rabbitmqctl set_user_tags kds kds_tag
+        rabbitmqctl set_user_tags kds kds_tag || true
 
         echo "==== set permission for user 'kds' on virtual host 'kds_vhost' ==="
 
-        rabbitmqctl set_permissions -p kds_vhost kds ".*" ".*" ".*"
+        rabbitmqctl set_permissions -p kds_vhost kds ".*" ".*" ".*" || true
 
         echo "Eliminar archivo /etc/nginx/sites-available/default"
         if [ -f /etc/nginx/sites-available/default ] ; then
@@ -104,7 +104,7 @@ case "$1" in
         if [ -d /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/ ]; then
 
             echo "Permisos a la carpeta del proyecto"
-            chown -R www-data:www-data /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/
+            chown -R kds:kds /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/
 
             chmod 777 /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/ansible.log
             chmod 777 /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/playbook-log
@@ -112,29 +112,19 @@ case "$1" in
         fi
          
         echo "Configurando permisos y grupos de celeryd"
-        chmod +x /etc/init.d/celeryd
-        chown root:root /etc/init.d/celeryd
-        chmod 777 /etc/init.d/celeryd
+        chmod +x /etc/init.d/celeryd || true
+        chown kds:kds /etc/init.d/celeryd || true
+        chmod 777 /etc/init.d/celeryd || true
 
         echo "Creando archivos de log de celeryd"
-        
-        if [ -f /var/log/celery/w1.log ]; then
-
-            rm -f /var/log/celery/w1.log
-            rm -f /var/run/celery/w1.pid
-
-        elif [ -d /var/log/celery/ ]; then
-
-            touch /var/log/celery/w1.log
-            touch /var/run/celery/w1.pid
-
-        fi
+        rm -rf /var/log/celery || true
+        rm -rf /var/run/celery || true
 
         echo "Reiniciando los servicios"
         serviceCommand apache2 stop
         serviceCommand nginx restart
 		serviceCommand uwsgi restart || true
-        /etc/init.d/celeryd restart 
+        /etc/init.d/celeryd restart || true
         serviceCommand redis-server restart
       
     ;;

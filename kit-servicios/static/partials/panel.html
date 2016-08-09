@@ -19,7 +19,28 @@
 	</div>
 
 	<br><br><br><br><br>
-	
+
+	<div ng-show="!confirm" class="preloader-wrapper small active">
+					
+		<div class="spinner-layer spinner-blue-only">
+			
+			<div class="circle-clipper left">
+				<div class="circle"></div>
+			</div>
+
+			<div class="gap-patch">
+				<div class="circle"></div>
+			</div>
+		
+			<div class="circle-clipper right">
+				<div class="circle"></div>
+			</div>
+		</div>
+
+		<h3> Confirmando estatus del host </h3>
+
+	</div>
+
 	<div ng-if="!!servicioStatus.error">
 		
 		<div class="card-panel">

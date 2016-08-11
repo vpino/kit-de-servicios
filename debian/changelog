@@ -1,3 +1,9 @@
+kit-servicios (0.1.8) unstable; urgency=medium
+
+  * [276ec07] Modificando callback y frontend
+
+ -- Victor Pino <victopin0@gmail.com>  Thu, 11 Aug 2016 16:43:58 -0400
+
 kit-servicios (0.1.7) unstable; urgency=medium
 
   * [04878e9] Actualizando empaquetado y frontend

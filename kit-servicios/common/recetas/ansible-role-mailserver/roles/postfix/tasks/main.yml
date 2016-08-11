@@ -1,6 +1,6 @@
 ---
 - name: check postfix package are installed
-  shell: dpkg -l | grep postfix | cut -d " " -f1
+  shell: dpkg -l | grep postfix | grep ii | cut -d " " -f1
   register: init
   when: action == 'Instalar'
 
@@ -16,7 +16,7 @@
     - postfix-policyd-spf-python
     - mailutils
     - rsyslog
-  when: init|changed and init.stdout == "" and action == 'Instalar'
+  when: init|changed and init.stdout != "ii" and action == 'Instalar'
 
 #  Aqui debo hacer los certificados autofirmados temporales
 - name: create self-signed certificates

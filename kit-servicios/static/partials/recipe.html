@@ -10,7 +10,7 @@
 								
 				<i class="material-icons prefix">account_circle</i>
 				<input ng-model="Params.username"  name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+">
-				<label> Nombre de usuario</label>
+				<label> Nombre de usuario cliente </label>
 				<span ng-show="!kds.$pristine && kds.username.$error.required"> El nombre de usuario es requerido.</span>
 
 			</div>
@@ -178,7 +178,9 @@
            
     	</div>
 		
-		<div class="col s12 "> 
+		<br><br><br><br><br>
+		
+		<div ng-show="msj_logger" class="col s12 "> 
 
 			<div class="fixed-action-btn horizontal right-align" style="position: relative;">
 				

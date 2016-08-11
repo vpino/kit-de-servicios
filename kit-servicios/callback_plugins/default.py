@@ -25,8 +25,15 @@ from ansible.utils.color import colorize, hostcolor
 from common.redis import redisPublishMessage
 import os
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 BASE_DIR = BASE_DIR + '/playbook-log'
+
+preferences = open(BASE_DIR, 'w') # Indicamos el valor 'w'.
+preferences.write('Logger.\n')
+preferences.close()
+
 
 class CallbackModule(CallbackBase):
 
@@ -38,6 +45,11 @@ class CallbackModule(CallbackBase):
     CALLBACK_VERSION = 2.0
     CALLBACK_TYPE = 'stdout'
     CALLBACK_NAME = 'default'
+    MENSAJE = ''
+
+    preferences = open(BASE_DIR, 'w') # Indicamos el valor 'w'.
+    preferences.write('Logger.\n')
+    preferences.close()
 
     def v2_runner_on_failed(self, result, ignore_errors=False):
         delegated_vars = result._result.get('_ansible_delegated_vars', None)
@@ -50,7 +62,10 @@ class CallbackModule(CallbackBase):
             else:
                 msg = "An exception occurred during task execution. The full traceback is:\n" + result._result['exception']
                 
-            redisPublishMessage(msg+"\n"),
+            preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+            preferences.write(msg+"\n")
+            preferences.close()
+            redisPublishMessage(msg+"\n")
             self._display.display(msg, color=C.COLOR_ERROR)
 
             # finally, remove the exception from the result so it's not shown every time
@@ -61,18 +76,14 @@ class CallbackModule(CallbackBase):
 
         else:
             if delegated_vars:
-                msg = "fatal: [%s -> %s]: FAILED! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result))
-                redisPublishMessage(msg+"\n")
+                redisPublishMessage("fatal: [%s -> %s]: FAILED! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)))
                 self._display.display("fatal: [%s -> %s]: FAILED! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)), color=C.COLOR_ERROR)
-                
             else:
-                msg = "fatal: [%s]: FAILED! => %s" % (result._host.get_name(), self._dump_results(result._result))
-                
-                redisPublishMessage(msg+"\n")
-                redisPublishMessage("Finnish")
+                redisPublishMessage("fatal: [%s]: FAILED! => %s" % (result._host.get_name(), self._dump_results(result._result)))
                 self._display.display("fatal: [%s]: FAILED! => %s" % (result._host.get_name(), self._dump_results(result._result)), color=C.COLOR_ERROR)
-                
+
         if result._task.ignore_errors:
+            redisPublishMessage("...ignoring")
             self._display.display("...ignoring", color=C.COLOR_SKIP)
 
     def v2_runner_on_ok(self, result):
@@ -84,22 +95,31 @@ class CallbackModule(CallbackBase):
         elif result._result.get('changed', False):
             if delegated_vars:
                 msg = "changed: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
+                preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+                preferences.write(msg+"\n")
+                preferences.close()
                 redisPublishMessage(msg+"\n")
-                
             else:
                 msg = "changed: [%s]" % result._host.get_name()
+                preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+                preferences.write(msg+"\n")
+                preferences.close()
                 redisPublishMessage(msg+"\n")
 
             color = C.COLOR_CHANGED
         else:
             if delegated_vars:
-                msg = "ok: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])               
+                msg = "ok: [%s -> %s]" % (result._host.get_name(), delegated_vars['ansible_host'])
+                preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+                preferences.write(msg+"\n")
+                preferences.close()
                 redisPublishMessage(msg+"\n")
-                
             else:
                 msg = "ok: [%s]" % result._host.get_name()
+                preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+                preferences.write(msg+"\n")
+                preferences.close()
                 redisPublishMessage(msg+"\n")
-                
             color = C.COLOR_OK
 
         if result._task.loop and 'results' in result._result:
@@ -108,7 +128,10 @@ class CallbackModule(CallbackBase):
 
             if (self._display.verbosity > 0 or '_ansible_verbose_always' in result._result) and not '_ansible_verbose_override' in result._result:
                 msg += " => %s" % (self._dump_results(result._result),)
-            
+
+            preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+            preferences.write(msg+"\n")
+            preferences.close()
             redisPublishMessage(msg+"\n")
             self._display.display(msg, color=color)
 
@@ -123,48 +146,62 @@ class CallbackModule(CallbackBase):
                 if (self._display.verbosity > 0 or '_ansible_verbose_always' in result._result) and not '_ansible_verbose_override' in result._result:
                     msg += " => %s" % self._dump_results(result._result)
                 
+                preferences = open(BASE_DIR, 'a') # Indicamos el valor 'w'.
+                preferences.write(msg+"\n")
+                preferences.close()
                 redisPublishMessage(msg+"\n")
                 self._display.display(msg, color=C.COLOR_SKIP)
 
     def v2_runner_on_unreachable(self, result):
         delegated_vars = result._result.get('_ansible_delegated_vars', None)
         if delegated_vars:
-            
-            redisPublishMessage("fatal: [%s -> %s]: UNREACHABLE! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)) +"\n")            
+            preferences = open(BASE_DIR, 'a')
+            preferences.write("fatal: [%s -> %s]: UNREACHABLE! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)) +"\n")
+            preferences.close()
+            redisPublishMessage("fatal: [%s -> %s]: UNREACHABLE! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)) +"\n")
             self._display.display("fatal: [%s -> %s]: UNREACHABLE! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)), color=C.COLOR_UNREACHABLE)
         else:
-            
+            preferences = open(BASE_DIR, 'a')
+            preferences.write("fatal: [%s]: UNREACHABLE! => %s" % (result._host.get_name(), self._dump_results(result._result))+"\n")
+            preferences.close()
             redisPublishMessage("fatal: [%s]: UNREACHABLE! => %s" % (result._host.get_name(), self._dump_results(result._result))+"\n")
             self._display.display("fatal: [%s]: UNREACHABLE! => %s" % (result._host.get_name(), self._dump_results(result._result)), color=C.COLOR_UNREACHABLE)
     
     def v2_playbook_on_no_hosts_matched(self):
-
-        redisPublishMessage("skipping: no hosts matched"+"\n")
+        redisPublishMessage("skipping: no hosts matched")
         self._display.display("skipping: no hosts matched", color=C.COLOR_SKIP)
 
     def v2_playbook_on_no_hosts_remaining(self):
+        redisPublishMessage("NO MORE HOSTS LEFT")
         self._display.banner("NO MORE HOSTS LEFT")
 
     def v2_playbook_on_task_start(self, task, is_conditional):
-        
+        preferences = open(BASE_DIR, 'a')
+        preferences.write("TASK [%s]" % task.get_name().strip()+"\n")
+        preferences.close()
         redisPublishMessage("TASK [%s]" % task.get_name().strip()+"\n")
         self._display.banner("TASK [%s]" % task.get_name().strip())
-
         if self._display.verbosity >= 2:
             path = task.get_path()
             if path:
-
-                redisPublishMessage("task path: %s" % path +"\n")    
+                preferences = open(BASE_DIR, 'a')
+                preferences.write("task path: %s" % path +"\n")
+                preferences.close()
+                redisPublishMessage("task path: %s" % path)
                 self._display.display("task path: %s" % path, color=C.COLOR_DEBUG)
                 
 
     def v2_playbook_on_cleanup_task_start(self, task):
-        
+        preferences = open(BASE_DIR, 'a')
+        preferences.write("CLEANUP TASK [%s]" % task.get_name().strip() + "\n")
+        preferences.close()
         redisPublishMessage("CLEANUP TASK [%s]" % task.get_name().strip() + "\n")
         self._display.banner("CLEANUP TASK [%s]" % task.get_name().strip())
 
     def v2_playbook_on_handler_task_start(self, task):
-        
+        preferences = open(BASE_DIR, 'a')
+        preferences.write("RUNNING HANDLER [%s]" % task.get_name().strip() + "\n")
+        preferences.close()
         redisPublishMessage("RUNNING HANDLER [%s]" % task.get_name().strip() + "\n")
         self._display.banner("RUNNING HANDLER [%s]" % task.get_name().strip())
 
@@ -172,9 +209,13 @@ class CallbackModule(CallbackBase):
         name = play.get_name().strip()
         if not name:
             msg = "PLAY"
+            preferences.write(msg)
         else:
             msg = "PLAY [%s]" % name
 
+        preferences = open(BASE_DIR, 'a')
+        preferences.write(msg+"\n")
+        preferences.close()
         redisPublishMessage(msg+"\n")
         self._display.banner(msg)
 
@@ -211,6 +252,9 @@ class CallbackModule(CallbackBase):
         if (self._display.verbosity > 0 or '_ansible_verbose_always' in result._result) and not '_ansible_verbose_override' in result._result:
             msg += " => %s" % self._dump_results(result._result)
         
+        preferences = open(BASE_DIR, 'a')
+        preferences.write(msg+"\n")
+        preferences.close()
         redisPublishMessage(msg+"\n")
         self._display.display(msg, color=color)
 
@@ -224,6 +268,9 @@ class CallbackModule(CallbackBase):
             else:
                 msg = "An exception occurred during task execution. The full traceback is:\n" + result._result['exception']
 
+            preferences = open(BASE_DIR, 'a')
+            preferences.write(msg+"\n")
+            preferences.close()
             redisPublishMessage(msg+"\n")
             self._display.display(msg, color=C.COLOR_ERROR)
 
@@ -236,7 +283,10 @@ class CallbackModule(CallbackBase):
         else:
             msg += '[%s]' % (result._host.get_name())
 
-        redisPublishMessage(msg+"\n")        
+        preferences = open(BASE_DIR, 'a')
+        preferences.write(msg+"\n")
+        preferences.close()
+        redisPublishMessage(msg + " (item=%s) => %s" % (self._get_item(result._result), self._dump_results(result._result))+"\n")
         self._display.display(msg + " (item=%s) => %s" % (self._get_item(result._result), self._dump_results(result._result)), color=C.COLOR_ERROR)
         self._handle_warnings(result._result)
 
@@ -246,12 +296,17 @@ class CallbackModule(CallbackBase):
             if (self._display.verbosity > 0 or '_ansible_verbose_always' in result._result) and not '_ansible_verbose_override' in result._result:
                 msg += " => %s" % self._dump_results(result._result)
             
+            preferences = open(BASE_DIR, 'a')
+            preferences.write(msg+"\n")
+            preferences.close()
             redisPublishMessage(msg+"\n")
             self._display.display(msg, color=C.COLOR_SKIP)
 
     def v2_playbook_on_include(self, included_file):
         msg = 'included: %s for %s' % (included_file._filename, ", ".join([h.name for h in included_file._hosts]))
-        
+        preferences = open(BASE_DIR, 'a')
+        preferences.write(msg+"\n")
+        preferences.close()
         redisPublishMessage(msg+"\n")
         self._display.display(msg, color=C.COLOR_SKIP)
 
@@ -285,7 +340,6 @@ class CallbackModule(CallbackBase):
     def v2_playbook_on_start(self, playbook):
         if self._display.verbosity > 1:
             from os.path import basename
-            redisPublishMessage("PLAYBOOK: %s" % basename(playbook._file_name))
             self._display.banner("PLAYBOOK: %s" % basename(playbook._file_name))
 
         if self._display.verbosity > 3:
@@ -302,5 +356,8 @@ class CallbackModule(CallbackBase):
         if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) and not '_ansible_verbose_override' in result._result:
             msg += "Result was: %s" % self._dump_results(result._result)
         
+        preferences = open(BASE_DIR, 'a')
+        preferences.write(msg+"\n")
+        preferences.close()
         redisPublishMessage(msg+"\n")
         self._display.display(msg, color=C.COLOR_DEBUG)

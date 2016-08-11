@@ -1,6 +1,6 @@
 ---
 - name: check postfix package are installed
-  shell: dpkg -l | grep squirrelmail | cut -d " " -f1
+  shell: dpkg -l | grep squirrelmail | grep ii | cut -d " " -f1
   register: init
   when: action == 'Instalar'
 
@@ -13,7 +13,8 @@
   with_items:
     - squirrelmail
     - apache2
-  when: init|changed and init.stdout == "" and action == 'Instalar'
+    - libapache2-mod-php5
+  when: init|changed and init.stdout != "ii" and action == 'Instalar'
 
 - name: update /etc/squirrelmail/config.php from template
   template:
@@ -93,6 +94,5 @@
     cache_valid_time: 600
   with_items:
     - squirrelmail
-    - apache2
   when: status|changed and status.stdout != "" and action == 'Desintalar'
 

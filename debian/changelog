@@ -1,3 +1,9 @@
+kit-servicios (0.1.9) unstable; urgency=medium
+
+  * [3878399] Agregando validaciones al frontend
+
+ -- Victor Pino <victopin0@gmail.com>  Fri, 12 Aug 2016 16:43:08 -0400
+
 kit-servicios (0.1.8) unstable; urgency=medium
 
   * [276ec07] Modificando callback y frontend

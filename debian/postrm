@@ -41,6 +41,13 @@ case "$1" in
 
     fi
 
+    if [ -e /etc/ssh/ssh_config ] ; then
+
+            echo "Elimiando posible enlance simbolico /etc/ssh/ssh_config"
+            unlink /etc/ssh/ssh_config || true
+
+    fi
+
     serviceCommand rabbitmq-server restart
 
     echo "Eliminamos el usuario de rabbitmq"
@@ -54,6 +61,12 @@ case "$1" in
 
     echo "Eliminando el divert de celeryd init.d"
     dpkg-divert --remove --rename /etc/init.d/celeryd
+
+    echo "Eliminando el divert de ssh_config"
+    dpkg-divert --remove --rename /etc/ssh/ssh_config
+
+    echo "Matando procesos que este ejecutando el usuario kds"
+    killall -u kds || true
 
     echo "Eliminando el usuario KDS"
     deluser --remove-home -f kds || true 

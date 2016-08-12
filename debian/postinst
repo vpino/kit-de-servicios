@@ -55,20 +55,33 @@ case "$1" in
             ln /etc/kds/init.d/celeryd /etc/init.d/celeryd
 
         fi
+
+        echo "Colocando /etc/init.d/celeryd en /etc/kds/diverted/init.d/celeryd"
+        dpkg-divert --divert /etc/kds/diverted/ssh/ssh_config --rename /etc/ssh/ssh_config
+
+        if [ -e /etc/ssh/ssh_config ] ; then
+
+            echo "Elimiando posible enlance simbolico /etc/ssh/ssh_config"
+            unlink /etc/ssh/ssh_config || true
+
+        fi
+
+        if [ ! -e /etc/ssh/ssh_config ] ; then
+
+            echo "Instalando configuracion personalizada para SSH"
+            ln /etc/kds/ssh/ssh_config /etc/ssh/ssh_config || true
+
+        fi
                        
         # Source debconf library.
         . /usr/share/debconf/confmodule
        
-        if [[ ! -d /home/kds/.ssh/ && -d /home/kds/ ]]; then
+        mkdir -p /home/kds/.ssh/ || true 
+        chown kds:kds -R /home/kds/ || true
 
-            mkdir /home/kds/.ssh/
-            chown kds:kds -R /home/kds/
-
-            echo "Generando llave ssh al usuario kds"
-            su -s /bin/bash -c  'ssh-keygen -t rsa -f /home/kds/.ssh/id_rsa -q -P ""' kds
-
-        fi 
-        
+        echo "Generando llave ssh al usuario kds"
+        su -s /bin/bash -c  'ssh-keygen -t rsa -f /home/kds/.ssh/id_rsa -q -P ""' kds
+ 
         serviceCommand rabbitmq-server restart
 
         echo "Configurando rabbitmq-server"

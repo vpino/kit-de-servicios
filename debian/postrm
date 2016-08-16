@@ -48,7 +48,7 @@ case "$1" in
 
     fi
 
-    serviceCommand rabbitmq-server restart
+    serviceCommand rabbitmq-server restart || true 
 
     echo "Eliminamos el usuario de rabbitmq"
     rabbitmqctl delete_user kds || true

@@ -177,6 +177,31 @@
 			 </ul>
            
     	</div>
+
+    	<div ng-show="band">
+
+			<div class="card-panel">
+			
+				<p> 
+					<i class="medium material-icons waves-effect waves-light">
+						info_outline
+					</i>
+					Dirigirse a la siguiente ruta para verificar la instalacion del
+					servico
+				</p>
+
+				<p>
+					{{Params.ipadd}}/squirrelmail/
+
+				</p>
+
+				<p>
+					Debera crear un Usuario con el modulo de actualización de la aplicación 
+				</p>
+				
+			</div>
+
+		</div>
 		
 		<br><br><br>
 		
@@ -204,26 +229,8 @@
 
 			</div>
 
-			<div class="card-panel">
-			
-				<p> 
-					<i class="medium material-icons waves-effect waves-light">
-						info_outline
-					</i>
-					Dirigirse a la siguiente ruta para verificar la instalacion del
-					servico
-
-					{{Params.ipadd}}/squirrelmail/
-
-					Debera crear un Usuario con el modulo de actualización de la aplicación 
-				
-				</p>
-
-
-			</div>
-
 		</div>
-		
+
 	</form>
 
 </div>

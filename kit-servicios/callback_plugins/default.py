@@ -58,14 +58,14 @@ class CallbackModule(CallbackBase):
 
         else:
             if delegated_vars:
-                redisPublishMessage(msg+"\n")
+                redisPublishMessage("fatal: [%s -> %s]: FAILED! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result))+"\n")
                 self._display.display("fatal: [%s -> %s]: FAILED! => %s" % (result._host.get_name(), delegated_vars['ansible_host'], self._dump_results(result._result)), color=C.COLOR_ERROR)
             else:
-                redisPublishMessage(msg+"\n")
+                redisPublishMessage("fatal: [%s]: FAILED! => %s" % (result._host.get_name(), self._dump_results(result._result))+"\n")
                 self._display.display("fatal: [%s]: FAILED! => %s" % (result._host.get_name(), self._dump_results(result._result)), color=C.COLOR_ERROR)
 
         if result._task.ignore_errors:
-            redisPublishMessage(msg+"\n")
+            redisPublishMessage("...ignoring"+"\n")
             self._display.display("...ignoring", color=C.COLOR_SKIP)
 
     def v2_runner_on_ok(self, result):
@@ -140,20 +140,20 @@ class CallbackModule(CallbackBase):
             args = ', '.join(('%s=%s' % a for a in task.args.items()))
             args = ' %s' % args
 
-        redisPublishMessage("TASK [%s%s]" % (task.get_name().strip(), args))
+        redisPublishMessage("TASK [%s%s]" % (task.get_name().strip(), args) + "\n")
         self._display.banner("TASK [%s%s]" % (task.get_name().strip(), args))
         if self._display.verbosity >= 2:
             path = task.get_path()
             if path:
-                redisPublishMessage("task path: %s" % path)
+                redisPublishMessage("task path: %s" % path + "\n")
                 self._display.display("task path: %s" % path, color=C.COLOR_DEBUG)
 
     def v2_playbook_on_cleanup_task_start(self, task):
-        redisPublishMessage("CLEANUP TASK [%s]" % task.get_name().strip())
+        redisPublishMessage("CLEANUP TASK [%s]" % task.get_name().strip()+ "\n")
         self._display.banner("CLEANUP TASK [%s]" % task.get_name().strip())
 
     def v2_playbook_on_handler_task_start(self, task):
-        redisPublishMessage("RUNNING HANDLER [%s]" % task.get_name().strip())
+        redisPublishMessage("RUNNING HANDLER [%s]" % task.get_name().strip()+ "\n")
         self._display.banner("RUNNING HANDLER [%s]" % task.get_name().strip())
 
     def v2_playbook_on_play_start(self, play):
@@ -176,7 +176,7 @@ class CallbackModule(CallbackBase):
         elif 'diff' in result._result and result._result['diff'] and result._result.get('changed', False):
             diff = self._get_diff(result._result['diff'])
             if diff:
-                redisPublishMessage(diff)
+                redisPublishMessage(diff+ "\n")
                 self._display.display(diff)
 
     def v2_runner_item_on_ok(self, result):

@@ -2,8 +2,10 @@
 
 	<form class="col s12" name="kds" novalidate>
 
-		<center> <h2> Modulo de Eliminacion de Servicio </h2> </center>
+		<center> <h2> Modulo de Eliminacion </h2> </center>
 
+		<br><br>
+		
 		<div ng-show="msj_logger">
 
 			<div class="input-field col s12">
@@ -184,10 +186,25 @@
 			 </ul>
            
     	</div>
+
+    	<div ng-show="band" class="card-panel">
+			
+			<p> 
+				<i class="medium material-icons waves-effect waves-light">
+					info_outline
+				</i>
+				
+				Ha Finalizado la desintalación del servicio. 
+
+			</p>
+
+		</div>
 		
 		<br><br><br><br><br>
 
 		<div ng-show="msj_logger" class="col s12 "> 
+
+		<br><br>
 
 			<div class="fixed-action-btn horizontal right-align" style="position: relative;">
 				
@@ -208,19 +225,6 @@
 					</li>
 
 				</ul>
-
-			</div>
-
-			<div class="card-panel">
-			
-				<p> 
-					<i class="medium material-icons waves-effect waves-light">
-						info_outline
-					</i>
-					
-					Ha Finalizado la instación del servicio. 
-	
-				</p>
 
 			</div>
 

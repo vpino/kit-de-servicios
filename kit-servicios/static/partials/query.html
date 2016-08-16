@@ -7,43 +7,164 @@
 
 	<br><br>
 
+	<form class="col s12" name="kds" novalidate>
 
-	<div class="row" data-ng-repeat="service in servicioStatus.services">
+		<div class="row">
 
-			<p ng-if="service.run=='Online'">
+			<div class="input-field col s12">
+								
+				<i class="material-icons prefix">account_circle</i>
+				<input ng-model="servicioStatus.username" name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+" placeholder="kds" disabled>
+				<label class="active" for="username"> Nombre de usuario </label>
 
-				<i class="small material-icons">done_all</i>
-      			<label> {{ service.service }} </label>
-      			
-    		</p>
+			</div>
 
-    		<p ng-if="service.run=='Offline'">
-    		    <i class="small material-icons">report_problem</i>
-      			<label>  {{ service.service }}  </label>
-    		</p>
-
-	</div>
-
-	<div ng-if="!!servicioStatus.error">
-		
-		<div class="card-panel">
+			<div class="card-panel" ng-show="!kds.username.$pristine && kds.username.$error.required">
 			
-			<p> 
-				<i class="medium material-icons waves-effect waves-light">
-					report_problem
-				</i>
-				{{servicioStatus.error}}
-			 </p>
+				<p> 
+					<i class="medium material-icons waves-effect waves-light">
+						report_problem
+					</i>
+					El campo es requerido
+				 </p>
+
+			</div>
+
+			<div class="input-field col s12">
+								
+				<i class="material-icons prefix">vpn_key</i>
+				<input ng-model="servicioStatus.passwd" name="passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+				<label>Contraseña del usuario</label>
+				
+			</div>
+
+			<div class="card-panel" ng-show="!kds.passwd.$pristine && kds.passwd.$error.required">
+			
+				<p> 
+					<i class="medium material-icons waves-effect waves-light">
+						report_problem
+					</i>
+					El campo es requerido
+				 </p>
+
+			</div>
+
+			<div class="input-field col s12">
+								
+				<i class="material-icons prefix">vpn_key</i>
+				<input ng-model="confirmPassword" name="confirmPassword" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="servicioStatus.passwd" >
+				<label>Confirmar contraseña </label>
+				
+				<div class="card-panel" ng-show="!kds.confirmPassword.$pristine && kds.confirmPassword.$error.compareTo">
+			
+					<p> 
+						<i class="medium material-icons waves-effect waves-light">
+							report_problem
+						</i>
+						Las contraseñas no coinciden
+					 </p>
+
+				</div>
+				
+			</div>
 
 		</div>
+
+		<br><br><br><br><br><br>
+
 		
-	</div>
+		<div class="row" data-ng-repeat="service in servicioStatus.services">
 
-	<center> 
+				<p ng-if="service.run=='Online'">
 
-		<a class="waves-effect waves-light btn" ng-click="restartService()"><i class="material-icons left">cloud</i>Reinciar los Servicios</a>
-		<a class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Cancelar</a>
+					<i class="medium material-icons">done_all</i>
+	      			 {{ service.service }}  Active 
+	      			
+	    		</p>
 
-	</center>
+	    		<p ng-if="service.run=='Offline'">
+	    		    <i class="medium material-icons">done_all</i>
+	      			 {{ service.service }}  Inactive
+	    		</p>
+
+		</div>
+
+		<br><br><br><br><br><br>
+
+		<div class="row" ng-if="!!servicioStatus.error">
+			
+			<div class="card-panel">
+				
+				<p> 
+					<i class="medium material-icons waves-effect waves-light">
+						report_problem
+					</i>
+					{{servicioStatus.error}}
+				 </p>
+
+			</div>
+			
+		</div>
+
+		<div class="row" ng-if="servicioStatus.ok">
+			
+			<div class="card-panel">
+				
+				<p> 
+					<i class="medium material-icons waves-effect waves-light">
+						done_all
+					</i>
+					{{servicioStatus.ok}}
+				 </p>
+
+			</div>
+			
+		</div>
+
+		<br><br><br><br>
+
+		<div class="row" >
+
+			<center> 
+
+				<button type="submit" class="waves-effect waves-light btn" ng-click="restartService()" ng-disabled="!(kds.$valid)">
+					<i class="material-icons">
+						cloud
+					</i>
+					Reinciar los Servicios
+				</button>
+				
+				<a class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Cancelar</a>
+
+			</center>
+
+		</div>
+
+		<div ng-show="!confirm"> 
+			
+			<h5> Reiniciando los Servicios </h5>
+
+			<div class="row preloader-wrapper small active">
+								
+				<div class="spinner-layer spinner-blue-only">
+					
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+
+					<div class="gap-patch">
+						<div class="circle"></div>
+					</div>
+				
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</form>
 
 </div>

@@ -244,17 +244,6 @@ class ServiceStatus(APIView):
 
                         d['status'] = 'Instalado'
 
-                        #Comprobaremos si el servicio esta corriendo.
-                        query = 'ssh kds@' + str(host) + ' echo 11 | sudo -S service ' +  str(d['service']) + ' status | grep active | cut -d " " -f5'
-
-                        command_running = subprocess.Popen(query, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    
-                        running_success, running_err = command_running.communicate()
-                    
-                        if running_success.strip('\n') == 'active':
-
-                            d['run'] = 'Online'
-
                     if check_err != '':
 
                         if check_err.split(':')[0] == 'ssh':
@@ -292,13 +281,13 @@ class ServiceStatus(APIView):
                     d['run'] = service['run']
 
                     #Comprobaremos si el servicio esta corriendo.
-                    query = 'ssh kds@' + request.data['data']['ip'] + ' echo 11 | sudo -S service ' +  service['service'] + ' restart | grep -E "failed" | cut -d ":" -f2 | cut -d " " -f3'
+                    query = 'ssh kds@' + str(request.data['data']['ip']) + ' echo ' + str(request.data['data']['passwd']) + ' | sudo -S service ' +  str(service['service']) + ' status | grep active | cut -d " " -f5'
 
-                    command_restart = subprocess.Popen(query, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    
-                    restart_success, restart_err = command_restart.communicate()
-                    
-                    if restart_success != '':
+                    command_running = subprocess.Popen(query, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                
+                    running_success, running_err = command_running.communicate()
+                
+                    if running_success.strip('\n') == 'active':
 
                         service['run'] = 'Online'
 
@@ -306,7 +295,7 @@ class ServiceStatus(APIView):
 
                         service['run'] = 'Offline'
 
-                        config['error'] = config['error'] + restart_err
+                        config['error'] = config['error'] + running_err
 
                     servicios.append(d)
 
@@ -319,6 +308,19 @@ class ServiceStatus(APIView):
                 config['error'] = e
 
                 return Response(config)
+            
+            except KeyError:
+
+                config['error'] = 'La informacion pasada es invalida y/o incorrecta'
+
+                return Response(config)
+
+            except Exception, e:
+        
+                config['error'] = e
+
+                return Response(config)
+
 
         return Response(config)
 

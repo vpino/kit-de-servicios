@@ -134,11 +134,11 @@ case "$1" in
         rm -rf /var/run/celery || true
 
         echo "Reiniciando los servicios"
-        serviceCommand apache2 stop
-        serviceCommand nginx restart
+        serviceCommand apache2 stop || true
+        serviceCommand nginx restart || true
 		serviceCommand uwsgi restart || true
         /etc/init.d/celeryd restart || true
-        serviceCommand redis-server restart
+        serviceCommand redis-server restart || true
       
     ;;
 

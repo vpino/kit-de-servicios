@@ -16,17 +16,15 @@ case "$1" in
     install|upgrade)
 
 	if [ -e /var/lib/dpkg/info/apache2.list ] || [ -e /var/lib/live/config/apache2 ]; then
-		service apache2 stop
+		service apache2 stop || true
 	fi
+    
+    mkdir -p /etc/kds/diverted/default || true
 
-    if [[ -d /etc/kds/ && ! -d /etc/kds/diverted/default/ ]]; then
-        mkdir -p /etc/kds/diverted/default
-    fi
+    mkdir -p /etc/kds/diverted/init.d || true
 
-    if [[ -d /etc/kds/ && ! -d /etc/kds/diverted/init.d/ ]]; then
-        mkdir -p /etc/kds/diverted/init.d
-    fi
-	
+    mkdir -p /etc/kds/diverted/ssh || true 
+    
     ;;
 
     abort-upgrade)

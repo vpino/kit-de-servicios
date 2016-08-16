@@ -198,13 +198,19 @@ ManageControllers.controller('queryServiceController', ['$scope', '$location', '
 		
 		$scope.servicioStatus = dataService.getData();
 
+		$scope.servicioStatus.username = 'kds';
 		$scope.servicioStatus.error = '';
+		$scope.servicioStatus.passwd = '';
 
+		$scope.confirm = true;
+		
     	/* Funcion para reiniciar los servicios */
     	$scope.restartService = function() {
 
+    		$scope.confirm = false;
 			/* Ejecutamos la funcion save del servicio pasandole la lista
 	           de parametros */
+
 	       Status.save({
 	            data: $scope.servicioStatus
 	        },
@@ -214,15 +220,25 @@ ManageControllers.controller('queryServiceController', ['$scope', '$location', '
 	        
 	        	$scope.servicioStatus = resp;
 	        	//$location.path('/');
+	        	$scope.servicioStatus.username = ' ';
+				$scope.servicioStatus.passwd = ' ';
+				$scope.confirmPassword = ' ';
+				$scope.servicioStatus.ok = 'Servicios Reiniciados Verifique el ESTATUS.';
+
 
 	        },
 	        function(err){
 				/* error callback */
 				console.log(err);
 
+				$scope.servicioStatus.username = ' ';
+				$scope.servicioStatus.passwd = ' ';
+				$scope.confirmPassword = ' ';
 				$scope.servicioStatus = err;
 
 	        });
+
+	    	$scope.confirm = true;
 
     	}
 

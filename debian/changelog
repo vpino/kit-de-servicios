@@ -1,3 +1,9 @@
+kit-servicios (0.1.10) unstable; urgency=medium
+
+  * [67d01df] Validaciones en el frontend y en el empaquetado
+
+ -- Victor Pino <victopin0@gmail.com>  Tue, 16 Aug 2016 17:08:30 -0400
+
 kit-servicios (0.1.9) unstable; urgency=medium
 
   * [3878399] Agregando validaciones al frontend

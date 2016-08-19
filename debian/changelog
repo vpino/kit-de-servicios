@@ -1,3 +1,9 @@
+kit-servicios (0.1.11) unstable; urgency=medium
+
+  * [a3e3ac5] Agregando validaciones en la autorizacion de operaciones
+
+ -- Victor Pino <victopin0@gmail.com>  Fri, 19 Aug 2016 14:42:20 -0400
+
 kit-servicios (0.1.10) unstable; urgency=medium
 
   * [67d01df] Validaciones en el frontend y en el empaquetado

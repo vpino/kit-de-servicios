@@ -50,8 +50,6 @@ function($routeProvider, $locationProvider) {
 
 }]);
 
-
-
 /*
   panelApp.run(run);
 

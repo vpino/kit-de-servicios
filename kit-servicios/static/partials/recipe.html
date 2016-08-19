@@ -3,25 +3,10 @@
 	<form class="col s12" name="kds">
 
 		<center> <h1> Parametros </h1> </center>
+		
+		<br>
 
 		<div ng-show="msj_logger">
-
-			<div class="input-field col s12">
-								
-				<i class="material-icons prefix">account_circle</i>
-				<input ng-model="Params.username"  name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+">
-				<label> Nombre de usuario cliente </label>
-				<span ng-show="!kds.$pristine && kds.username.$error.required"> El nombre de usuario es requerido.</span>
-
-			</div>
-
-			<div class="input-field col s12">
-								
-				<i class="material-icons prefix">vpn_key</i>
-				<input ng-model="Params.passwd" name="Params.passwd" id="Params.passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
-				<label>Contraseña del usuario</label>
-				<span ng-show="!kds.$pristine && kds.Params.passwd.$error.required"> El nombre de usuario es requerido.</span>
-			</div>
 
 			<div class="row" data-ng-repeat="service in Params.campos">
 
@@ -54,6 +39,64 @@
 					</div>
 					
 				</div>
+
+			</div>
+
+			<div class="card"> 
+
+				<ul class="collection">
+
+					<center> <h4> Autorización de las operaciones </h4> </center>
+					
+					<li class="collection-item">
+
+						<div class="input-field col s12">
+											
+							<i class="material-icons prefix">account_circle</i>
+							<input ng-model="Params.username"  name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+">
+							<label class="active"> Nombre del usuario en el servidor remoto </label>
+							<span ng-show="!kds.$pristine && kds.username.$error.required"> El nombre de usuario es requerido.</span>
+
+						</div>
+
+					</li>
+
+					<li class="collection-item">
+
+						<div class="input-field col s12">
+											
+							<i class="material-icons prefix">vpn_key</i>
+							<input ng-model="Params.passwd" name="Params.passwd" id="Params.passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+							<label> Contraseña del usuario en el servidor remoto </label>
+							<span ng-show="!kds.$pristine && kds.Params.passwd.$error.required"> El nombre de usuario es requerido.</span>
+						</div>
+
+					</li>
+
+					<li class="collection-item">
+
+						<div class="input-field col s12">
+										
+							<i class="material-icons prefix">vpn_key</i>
+							<input ng-model="confirmPassword" name="confirmPassword" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="Params.passwd" >
+							<label>Confirmar contraseña </label>
+							
+							<div class="card-panel" ng-show="!kds.confirmPassword.$pristine && kds.confirmPassword.$error.compareTo">
+						
+								<p> 
+									<i class="medium material-icons waves-effect waves-light">
+										report_problem
+									</i>
+									Las contraseñas no coinciden
+								 </p>
+
+							</div>
+						
+						</div>
+
+					</li>
+
+				</ul>
 
 			</div>
 

@@ -67,13 +67,9 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 
 			});
 
-			console.log(config.campos[0])
-
 			$scope.status = false;
 			$scope.msj = false;
 			$scope.msj_logger = false;
-
-	        //console.log(config.campos);
 
 	        /* Ejecutamos la funcion save del servicio pasandole la lista
 	           de parametros */
@@ -190,56 +186,90 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 
 	}
 
-ManageControllers.controller('queryServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', queryServiceController]);
+ManageControllers.controller('queryServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', 'Recipe', 'WSService', queryServiceController]);
 
-	function queryServiceController($scope, $location, $routeParams, Status, dataService){
+	function queryServiceController($scope, $location, $routeParams, Status, dataService, Recipe, WSService){
 
-		$scope.name = $routeParams.name;
+		$scope.servicioStatus = '';
 		
 		$scope.servicioStatus = dataService.getData();
 
+		$scope.servicioStatus.ipadd = $routeParams.host
+		$scope.servicioStatus.receta = $routeParams.name;
 		$scope.servicioStatus.username = 'kds';
 		$scope.servicioStatus.error = '';
 		$scope.servicioStatus.passwd = '';
-
+		$scope.servicioStatus.campos = [{'action': 'Consultar'}];
+		$scope.msj = false;
+		$scope.respuesta = '';
+        $scope.band = false;
+        $scope.msj_logger = true;
 		$scope.confirm = true;
 		
     	/* Funcion para reiniciar los servicios */
     	$scope.restartService = function() {
 
     		$scope.confirm = false;
+			$scope.servicioStatus.campos[0]['action'] = 'Consultar';
+
 			/* Ejecutamos la funcion save del servicio pasandole la lista
 	           de parametros */
+	        $scope.logger = '';
+        
+        	var promise = WSService.logplay();
 
-	       Status.save({
-	            data: $scope.servicioStatus
+        	promise.then(
+
+        		 /* Funcion que retorna la conexion con el socket */
+				function(evt) { 
+					console.log('resolve : ' + evt); 
+				}, 
+
+				 /* Funcion que retorna el cierre del socket */
+				function(evt) { 
+					console.log('reject : ' + evt); 
+				}, 
+                    
+                /* Funcion que retorna las notificaciones del socket */ 
+				function(evt) {
+					
+					//Update the scope
+					$scope.logger = $scope.logger.concat(evt);
+				     
+				}
+
+        	);
+
+        	$scope.msj_logger = false;
+
+	        Recipe.save({
+	            config: $scope.servicioStatus
 	        },
 	        function(resp, headers){
-				/* success callback */
-				console.log(resp);
-	        
-	        	$scope.servicioStatus = resp;
-	        	//$location.path('/');
-	        	$scope.servicioStatus.username = ' ';
-				$scope.servicioStatus.passwd = ' ';
-				$scope.confirmPassword = ' ';
-				$scope.servicioStatus.ok = 'Servicios Reiniciados Verifique el ESTATUS.';
-
-
-	        },
-	        function(err){
-				/* error callback */
-				console.log(err);
-
+	          //success callback
+	          console.log(resp);
+				$scope.msj = true;
+				$scope.band = true;
+				$scope.respuesta = resp;
+				$scope.servicioStatus = dataService.getData();
 				$scope.servicioStatus.username = ' ';
 				$scope.servicioStatus.passwd = ' ';
 				$scope.confirmPassword = ' ';
-				$scope.servicioStatus = err;
-
+				$scope.servicioStatus.error = ' ';
+	        },
+	        function(err){
+	          // error callback
+	          console.log(err);
+				$scope.msj = true;
+				$scope.band = true;
+				$scope.respuesta = err;
+				$scope.servicioStatus = dataService.getData();
+				$scope.servicioStatus.username = ' ';
+				$scope.servicioStatus.passwd = ' ';
+				$scope.confirmPassword = ' ';
+				$scope.servicioStatus.error = err;
 	        });
-
-	    	$scope.confirm = true;
-
+	       	
     	}
 
     }
@@ -258,5 +288,3 @@ ManageControllers.controller('keyController', ['$scope', 'Keyssh', keyController
 		});
     	
     }
-
-	

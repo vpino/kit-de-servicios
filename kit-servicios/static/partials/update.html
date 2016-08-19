@@ -4,147 +4,150 @@
 
 		<center> <h2> Modulo de Update </h2> </center>
 
-		<div ng-show="msj_logger">
-
-			<div class="input-field col s12">
-								
-				<i class="material-icons prefix">account_circle</i>
-				<input ng-model="Params.username"  name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+">
-				<label> Nombre de usuario</label>
-			</div>
-
-			<div class="card-panel" ng-show="!kds.username.$pristine && kds.username.$error.required">
-			
-				<p> 
-					<i class="medium material-icons waves-effect waves-light">
-						report_problem
-					</i>
-					El campo es requerido
-				 </p>
-
-			</div>
-
-			<div class="input-field col s12">
-								
-				<i class="material-icons prefix">vpn_key</i>
-				<input ng-model="Params.passwd" name="passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
-				<label>Contraseña del usuario</label>
-				
-			</div>
-
-			<div class="card-panel" ng-show="!kds.passwd.$pristine && kds.passwd.$error.required">
-			
-				<p> 
-					<i class="medium material-icons waves-effect waves-light">
-						report_problem
-					</i>
-					El campo es requerido
-				 </p>
-
-			</div>
-
-			<div class="input-field col s12">
-								
-				<i class="material-icons prefix">vpn_key</i>
-				<input ng-model="confirmPassword" name="confirmPassword" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="Params.passwd" >
-				<label>Confirmar contraseña </label>
-				
-				<div class="card-panel" ng-show="!kds.confirmPassword.$pristine && kds.confirmPassword.$error.compareTo">
-			
-					<p> 
-						<i class="medium material-icons waves-effect waves-light">
-							report_problem
-						</i>
-						Las contraseñas no coinciden
-					 </p>
-
-				</div>
-				
-			</div>
-
-		</div>
-
 		<br><br><br>
 		
-		<div class="row" data-ng-repeat="campo in Params.campos">
+		<div ng-show="msj_logger">
 
-			<div class="row" ng-show="status"> 
-					
-				<div ng-if="campo.field_name=='module'">
-					
-					<br><br>
-					<h5> {{campo.nombre}} </h5>
+			<div class="row" data-ng-repeat="campo in Params.campos">
 
-				</div>
+				<div class="row" ng-show="status"> 
+						
+					<div ng-if="campo.field_name=='module'">
+						
+						<br><br>
+						<h5> {{campo.nombre}} </h5>
 
-				<div ng-if="campo.tipo=='string'">
+					</div>
 
-					<div class="input-field col s12">
-							
-						<i class="material-icons prefix">description</i>
-						<input ng-model="campo.default"  name="{{campo.nombre}}" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
-						<label class="active">{{campo.nombre}}</label>
+					<div ng-if="campo.tipo=='string'">
+
+						<div class="input-field col s12">
+								
+							<i class="material-icons prefix">description</i>
+							<input ng-model="campo.default"  name="{{campo.nombre}}" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+							<label class="active">{{campo.nombre}}</label>
 
 
-						<div class="card-panel" ng-show="kds.campo.nombre.$pristine && kds.campo.nombre.$error.required">
-			
-							<p> 
-								<i class="medium material-icons waves-effect waves-light">
-									report_problem
-								</i>
-								El campo es requerido
-							 </p>
+							<div class="card-panel" ng-show="kds.campo.nombre.$pristine && kds.campo.nombre.$error.required">
+				
+								<p> 
+									<i class="medium material-icons waves-effect waves-light">
+										report_problem
+									</i>
+									El campo es requerido
+								 </p>
+
+							</div>
 
 						</div>
 
 					</div>
 
-				</div>
+					<div ng-if="campo.tipo=='password'">
 
-				<div ng-if="campo.tipo=='password'">
+						<div class="input-field col s12">
 
-					<div class="input-field col s12">
+							<i class="material-icons prefix">vpn_key</i>
+							<input ng-model="campo.default" name="{{campo.nombre}}" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+							<label class="active"> Contraseña </label>
 
-						<i class="material-icons prefix">vpn_key</i>
-						<input ng-model="campo.default" name="{{campo.nombre}}" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
-						<label class="active"> Contraseña </label>
-
-						<div class="card-panel" ng-show="!kds.campo.nombre.$pristine && kds.campo.nombre.$error.required">
-			
-							<p> 
-								<i class="medium material-icons waves-effect waves-light">
-									report_problem
-								</i>
-								El campo es requerido
-							 </p>
-
-						</div>
-				    
-				    </div>
-
-				    <div class="input-field col s12">
-
-						<i class="material-icons prefix">vpn_key</i>
-						<input ng-model="confirmPw" type="password" name="confirmPw" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="campo.default" >
-						<label class="active">Confirmar Contraseña </label>
-				   
-				   		<div class="card-panel" ng-show="!kds.confirmPw.$pristine && kds.confirmPw.$error.compareTo">
-			
-							<p> 
-								<i class="medium material-icons waves-effect waves-light">
-									report_problem
-								</i>
-								Las contraseñas no coinciden
-							 </p>
-
-						</div>
-
-				    </div>
-
-				</div>
+							<div class="card-panel" ng-show="!kds.campo.nombre.$pristine && kds.campo.nombre.$error.required">
 				
+								<p> 
+									<i class="medium material-icons waves-effect waves-light">
+										report_problem
+									</i>
+									El campo es requerido
+								 </p>
+
+							</div>
+					    
+					    </div>
+
+					    <div class="input-field col s12">
+
+							<i class="material-icons prefix">vpn_key</i>
+							<input ng-model="confirmPw" type="password" name="confirmPw" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="campo.default" >
+							<label class="active">Confirmar Contraseña </label>
+					   
+					   		<div class="card-panel" ng-show="!kds.confirmPw.$pristine && kds.confirmPw.$error.compareTo">
+				
+								<p> 
+									<i class="medium material-icons waves-effect waves-light">
+										report_problem
+									</i>
+									Las contraseñas no coinciden
+								 </p>
+
+							</div>
+
+					    </div>
+
+					</div>
+					
+				</div>
+
 			</div>
 
+			<div class="card"> 
+
+				<ul class="collection">
+
+					<center> <h4> Autorización de las operaciones </h4> </center>
+					
+					
+					<li class="collection-item">
+
+						<div class="input-field col s12">
+											
+							<i class="material-icons prefix">account_circle</i>
+							<input ng-model="Params.username"  name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+" >
+							<label class="active"> Nombre del usuario en el servidor remoto </label>
+							<span ng-show="!kds.$pristine && kds.username.$error.required"> El nombre de usuario es requerido.</span>
+
+						</div>
+
+					</li>
+
+					<li class="collection-item">
+
+						<div class="input-field col s12">
+											
+							<i class="material-icons prefix">vpn_key</i>
+							<input ng-model="Params.passwd" name="Params.passwd" id="Params.passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+							<label> Contraseña del usuario en el servidor remoto </label>
+							<span ng-show="!kds.$pristine && kds.Params.passwd.$error.required"> El nombre de usuario es requerido.</span>
+						</div>
+
+					</li>
+
+					<li class="collection-item">
+
+						<div class="input-field col s12">
+										
+							<i class="material-icons prefix">vpn_key</i>
+							<input ng-model="confirmPassword" name="confirmPassword" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="Params.passwd" >
+							<label>Confirmar contraseña </label>
+							
+							<div class="card-panel" ng-show="!kds.confirmPassword.$pristine && kds.confirmPassword.$error.compareTo">
+						
+								<p> 
+									<i class="medium material-icons waves-effect waves-light">
+										report_problem
+									</i>
+									Las contraseñas no coinciden
+								 </p>
+
+							</div>
+						
+						</div>
+
+					</li>
+
+				</ul>
+
+			</div>
+			
 		</div>
 
 		<div ng-show="!msj_logger" >
@@ -164,7 +167,6 @@
 		
 		</div>
     	
-    
     	<div ng-show="band">
     	
 	    	<ul class="collection col s12">

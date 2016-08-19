@@ -81,6 +81,17 @@
     - { name: apache2, pattern: /etc/init.d/apache2 }
   when: action == 'Instalar'
 
+- name: ensure all services are restarted
+  service:
+    name: "{{ item.name }}"
+    pattern: "{{ item.pattern }}"
+    state: restarted
+  with_items:
+    - { name: apache2, pattern: /etc/init.d/apache2 }
+    - { name: dovecot, pattern: /etc/init.d/dovecot }
+    - { name: postfix, pattern: /etc/init.d/postfix }
+  when: action == 'Consultar'
+
 - name: check package status squirrelmail
   shell: dpkg -l | grep squirrelmail | cut -d " " -f1
   register: status

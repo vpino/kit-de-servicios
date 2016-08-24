@@ -20,6 +20,10 @@
 
 	<br><br><br><br><br>
 
+	<div ng-show="!confirm">
+		<h4> Confirmando estatus del cliente </h4>
+	</div>
+
 	<div ng-show="!confirm" class="preloader-wrapper small active">
 							
 		<div class="spinner-layer spinner-blue-only">
@@ -60,7 +64,7 @@
 			
 			<div class="chip">
 			    Instalar
-			    <a ng-href="/recipe/{{name}}/{{ip}}/install">
+			    <a ng-click="routeState('recipe', name, ip, 'install')">
 			    	<i class="material-icons" ng-disabled="!desintalado">add</i>
 			    </a>
 		  	</div>
@@ -73,7 +77,7 @@
 			
 			<div class="chip">
 		    Actualizar
-		    	<a ng-href="/update/{{name}}/{{ip}}/update">
+		    	<a ng-click="routeState('update', name, ip, 'update')">
 		    		<i class="material-icons" ng-disabled="!instalado">mode_edit</i>
 		    	</a>
 		  	</div>
@@ -86,7 +90,7 @@
 			
 			<div class="chip">
 		    	Consultar
-			    <a ng-href="/query/{{name}}/{{ip}}">
+			    <a ng-click="routeState('query', name, ip, 'query')">
 						<i class="material-icons" ng-disabled="!instalado">search</i>
 				</a>
 		  	</div>
@@ -99,7 +103,7 @@
 			
 			<div class="chip">
 		    	Desintalar
-			    <a ng-href="/delete/{{name}}/{{ip}}/delete">
+			    <a ng-click="routeState('delete', name, ip, 'delete')">
 						<i class="material-icons" ng-disabled="!instalado">delete</i>
 				</a>
 		  	</div>

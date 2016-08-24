@@ -2,7 +2,7 @@
 
 	<center> <h2> Monitoreo </h2> </center>
 
-	<h3> {{servicioStatus.recipe}} </h3>
+	<h3> {{servicioStatus.receta}} </h3>
 
 	<br><br>
 
@@ -136,9 +136,7 @@
 
     	<pre ng-show="!msj_logger" class=" language-markup"><code class=" language-markup">{{logger}}</code></pre>
 
-
 		<br><br>
-
 		
 		<div class="row" data-ng-repeat="service in servicioStatus.services">
 
@@ -151,36 +149,6 @@
 		</div>
 
 		<br><br><br>
-
-		<div class="row" ng-if="!!servicioStatus.error">
-			
-			<div class="card-panel">
-				
-				<p> 
-					<i class="medium material-icons waves-effect waves-light">
-						report_problem
-					</i>
-					{{servicioStatus.error}}
-				 </p>
-
-			</div>
-			
-		</div>
-
-		<div class="row" ng-if="servicioStatus.ok">
-			
-			<div class="card-panel">
-				
-				<p> 
-					<i class="medium material-icons waves-effect waves-light">
-						done_all
-					</i>
-					{{servicioStatus.ok}}
-				 </p>
-
-			</div>
-			
-		</div>
 
 		<div ng-show="band">
     	

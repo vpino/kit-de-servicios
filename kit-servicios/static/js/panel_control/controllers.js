@@ -6,30 +6,36 @@
 var ManageControllers = angular.module('ManageControllers', []);
 
 /* Declaro un controlador que manejara las acciones de los servicios */
-ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', 'WSService', recipeController]);
+ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', 'WSService', 'dataService', recipeController]);
 
-    function recipeController($scope, $location, $routeParams, Recipe, WSService){
+    function recipeController($scope, $location, $routeParams, Recipe, WSService, dataService){
         
+        $scope.datos = dataService.getData()
+
+		if ('{}' === JSON.stringify($scope.datos) ){
+			$location.path('/');
+		}
+
+        /* Funcion que retorna los parametros de una receta
+
+			1. Recibe como parametro el nombre de la receta
+			   a consultar.
+    	 
+    	 */
+        Recipe.get({name:$scope.datos.recipe, action:$scope.datos.action})
+        .$promise.then(function(data) {
+
+        		$scope.Params = data;
+        		$scope.Params.ipadd = $scope.datos.ip;
+      			
+    	});
+        	
         $scope.status = true;
         $scope.msj = true;
         $scope.respuesta = '';
         $scope.band = false;
         $scope.msj_logger = true;
   
-    	/* Funcion que retorna los parametros de una receta
-
-			1. Recibe como parametro el nombre de la receta
-			   a consultar.
-    	 
-    	 */
-        Recipe.get({name:$routeParams.name, action:$routeParams.action})
-        .$promise.then(function(data) {
-
-        		$scope.Params = data;
-        		$scope.Params.ipadd = $routeParams.host
-      			
-    	});
-        	
 	    /* Funcion para desplegar el servicio */
 		$scope.deployService = function(config, action) {
 
@@ -82,7 +88,6 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	          $scope.msj = true;
 	          $scope.band = true;
 	          $scope.respuesta = resp;
-	          //$location.path('/');
 
 	        },
 	        function(err){
@@ -184,18 +189,55 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
         	
         }
 
+        $scope.routeState = function(route, name, ip, action){
+
+        	$scope.servicioStatus.action = action;
+
+       		dataService.setData($scope.servicioStatus);
+
+       		if (route == 'recipe'){
+
+       			$location.path('/recipe/');
+
+       		}
+
+       		if (route == 'update'){
+
+       			$location.path('/update/');
+
+       		}
+
+       		if (route == 'delete'){
+
+       			$location.path('/delete/');
+
+       		}
+
+       		if (route == 'query'){
+
+       			$location.path('/query/');
+
+       		}
+       		
+
+       	}
+
 	}
 
 ManageControllers.controller('queryServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', 'Recipe', 'WSService', queryServiceController]);
 
 	function queryServiceController($scope, $location, $routeParams, Status, dataService, Recipe, WSService){
 
-		$scope.servicioStatus = '';
-		
-		$scope.servicioStatus = dataService.getData();
+		$scope.servicioStatus = {};
 
-		$scope.servicioStatus.ipadd = $routeParams.host
-		$scope.servicioStatus.receta = $routeParams.name;
+		$scope.servicios = dataService.getData()
+
+		if ('{}' === JSON.stringify($scope.servicios) ){
+			$location.path('/');
+		}
+		
+		$scope.servicioStatus.ipadd = $scope.servicios.ip;
+		$scope.servicioStatus.receta = $scope.servicios.recipe;
 		$scope.servicioStatus.username = 'kds';
 		$scope.servicioStatus.error = '';
 		$scope.servicioStatus.passwd = '';
@@ -251,7 +293,6 @@ ManageControllers.controller('queryServiceController', ['$scope', '$location', '
 				$scope.msj = true;
 				$scope.band = true;
 				$scope.respuesta = resp;
-				$scope.servicioStatus = dataService.getData();
 				$scope.servicioStatus.username = ' ';
 				$scope.servicioStatus.passwd = ' ';
 				$scope.confirmPassword = ' ';
@@ -263,7 +304,6 @@ ManageControllers.controller('queryServiceController', ['$scope', '$location', '
 				$scope.msj = true;
 				$scope.band = true;
 				$scope.respuesta = err;
-				$scope.servicioStatus = dataService.getData();
 				$scope.servicioStatus.username = ' ';
 				$scope.servicioStatus.passwd = ' ';
 				$scope.confirmPassword = ' ';

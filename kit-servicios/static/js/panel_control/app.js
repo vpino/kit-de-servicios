@@ -21,19 +21,19 @@ function($routeProvider, $locationProvider) {
       templateUrl: 'static/partials/panel.html',
       controller: 'statusServiceController'
     }).
-    when('/recipe/:name/:host/:action', {
+    when('/recipe/', {
       templateUrl: 'static/partials/recipe.html',
       controller: 'recipeController'
     }).
-    when('/update/:name/:host/:action', {
+    when('/update/', {
       templateUrl: 'static/partials/update.html',
       controller: 'recipeController'
     }).
-    when('/query/:name/:host', {
+    when('/query/', {
       templateUrl: 'static/partials/query.html',
       controller: 'queryServiceController'
     }).
-    when('/delete/:name/:host/:action', {
+    when('/delete/', {
       templateUrl: 'static/partials/delete.html',
       controller: 'recipeController'
     }).
@@ -64,4 +64,4 @@ function($routeProvider, $locationProvider) {
     $http.defaults.xsrfHeaderName = 'X-CSRFToken';
     $http.defaults.xsrfCookieName = 'csrftoken';
   }
-  */
+*/

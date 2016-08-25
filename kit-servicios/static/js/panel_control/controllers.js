@@ -6,10 +6,14 @@
 var ManageControllers = angular.module('ManageControllers', []);
 
 /* Declaro un controlador que manejara las acciones de los servicios */
-ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', 'WSService', 'dataService', recipeController]);
+ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', 'WSService', 'dataService', '$window', recipeController]);
 
-    function recipeController($scope, $location, $routeParams, Recipe, WSService, dataService){
+    function recipeController($scope, $location, $routeParams, Recipe, WSService, dataService, $window){
         
+        $window.addEventListener("popstate", function(event){
+      		$location.path('/');
+      	});
+
         $scope.datos = dataService.getData()
 
 		if ('{}' === JSON.stringify($scope.datos) ){
@@ -130,9 +134,13 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
           
     }
 
-ManageControllers.controller('statusServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', statusServiceController]);
+ManageControllers.controller('statusServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', '$window' statusServiceController]);
 
-	function statusServiceController($scope, $location, $routeParams, Status, dataService){
+	function statusServiceController($scope, $location, $routeParams, Status, dataService, $window){
+
+		$window.addEventListener("popstate", function(event){
+      		$location.path('/');
+      	});
 
        	$scope.ip = '';
 
@@ -224,9 +232,13 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 
 	}
 
-ManageControllers.controller('queryServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', 'Recipe', 'WSService', queryServiceController]);
+ManageControllers.controller('queryServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', 'Recipe', 'WSService', '$window', queryServiceController]);
 
-	function queryServiceController($scope, $location, $routeParams, Status, dataService, Recipe, WSService){
+	function queryServiceController($scope, $location, $routeParams, Status, dataService, Recipe, WSService, $window){
+
+		$window.addEventListener("popstate", function(event){
+      		$location.path('/');
+      	});
 
 		$scope.servicioStatus = {};
 

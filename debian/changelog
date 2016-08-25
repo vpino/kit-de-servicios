@@ -1,3 +1,9 @@
+kit-servicios (0.1.13) unstable; urgency=medium
+
+  * [559e27c] Override metodo popstate
+
+ -- Victor Pino <victopin0@gmail.com>  Thu, 25 Aug 2016 17:08:48 -0400
+
 kit-servicios (0.1.12) unstable; urgency=medium
 
   * [3a1b680] Actualizando frontend Validaciones

@@ -134,7 +134,7 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
           
     }
 
-ManageControllers.controller('statusServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', '$window' statusServiceController]);
+ManageControllers.controller('statusServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', '$window', statusServiceController]);
 
 	function statusServiceController($scope, $location, $routeParams, Status, dataService, $window){
 

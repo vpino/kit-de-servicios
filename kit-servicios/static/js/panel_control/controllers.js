@@ -12,6 +12,7 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
         
         $window.addEventListener("popstate", function(event){
       		$location.path('/');
+      		$scope = $scope.$new(true);
       	});
 
         $scope.datos = dataService.getData()
@@ -43,7 +44,7 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	    /* Funcion para desplegar el servicio */
 		$scope.deployService = function(config, action) {
 
-			$scope.logger = ''
+			$scope.logger = '';
         
         	var promise = WSService.logplay();
 
@@ -105,33 +106,6 @@ ManageControllers.controller('recipeController', ['$scope', '$location', '$route
 	        });
 	    }; 
 
-	    /* Funcion para consultar el WebSocket */
-		$scope.WSServiceConsult = function() {
-	       
-			var promise = WSService.promise($q);
-
-        	promise.then(
-
-				function(evt) { 
-					console.log('resolve : ' + evt); 
-				}, 
-
-				function(evt) { 
-					console.log('reject : ' + evt); 
-				}, 
-                     
-				function(evt) {
-					console.log('notify: ' + evt);
-
-					//Update the scope
-					$scope.logger = evt;
-				     
-				    }
-
-        		);
-
-		};
-          
     }
 
 ManageControllers.controller('statusServiceController', ['$scope', '$location', '$routeParams', 'Status', 'dataService', '$window', statusServiceController]);
@@ -140,11 +114,13 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 
 		$window.addEventListener("popstate", function(event){
       		$location.path('/');
+      		$scope = $scope.$new(true);
       	});
 
        	$scope.ip = '';
 
        	$scope.confirm = true;
+       	$scope.let = false;
 
        	$scope.name = $routeParams.name;
 
@@ -183,6 +159,7 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 			  			$scope.instalado = true;
 			  			$scope.desintalado = false;
 
+
 			  		} else {
 
 			  			$scope.desintalado = true;
@@ -192,6 +169,8 @@ ManageControllers.controller('statusServiceController', ['$scope', '$location', 
 				});
 
         	$scope.confirm = true;
+        	$scope.let = true;
+
 			
     		});
         	
@@ -238,6 +217,7 @@ ManageControllers.controller('queryServiceController', ['$scope', '$location', '
 
 		$window.addEventListener("popstate", function(event){
       		$location.path('/');
+      		$scope = $scope.$new(true);
       	});
 
 		$scope.servicioStatus = {};
@@ -266,8 +246,6 @@ ManageControllers.controller('queryServiceController', ['$scope', '$location', '
     		$scope.confirm = false;
 			$scope.servicioStatus.campos[0]['action'] = 'Consultar';
 
-			/* Ejecutamos la funcion save del servicio pasandole la lista
-	           de parametros */
 	        $scope.logger = '';
         
         	var promise = WSService.logplay();

@@ -1,3 +1,12 @@
+kit-servicios (0.1.15) unstable; urgency=medium
+
+  * [d7b6cf6] feat(CI) Adding continuous integration
+    added travis
+    added landscape
+    added coveralls
+
+ -- Victor Pino <victopin0@gmail.com>  Mon, 29 Aug 2016 16:37:16 -0400
+
 kit-servicios (0.1.14) unstable; urgency=medium
 
   * [c3aafa9] fix(panel_control): corrected error in the controller.

@@ -1,0 +1,18 @@
+---
+#Variables para postfix
+mailserver_domain: canaima.lan
+mailserver_fqdn: canaima.softwarelibre
+mailserver_subdomain_list:
+  - www
+  - ftp
+  - mail
+
+mailserver_ssl_cert_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
+mailserver_ssl_key_file: /etc/ssl/private/ssl-cert-snakeoil.key
+
+#Accion que realizara la receta
+action: ""
+
+#Variables para el update
+user: ""
+passwd: ""

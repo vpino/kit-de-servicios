@@ -1,0 +1,297 @@
+<div class="row">
+
+	<form class="col s12" name="kds" novalidate>
+
+		<center> <h2> Modulo de Update </h2> </center>
+
+		<br>
+		
+		<div ng-show="msj_logger">
+
+			<div class="row" data-ng-repeat="campo in Params.campos">
+
+				<div class="row" ng-show="status"> 
+						
+					<div ng-if="campo.field_name=='module'">
+						
+						<h5> {{campo.nombre}} </h5>
+
+					</div>
+
+					<div ng-if="campo.tipo=='string'">
+
+						<div class="input-field col s12">
+								
+							<i class="material-icons prefix">description</i>
+							<input ng-model="campo.default"  name="{{campo.nombre}}" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+							<label class="active">{{campo.nombre}}</label>
+
+
+							<div class="card-panel" ng-show="kds.campo.nombre.$pristine && kds.campo.nombre.$error.required">
+				
+								<p> 
+									<i class="medium material-icons waves-effect waves-light">
+										report_problem
+									</i>
+									El campo es requerido
+								 </p>
+
+							</div>
+
+						</div>
+
+					</div>
+
+					<div ng-if="campo.tipo=='password'">
+
+						<div class="input-field col s12">
+
+							<i class="material-icons prefix">vpn_key</i>
+							<input ng-model="campo.default" name="{{campo.nombre}}" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+							<label class="active"> Contraseña </label>
+
+							<div class="card-panel" ng-show="!kds.campo.nombre.$pristine && kds.campo.nombre.$error.required">
+				
+								<p> 
+									<i class="medium material-icons waves-effect waves-light">
+										report_problem
+									</i>
+									El campo es requerido
+								 </p>
+
+							</div>
+					    
+					    </div>
+
+					    <div class="input-field col s12">
+
+							<i class="material-icons prefix">vpn_key</i>
+							<input ng-model="confirmPw" type="password" name="confirmPw" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="campo.default" >
+							<label class="active">Confirmar Contraseña </label>
+					   
+					   		<div class="card-panel" ng-show="!kds.confirmPw.$pristine && kds.confirmPw.$error.compareTo">
+				
+								<p> 
+									<i class="medium material-icons waves-effect waves-light">
+										report_problem
+									</i>
+									Las contraseñas no coinciden
+								 </p>
+
+							</div>
+
+					    </div>
+
+					</div>
+					
+				</div>
+
+			</div>
+
+			<br>
+
+			<div class="card"> 
+
+				<ul class="collection">
+
+					<center> <h4> Autorización de las operaciones </h4> </center>
+					
+					
+					<li class="collection-item">
+
+						<div class="input-field col s12">
+											
+							<i class="material-icons prefix">account_circle</i>
+							<input ng-model="Params.username"  name="username" id="username" type="text" class="validate" required pattern="[ñáéíóúA-Za-z ]+" >
+							<label class="active"> Nombre del usuario en el servidor remoto </label>
+							<span ng-show="!kds.$pristine && kds.username.$error.required"> El nombre de usuario es requerido.</span>
+
+						</div>
+
+					</li>
+
+					<li class="collection-item">
+
+						<div class="input-field col s12">
+											
+							<i class="material-icons prefix">vpn_key</i>
+							<input ng-model="Params.passwd" name="Params.passwd" id="Params.passwd" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+							<label> Contraseña del usuario en el servidor remoto </label>
+							<span ng-show="!kds.$pristine && kds.Params.passwd.$error.required"> El nombre de usuario es requerido.</span>
+						</div>
+
+					</li>
+
+					<li class="collection-item">
+
+						<div class="input-field col s12">
+										
+							<i class="material-icons prefix">vpn_key</i>
+							<input ng-model="confirmPassword" name="confirmPassword" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="Params.passwd" >
+							<label>Confirmar contraseña </label>
+							
+							<div class="card-panel" ng-show="!kds.confirmPassword.$pristine && kds.confirmPassword.$error.compareTo">
+						
+								<p> 
+									<i class="medium material-icons waves-effect waves-light">
+										report_problem
+									</i>
+									Las contraseñas no coinciden
+								 </p>
+
+							</div>
+						
+						</div>
+
+					</li>
+
+				</ul>
+
+			</div>
+			
+		</div>
+
+		<div ng-show="!msj_logger" >
+			
+			<div class="card-panel">
+			
+				<p> 
+					<i class="medium material-icons waves-effect waves-light">
+						repeat
+					</i>
+					Acciones a tiempo real del sistema 
+				 </p>
+
+			</div>
+
+			<pre class=" language-markup"><code class=" language-markup">{{logger}}</code></pre>
+		
+		</div>
+    	
+    	<div ng-show="band">
+    	
+	    	<ul class="collection col s12">
+			   
+			    <li class="collection-item avatar">
+					<i class="material-icons circle green">thumb_up</i>
+
+					<span class="title">Tareas Ejecutadas Correctamente:</span>
+
+					<p> {{ respuesta.ok }} </p>
+
+					<a href="#!" class="secondary-content">
+						
+						<i class="material-icons">grade</i>
+
+					</a>
+
+			    </li>
+
+			    <li class="collection-item avatar">
+					<i class="material-icons circle green">restore</i>
+
+					<span class="title">Tareas que generaron cambios:</span>
+
+					<p> {{ respuesta.changed }} </p>
+
+					<a href="#!" class="secondary-content">
+						
+						<i class="material-icons">grade</i>
+
+					</a>
+
+			    </li>
+
+			    <li class="collection-item avatar">
+					<i class="material-icons circle red">pause_circle_outline</i>
+
+					<span class="title">Tareas no ejecutadas:</span>
+
+					<p> {{ respuesta.unreachable }} </p>
+
+					<a href="#!" class="secondary-content">
+						
+						<i class="material-icons">grade</i>
+
+					</a>
+
+			    </li>
+
+			    <li class="collection-item avatar">
+					<i class="material-icons circle green">swap_calls</i>
+
+					<span class="title"> Tareas Saltadas: </span>
+
+					<p> {{ respuesta.skipped }} </p>
+
+					<a href="#!" class="secondary-content">
+						
+						<i class="material-icons">grade</i>
+
+					</a>
+
+			    </li>
+
+			    <li class="collection-item avatar">
+					<i class="material-icons circle red">error_outline</i>
+
+					<span class="title"> Tareas fallidas: </span>
+
+					<p> {{ respuesta.failures }} </p>
+
+					<a href="#!" class="secondary-content">
+						
+						<i class="material-icons">grade</i>
+
+					</a>
+
+			    </li>
+
+			 </ul>
+           
+    	</div>
+
+    	<div ng-show="band" class="card-panel">
+			
+			<p> 
+				<i class="medium material-icons waves-effect waves-light">
+					info_outline
+				</i>
+				
+				Ha Finalizado la actualizacion del servicio. 
+
+			</p>
+
+		</div>
+		
+		<br><br><br>
+
+		<div ng-show="msj_logger" class="col s12 "> 
+
+			<div class="fixed-action-btn horizontal right-align" style="position: relative;">
+				
+				<a href="#!" class="btn-floating btn-large waves-light">
+					<i class="large material-icons">menu</i>
+				</a>
+
+				<ul>
+					
+					<li>
+
+						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!(kds.$valid)">
+							<i class="material-icons">
+							add
+							</i>
+						</button>
+
+					</li>
+
+				</ul>
+
+			</div>
+
+		</div>
+		
+	</form>
+
+</div>

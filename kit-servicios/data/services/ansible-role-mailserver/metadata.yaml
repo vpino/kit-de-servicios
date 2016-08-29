@@ -1,0 +1,8 @@
+name: correo
+summary: "Servicio de correo"
+maintainer: Equipo de Desarrollo de Canaima GNU/Linux <desarrolladores@canaima.softwarelibre.gob.ve>
+description: |
+ Es un servicio de correo.
+components:
+  1: mysql
+  2: mediawiki

@@ -1,0 +1,15 @@
+{
+  "name": "kit-de-servicios",
+  "description": "desplegar despliegues",
+  "version": "0.0.0",
+  "homepage": "http://gitlab.canaima.softwarelibre.gob.ve/canaima-gnu-linux/kit-servicios/",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "1.4.x",
+    "angular-mocks": "1.4.x",
+    "jquery": "~2.1.1",
+    "angular-route": "1.4.x",
+    "angular-resource": "1.4.x"
+  }
+}

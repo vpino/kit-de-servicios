@@ -1,0 +1,6 @@
+include LICENSE
+include README.md
+recursive-include kit-servicios *
+recursive-exclude debian *
+recursive-exclude etc *
+

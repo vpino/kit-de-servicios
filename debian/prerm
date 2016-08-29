@@ -1,0 +1,36 @@
+#!/bin/bash -e
+#
+# ==============================================================================
+# PAQUETE: kit-servicios
+# ARCHIVO: prerm
+# DESCRIPCIÓN: Prepara el sistema para que el paquete sea removido.
+# COPYRIGHT:
+#  (C) 2016 Victor Pino <victopin0@gmail.com>
+# LICENCIA: GPL3
+# ==============================================================================
+#
+# Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
+# términos de la Licencia Pública General de GNU (versión 3).
+
+case "$1" in
+    remove|upgrade|deconfigure)
+        service nginx stop || true
+		service uwsgi stop || true
+        service redis-server stop || true
+        ps auxww | grep 'celery worker' | awk '{print $2}' | xargs kill -9 || true
+        ps auxww | grep celeryd | awk '{print $2}' | xargs kill -9 || true
+        /etc/init.d/celeryd stop || true
+    ;;
+
+    failed-upgrade)
+    ;;
+
+    *)
+        echo "prerm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

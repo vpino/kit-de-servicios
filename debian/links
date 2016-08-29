@@ -1,0 +1,2 @@
+/etc/nginx/sites-available/kds.nginx.conf /etc/nginx/sites-enabled/kds.nginx.conf
+/etc/uwsgi/apps-available/kds.uwsgi.ini /etc/uwsgi/apps-enabled/kds.uwsgi.ini

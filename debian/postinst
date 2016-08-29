@@ -1,0 +1,156 @@
+#!/bin/bash -e
+#
+# ==============================================================================
+# PAQUETE: kit-servicios
+# ARCHIVO: postinst
+# DESCRIPCIÓN: Configura el sistema despues la instalación del paquete.
+# COPYRIGHT:
+#  (C) 2016 Victor Pino <victopin0@gmail.com>
+# LICENCIA: GPL3
+# ==============================================================================
+#
+# Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
+# términos de la Licencia Pública General de GNU (versión 3).
+
+
+case "$1" in
+    configure)
+
+        serviceCommand() {
+            if service --status-all | grep -Fq ${1}; then
+                service ${1} ${2}
+            fi
+        }
+
+        echo "Colocando /etc/default/celeryd en /etc/kds/diverted/celeryd"
+        dpkg-divert --divert /etc/kds/diverted/default/celeryd --rename /etc/default/celeryd
+
+        if [ -e /etc/default/celeryd ] ; then
+
+            echo "Elimiando posible enlance simbolico /etc/default/celeryd"
+            unlink  /etc/default/celeryd
+
+        fi
+
+        if [ ! -e /etc/default/celeryd ] ; then
+
+            echo "Instalando configuracion personalizada para Celeryd default"
+            ln /etc/kds/default/celeryd /etc/default/celeryd
+
+        fi
+
+        echo "Colocando /etc/init.d/celeryd en /etc/kds/diverted/init.d/celeryd"
+        dpkg-divert --divert /etc/kds/diverted/init.d/celeryd --rename /etc/init.d/celeryd
+
+        if [ -e /etc/init.d/celeryd ] ; then
+
+            echo "Elimiando posible enlance simbolico /etc/init.d/celeryd"
+            unlink /etc/init.d/celeryd
+
+        fi
+
+        if [ ! -e /etc/init.d/celeryd ] ; then
+
+            echo "Instalando configuracion personalizada para Celeryd init"
+            ln /etc/kds/init.d/celeryd /etc/init.d/celeryd
+
+        fi
+
+        echo "Colocando /etc/init.d/celeryd en /etc/kds/diverted/init.d/celeryd"
+        dpkg-divert --divert /etc/kds/diverted/ssh/ssh_config --rename /etc/ssh/ssh_config
+
+        if [ -e /etc/ssh/ssh_config ] ; then
+
+            echo "Elimiando posible enlance simbolico /etc/ssh/ssh_config"
+            unlink /etc/ssh/ssh_config || true
+
+        fi
+
+        if [ ! -e /etc/ssh/ssh_config ] ; then
+
+            echo "Instalando configuracion personalizada para SSH"
+            ln /etc/kds/ssh/ssh_config /etc/ssh/ssh_config || true
+
+        fi
+                       
+        # Source debconf library.
+        . /usr/share/debconf/confmodule
+       
+        mkdir -p /home/kds/.ssh/ || true 
+        chown kds:kds -R /home/kds/ || true
+
+        echo "Generando llave ssh al usuario kds"
+        su -s /bin/bash -c  'ssh-keygen -t rsa -f /home/kds/.ssh/id_rsa -q -P ""' kds
+ 
+        serviceCommand rabbitmq-server restart
+
+        echo "Configurando rabbitmq-server"
+
+        rabbitmqctl add_user kds 11 || true
+
+        echo "==== add virtual host 'kds_vhost' === "
+
+        rabbitmqctl add_vhost kds_vhost || true
+
+        echo "==== add user tag 'kds_tag' for user 'kds' ==="
+
+        rabbitmqctl set_user_tags kds kds_tag || true
+
+        echo "==== set permission for user 'kds' on virtual host 'kds_vhost' ==="
+
+        rabbitmqctl set_permissions -p kds_vhost kds ".*" ".*" ".*" || true
+
+        echo "Eliminar archivo /etc/nginx/sites-available/default"
+        if [ -f /etc/nginx/sites-available/default ] ; then
+
+            rm -rf /etc/nginx/sites-available/default
+
+        fi
+
+        if [ -d /usr/share/python/kit-servicios/ ]; then
+        
+            echo "Modificando los permisos de la carpeta del proyecto"
+            chmod 755 /usr/share/python/kit-servicios/
+
+        fi
+
+        if [ -d /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/ ]; then
+
+            echo "Permisos a la carpeta del proyecto"
+            chown -R kds:kds /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/
+
+            chmod 777 /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/ansible.log
+            chmod 777 /usr/share/python/kit-servicios/lib/python2.7/site-packages/kit-servicios/playbook-log
+
+        fi
+         
+        echo "Configurando permisos y grupos de celeryd"
+        chmod +x /etc/init.d/celeryd || true
+        chown kds:kds /etc/init.d/celeryd || true
+        chmod 777 /etc/init.d/celeryd || true
+
+        echo "Creando archivos de log de celeryd"
+        rm -rf /var/log/celery || true
+        rm -rf /var/run/celery || true
+
+        echo "Reiniciando los servicios"
+        serviceCommand apache2 stop || true
+        serviceCommand nginx restart || true
+		serviceCommand uwsgi restart || true
+        /etc/init.d/celeryd restart || true
+        serviceCommand redis-server restart || true
+      
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

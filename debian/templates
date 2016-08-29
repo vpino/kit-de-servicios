@@ -1,0 +1,7 @@
+Template: kit-servicios/kds_user_pass
+Type: password
+Default: k1ts3rv1c10s
+Description: Contraseña para el usuario que ejecutara la aplicacion:
+ La ejecucion de este sistema requiere de usuario de nombre kds.
+ .
+ Si deja este campo vacío, la contaseña por defecto sera "k1ts3rv1c10s".

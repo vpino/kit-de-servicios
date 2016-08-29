@@ -1,0 +1,37 @@
+options:
+  mailserver_domain:
+    name: Dominio del servicio
+    default: canaima.net.ve
+    description: dominio del servicio de correo
+    type: string
+
+  mailserver_fqdn:
+    name: FQDN
+    default: kmail.canaima.net.ve
+    description: nombre dominio completo del servicio de correo
+    type: string
+
+update:
+  module:
+    name: Agregar usuario
+
+  user:
+    name: Direccion de correo
+    default: 
+    description: Nombre del correo 
+    type: string
+
+  passwd:
+    name: Contraseña
+    default: ''
+    description: Contraseña del correo 
+    type: password
+    
+query:
+  postfix:
+    package: postfix
+    description: Es un servidor de correo
+
+  dovecot:
+    package: dovecot-imapd
+    description: Es un servidor de IMAP y POP3

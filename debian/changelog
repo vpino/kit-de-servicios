@@ -1,0 +1,91 @@
+kit-servicios (0.1.14) unstable; urgency=medium
+
+  * [c3aafa9] fix(panel_control): corrected error in the controller.
+    The controller statusServiceController lacked a comma in the dependency injection.
+    In addition improvements were made in views (panel, query, update).
+
+ -- Victor Pino <victopin0@gmail.com>  Fri, 26 Aug 2016 16:24:32 -0400
+
+kit-servicios (0.1.13) unstable; urgency=medium
+
+  * [559e27c] Override metodo popstate
+
+ -- Victor Pino <victopin0@gmail.com>  Thu, 25 Aug 2016 17:08:48 -0400
+
+kit-servicios (0.1.12) unstable; urgency=medium
+
+  * [3a1b680] Actualizando frontend Validaciones
+
+ -- Victor Pino <victopin0@gmail.com>  Wed, 24 Aug 2016 11:36:42 -0400
+
+kit-servicios (0.1.11) unstable; urgency=medium
+
+  * [a3e3ac5] Agregando validaciones en la autorizacion de operaciones
+
+ -- Victor Pino <victopin0@gmail.com>  Fri, 19 Aug 2016 14:42:20 -0400
+
+kit-servicios (0.1.10) unstable; urgency=medium
+
+  * [67d01df] Validaciones en el frontend y en el empaquetado
+
+ -- Victor Pino <victopin0@gmail.com>  Tue, 16 Aug 2016 17:08:30 -0400
+
+kit-servicios (0.1.9) unstable; urgency=medium
+
+  * [3878399] Agregando validaciones al frontend
+
+ -- Victor Pino <victopin0@gmail.com>  Fri, 12 Aug 2016 16:43:08 -0400
+
+kit-servicios (0.1.8) unstable; urgency=medium
+
+  * [276ec07] Modificando callback y frontend
+
+ -- Victor Pino <victopin0@gmail.com>  Thu, 11 Aug 2016 16:43:58 -0400
+
+kit-servicios (0.1.7) unstable; urgency=medium
+
+  * [04878e9] Actualizando empaquetado y frontend
+
+ -- Victor Pino <victopin0@gmail.com>  Tue, 09 Aug 2016 17:08:49 -0400
+
+kit-servicios (0.1.6) unstable; urgency=medium
+
+  * [7479ad5] Arreglando el empaquetado
+
+ -- Victor Pino <victopin0@gmail.com>  Fri, 05 Aug 2016 16:54:31 -0400
+
+kit-servicios (0.1.5) unstable; urgency=medium
+
+  * [2e7b821] upgrade .deb
+
+ -- Victor Pino <victopin0@gmail.com>  Wed, 03 Aug 2016 13:42:47 -0400
+
+kit-servicios (0.1.4) unstable; urgency=medium
+
+  * [bfc1623] Añadiendo vista de key ssh y arreglando el empaquetado
+
+ -- Victor Pino <victopin0@gmail.com>  Mon, 01 Aug 2016 16:48:05 -0400
+
+kit-servicios (0.1.3) unstable; urgency=medium
+
+  * [e01f2cb] Añadiendo debconf y arreglando daemon celery
+
+ -- Victor Pino <victopin0@gmail.com>  Fri, 29 Jul 2016 17:08:58 -0400
+
+kit-servicios (0.1.2) unstable; urgency=medium
+
+  * [c849079] Arreglando postrm
+
+ -- Victor Pino <victopin0@gmail.com>  Thu, 21 Jul 2016 12:26:46 -0400
+
+kit-servicios (0.1.1) unstable; urgency=medium
+
+  * Arreglando el empaquetado
+
+ -- Victor Pino <victopin0@gmail.com>  Thu, 14 Jul 2016 16:01:40 -0400
+
+kit-servicios (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Victor Pino <victopin0@gmail.com>  Tue, 30 Jun 2016 08:33:35 -0430

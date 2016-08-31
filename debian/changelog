@@ -1,3 +1,11 @@
+kit-servicios (0.1.16) unstable; urgency=medium
+
+  * [a7e6069] fix(deb): update error in the file debian/control
+    the debian control had misallocated the architecture
+    In addition improvements were made in views (delete, servicios).
+
+ -- Victor Pino <victopin0@gmail.com>  Wed, 31 Aug 2016 17:16:08 -0400
+
 kit-servicios (0.1.15) unstable; urgency=medium
 
   * [d7b6cf6] feat(CI) Adding continuous integration

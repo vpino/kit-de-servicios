@@ -20,6 +20,8 @@ case "$1" in
         ps auxww | grep 'celery worker' | awk '{print $2}' | xargs kill -9 || true
         ps auxww | grep celeryd | awk '{print $2}' | xargs kill -9 || true
         /etc/init.d/celeryd stop || true
+        killall celery || true
+
     ;;
 
     failed-upgrade)

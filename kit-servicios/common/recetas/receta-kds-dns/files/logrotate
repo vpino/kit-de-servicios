@@ -1,0 +1,12 @@
+{{ ruta_log_bind }}/bind.log {
+  daily
+  missingok
+  rotate 7
+  compress
+  delaycompress
+  notifempty
+  create 644 {{ usuario_bind }} {{ grupo_bind }}
+  postrotate
+    /usr/sbin/invoke-rc.d bind9 reload > /dev/null
+  endscript
+}

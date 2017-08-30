@@ -1,0 +1,162 @@
+<div class="row">
+
+	<form class="col s12" name="kds" novalidate>
+
+		<div class="row">
+
+			<center> <h3> Modulos de Actualización </h3> </center>
+
+			<div class="col s12">
+
+				<div ng-repeat="mod in Params.campos[0].modules">
+					
+					<p class="col s4" ng-repeat="(key, value) in mod">
+
+						<input type="checkbox" class="filled-in" id="{{key}}" ng-click="moduleData(key)"/>
+						<label for="{{key}}">{{key}}</label>
+
+					</p>
+
+			  	</div>
+
+		  	</div>
+
+		</div>
+
+		<div ng-show="!log">
+	
+			<div class="row" data-ng-repeat="field in module">
+
+				<!-- ==================SI EL CAMPO ES TIPO STRING ==================== -->
+				
+				<div ng-if="field.type=='String'">
+
+					<div class="input-field col s10">
+							
+						<i class="material-icons prefix">description</i>
+						<input ng-model="field.default"  name="{{field.name}}" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+						<label class="active">{{field.label}}</label>
+
+
+						<div class="card-panel" ng-show="kds.field.name.$pristine && kds.field.name.$error.required">
+			
+							<p> 
+								<i class="medium material-icons waves-effect waves-light">
+									report_problem
+								</i>
+								El campo es requerido
+							 </p>
+
+						</div>
+
+					</div>
+
+					<div class="tooltip col s2">
+						<i class="medium material-icons prefix">live_help</i>
+						<span class="tooltiptext">{{field.tooltip}} </span>
+					</div>
+
+				</div>
+
+				<!-- ================================================================= -->
+
+				<!-- ==================SI EL CAMPO ES TIPO PASSWORD ================== -->
+
+				<div ng-if="field.type=='Password'">
+
+					<div class="input-field col s10">
+
+						<i class="material-icons prefix">vpn_key</i>
+						<input ng-model="field.default" name="{{field.name}}" type="password" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+						<label class="active"> Contraseña </label>
+
+						<div class="card-panel" ng-show="!kds.field.name.$pristine && kds.field.name.$error.required">
+			
+							<p> 
+								<i class="medium material-icons waves-effect waves-light">
+									report_problem
+								</i>
+								El field es requerido
+							 </p>
+
+						</div>
+				    
+				    </div>
+
+				    <div class="tooltip col s2">
+						<i class="medium material-icons prefix">live_help</i>
+						<span class="tooltiptext">{{field.tooltip}} </span>
+					</div>
+					
+
+				    <div class="input-field col s10">
+
+						<i class="material-icons prefix">vpn_key</i>
+						<input ng-model="confirmPw" type="password" name="confirmPw" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" compare-to="field.default" >
+						<label class="active">Confirmar Contraseña </label>
+
+					</div>
+				   
+			   		<div class="tooltip col s2">
+						<i class="medium material-icons prefix">live_help</i>
+						<span class="tooltiptext">Contraseña de confirmación </span>
+					</div>
+
+			   		<div class="card-panel" ng-show="!kds.confirmPw.$pristine && kds.confirmPw.$error.compareTo">
+		
+						<p> 
+							<i class="medium material-icons waves-effect waves-light">
+								report_problem
+							</i>
+							Las contraseñas no coinciden
+						 </p>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+		<!-- ================================================================= -->
+
+		<ng-include src="'static/partials/operation_autho.html'"></ng-include>
+
+		<br><br><br>
+
+		<div class="row" ng-show="deploy" > 
+
+			<div class="col s12 "> 
+
+				<div class="fixed-action-btn horizontal right-align" style="position: relative;">
+					
+					<a href="#!" class="btn-floating btn-large waves-light">
+						<i class="large material-icons">menu</i>
+					</a>
+
+					<ul>
+						
+						<li>
+
+							<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Actualizar')" ng-disabled="!(kds.$valid)">
+								<i class="material-icons">
+								settings_applications
+								</i>
+							</button>
+							Actualizar
+
+						</li>
+
+					</ul>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<ng-include src="'static/partials/deploy_service.html'"></ng-include>
+
+	</form>
+
+</div>

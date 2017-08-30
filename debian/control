@@ -7,7 +7,7 @@ Standards-Version: 3.9.6
 Homepage: http://canaima.softwarelibre.gob.ve
 
 Package: kit-servicios
-Architecture: all
+Architecture: any
 Pre-Depends: dpkg (>= 1.16.1), python2.7 | python2.6, libpcre3, libpcre3-dev
 Depends: python-all-dev,
  python-setuptools,
@@ -19,6 +19,9 @@ Depends: python-all-dev,
  rabbitmq-server,
  redis-server,
  celeryd,
- virtualenv
+ virtualenv,
+ build-essential,
+ libssl-dev,
+ libffi-dev
 Description: Proyecto Kit de servicios
  Este paquete instala el componente Kit de servicios

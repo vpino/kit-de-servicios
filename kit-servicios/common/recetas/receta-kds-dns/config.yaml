@@ -1,0 +1,77 @@
+instalacion:
+
+  dominio:
+    name: Nombre de dominio de la institución
+    default: institucion.gob.ve
+    description: Nombre de dominio de la institución
+    type: string
+
+  ns:
+    name: Nombre del primer servidor de nombre
+    default: ns.{{ dominio }}
+    description: Nombre del primer servidor de nombre
+    type: string
+
+  ipv4_ns:
+    name: Direccion IPv4 del primer servidor de nombre
+    default: ""
+    description: Direccion IPv4 del primer servidor de nombre
+    type: string
+
+  ipv6_ns:
+    name: Direccion IPv6 del primer servidor de nombre
+    default: ""
+    description: Direccion IPv6 del primer servidor de nombre
+    type: string
+
+  mx:
+    name: Nombre del servidor de correo asociado al dominio
+    default: correo.{{ dominio }}
+    description: Nombre del servidor de correo asociado al dominio
+    type: string
+
+  ip_mx:
+    name: Direccion IPv4 del servidor de correo
+    default: ""
+    description: Direccion IPv4 del servidor de correo
+    type: string
+
+actualizacion:
+
+  dominio:
+    name: Nombre de dominio de la institución
+    default: institucion.gob.ve
+    description: Nombre de dominio de la institución
+    type: string
+
+  ns:
+    name: Nombre del primer servidor de nombre
+    default: ns.{{ dominio }}
+    description: Nombre del primer servidor de nombre
+    type: string
+
+  ipv4_ns:
+    name: Direccion IPv4 del primer servidor de nombre
+    default: ""
+    description: Direccion IPv4 del primer servidor de nombre
+    type: string
+
+  ipv6_ns:
+    name: Direccion IPv6 del primer servidor de nombre
+    default: ""
+    description: Direccion IPv6 del primer servidor de nombre
+    type: string
+
+  mx:
+    name: Nombre del servidor de correo asociado al dominio
+    default: correo.{{ dominio }}
+    description: Nombre del servidor de correo asociado al dominio
+    type: string
+
+  ip_mx:
+    name: Direccion IPv4 del servidor de correo 
+    default: ""
+    description: Direccion IPv4 del servidor de correo
+    type: string
+
+

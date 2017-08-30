@@ -1,79 +1,38 @@
 {% load staticfiles %}
 
- <div class="row">
+{% verbatim %}
+ <div class="row" ng-controller="RolController">
 
     <div class="col s12 m5 l6">
     	<center> <h3> Servicios </h3> </center>
     	<br>
+
 		<ul class="collapsible popout" data-collapsible="accordion">
-		    <li>
+		    
+		    <li data-ng-repeat="recipe in roles.recipes">
 		      	
 		      	<div class="collapsible-header"><i class="material-icons">filter_drama</i> 
-		      		Servicio de Correo 
+		      		 {{recipe.summary}}  
 		      	</div>
 				
 				<div class="collapsible-body">
 			        
-			        	<p>
+			        	<p> {{recipe.description}}   </p>
+				        
+						<center>
+							<a href="/panel/{{recipe.name}}" class="btn-floating btn-large waves-effect">
 
-				        Un servidor de correo es una aplicación de red de computadoras ubicada en un servidor de Internet, para prestar servicio de correo electrónico (correo-e o "e-mail").
+								<i class="material-icons">add</i> Desplegar
 
-						El Mail Transfer Agent (MTA) tiene varias formas de comunicarse con otros servidores de correo:
+							</a>
+						</center>
 
-					    Recibe los mensajes desde otro MTA. Actúa como "servidor" de otros servidores.
-					    Envía los mensajes hacia otro MTA. Actúa como un "cliente" de otros servidores.
-					    Actúa como intermediario entre un Mail Submission Agent y otro MTA.
-						</p>
-
-						<a href="/panel/ansible-role-mailserver" class="btn-floating btn-large waves-effect waves-light waves-light">
-
-							<i class="material-icons">add</i> Desplegar
-
-						</a>
+						<br>
 
 			    </div>
 
 		    </li>
 		    
-		    <li>
-			    <div class="collapsible-header"><i class="material-icons">place</i> 
-			    
-			    	Time Server
-			    
-			    </div>
-		      	
-		      	<div class="collapsible-body">
-
-		      		<p>
-
-		      			
-
-		      		</p>
-
-		      	</div>
-
-		    </li>
-
-		    <li>
-		      
-		      <div class="collapsible-header"><i class="material-icons">whatshot</i> 
-		      	
-		      	DNS 
-
-		      </div>
-		      
-		      <div class="collapsible-body">
-
-		      		<p>
-
-		      			Es un sistema de nomenclatura jerárquico descentralizado para dispositivos conectados a redes IP como Internet o una red privada. Este sistema asocia información variada con nombres de dominios asignado a cada uno de los participantes.
-		      			
-		      		</p>
-
-		      </div>
-
-		    </li>
-
 		</ul>
 		
 	</div>
@@ -85,3 +44,5 @@
 	</div>
 
 </div>
+
+{% endverbatim %}

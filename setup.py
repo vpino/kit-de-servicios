@@ -38,7 +38,7 @@ setup(
     zip_safe=False,
     long_description=README,
     include_package_data=True,
-    license='BSD License',
+    license='GPL License',
     description='A Django app to Service Management.',
     url='http://gitlab.canaima.softwarelibre.gob.ve/canaima-gnu-linux/kit-servicios',
     author='Victor Pino',

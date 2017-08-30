@@ -1,0 +1,20 @@
+$TTL    4h
+$ORIGIN institucion.gob.ve.
+@           IN      SOA     ns.institucion.gob.ve.    administrador.institucion.gob.ve. (
+                            2016120401  ; serial de la zona
+                            1d		  ; refrescamiento de los DNS esclavos (1 día)
+                            2h		  ; tiempo en que un DNS esclavo reintentará en caso de un problema (2 horas)
+                            2w            ; tiempo de expiración de DNS esclavos (2 semanas)
+                            2d            ; mínimo tiempo para caché en caso de búsquedas fallidas (2 días)
+                            )
+; RR tipo NS
+@           IN      NS      ns
+
+; RR tipo MX
+
+; RR tipo A
+
+; RR tipo AAAA
+
+; RR tipo CNAME
+

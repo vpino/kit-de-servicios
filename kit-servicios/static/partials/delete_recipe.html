@@ -1,0 +1,32 @@
+<div class="row">
+
+	<form class="col s12" name="kds" novalidate>
+		
+		<center> <h2> Modulo de Eliminacion </h2> </center>
+		<br><br>
+    	<ng-include src="'static/partials/operation_autho.html'"></ng-include>
+
+		<div class="col s12" ng-show="deploy"> 
+		<br><br>
+			<div class="fixed-action-btn horizontal right-align" style="position: relative;">
+				<a href="#!" class="btn-floating btn-large waves-light">
+					<i class="large material-icons">menu</i>
+				</a>
+
+				<ul>
+					<li>
+						<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Desintalar')" ng-disabled="!(kds.$valid)" ng-confirm-click="¿ Esta seguro que desea eliminar el servicio ?">
+							<i class="material-icons">
+							delete
+							</i>
+						</button>
+						Eliminar
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<ng-include src="'static/partials/deploy_service.html'"></ng-include>
+	</form>
+
+</div>

@@ -1,0 +1,13 @@
+$TTL    4h
+$ORIGIN {{ dominio }}.
+@           IN      SOA     {{ ns }}.{{ dominio }}.    administrador.{{ dominio }}. (
+                            {{ serial }}  ; serial de la zona
+                            1d		  ; refrescamiento de los DNS esclavos (1 día)
+                            2h		  ; tiempo en que un DNS esclavo reintentará en caso de un problema (2 horas)
+                            2w            ; tiempo de expiración de DNS esclavos (2 semanas)
+                            2d            ; mínimo tiempo para caché en caso de búsquedas fallidas (2 días)
+                            )
+; registros esenciales
+@           IN      NS      {{ ns }}
+{{ ns }}    IN      A       {{ ipv4_ns }}
+{{ ns }}    IN      AAAA    {{ ipv6_ns }}

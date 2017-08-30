@@ -1,0 +1,248 @@
+esta receta se esta adaptando a los propositos de kit de servicios.
+su original reside en el playbook
+
+ ansible-role-bind
+
+requerimientos agregados:
+
+- inclusion de comentarios en el archivo files/named.conf
+  para ampliar documentacion.
+- inclusion del servicio de registro de eventos
+  mediante la referencia del archivo /etc/bind/named.conf.log
+  en el archivo files/named.conf.
+- inclusion de archivo files/named.conf.log con configuraciones
+  basicas propuestas en [1].
+- inclusion de tareas en tasks/main.yml para configurar
+  directorio y archivo de registro de eventos a situar en
+  /var/log/bind/bind.log del servidor remoto.
+- inclusion de variable por omision para directorio base
+  registro de eventos "/var/log/bind" en defaults/main.yml.
+- inclusion en directorio files el archivo de configuracion
+  de rotacion de log para bind.
+- inclusión de paquete bind9-doc en variable 'bind_pkgs' de
+  vars/main.yml.
+- 
+
+requerimientos que surjen al calor de la investigación
+
+- ¿Hará falta en un DNS manejar adecuadamente el archivo
+  de configuración /etc/resolv.conf?
+- Configuración y puesta en marcha del demonio rndc.
+- Manejo de variables a ser desplegadas por la interfaz de parametrización de Kit de Servicios.
+    Consigo en las recetas trabajadas por Víctor, un artilugio
+    al que bautizó con el nombre de archivo config.yaml. Este
+    instrumento está organizado de la siguiente forma:
+
+options:
+  server_domain:
+    name: Dominio del servidor dns 
+    default: domain.com
+    description: Dominio del servidor de DNS
+    type: string
+
+  name_server_domain:
+    name: Nombre del servidor de dns
+    default: domain
+    description: Nombre del servidor de dns
+    type: string
+(...)
+update:
+  server_domain:
+    name: Dominio del servidor dns 
+    default: domain.com
+    description: Dominio del servidor de DNS
+    type: string
+
+  name_server_domain:
+    name: Nombre del servidor de dns
+    default: domain
+    description: Nombre del servidor de dns
+    type: string
+
+ Haciendo una breve leyenda, tendríamos:
+
+* options y update son los contextos de parametrización: options para la primera parametrización y update para posteriores parametrizaciones.
+* Lueg, en el siguiente nivel 'server_domain', 'name_server_domain', etc., que son en sí los nombres de las variables, que han de suponerse manejará tanto el contexto de operaciones ansible y la lógica de pintado web de Kit de Servicios a través de la herramienta angular.
+* Luego, en el siguiente nivel una categoría de detalles, algo así como los metadatos asociados a la variable en cuestión. Aquí, por ahora, se mapean los siguientes elementos: 'name', 'default' (que es el valor que tomará por omisión la variable en cuestión, y además, para los efectos de la interfaz de Kit de Servicios será la variable mostrada en el campo correspondiente), 'description' (también un título que se pintará en la interfaz de Kit de Servicios) y 'type' (referido al tipo de dato de la variable).
+
+.: Continuando con los requerimientos
+
+- Siguiendo la ruta -considerada buena- que propone un apt purge bind9, deberíamos estar desistalando nuestro paquete de la siguiente manera:
+
+ rmdir '/var/lib/bind'
+ Deleting bind user
+ removing '/etc/bind'
+
+A esta altura, ya se han dominado ciertos elementos de la gestión de sericios mediada por ansible:
+- Instalación de servicios.
+- Desinstalación de servicios.
+
+Faltaría: la actualización del servicio.
+
+- Como requerimiento de actualización es importante mantener una traza de las operaciones en caliente hechas por el usuario a modo de desicorporarlas adecuadamente al momento de desinstalar el servicio.
+- ¿Qué queremos gestionar con el módulo de actualización? Por lo pronto, la gestión de los RR:
+  - A
+  - AAAA
+  - NS
+  - CNAME
+  - MX
+  - Por supuesto que la actualización del serial de la zona.
+
+Para esto, me planteé dos estrategias iniciales:
+
+ - Trabajar por bloques, estrategia que gratamente fue secundada por la solución provista por resmo en https://renemoser.net/blog/2014/04/28/manage-bind-and-zones-files-using-ansible/. En nuestro caso de estudio estaríamos trabajando con tres bloques:
+-- El bloque de SOA.
+-- El bloque de registros esenciales.
+-- El bloque de registros particulares.
+   
+   Para este último bloque estaremos explotando el DNS Generic Record Format:
+
+    owner-name  ttl  class  type  type-specific-data 
+
+   De ansible usaremos la extensibilidad posible a través de la directiva {% block tal %}, {% endblock %}.
+
+ - La segunda estrategia sería trabajar con la directiva de bind $INCLUDE, muy parecido a lo anterior, pero desde bind.
+
+   Recordé que en NIC-VE en cada actualización, que se hacía cada 15 minutos, se reescribía completamente la zona. Me parece esta vía ya probada y más sensata que estar insertando registros, haciendo filtros, etc., que era la estrategia seguida por la desarrolladora que me precedió.
+
+   Ahora, lo único importante es hacer persistente la base de datos de la zona. ¿Se podrá escribir localmente a la receta un documento?, ¿tendría esto sentido para el desempeño de Kit de Servicios?, ¿o será que esa base de datos debe residir en el host y ser parseada cada vez que la zona recibe una actualización para así ser reescritos en la zona?
+
+   Tomando en cuenta esto último, se ve más elegante contar con el mecanismo de %INCLUDE de bind.
+
+- Para el serial se podría usar algo así: http://stackoverflow.com/questions/31323604/ansible-date-variable
+
+En el ínterin surgió una tercera estrategia usada para los dynamic upates del DNS, pero creo que puede servir en una versión mejorada: https://github.com/jpmens/ansible-m-dnsupdate.
+
+ Ésta puede ser otra forma de armar SOAs: https://gist.github.com/halberom/b452df40828839fecabf
+
+- Los archivos .j2 en ansible, provienen del mecanismo jinga2: un lenguaje de plantillas.
+- 
+
+
+.: Otros requerimientos para una segunda versión
+
+1. Configurar el rndc.
+2. Chrootear el servicio.
+3. Que el servidor DNS sea usado como servidor secundario.
+4. Que el servidor primario tenga otros dns esclavos.
+5. explotar el uso de la llave rndc para hacer las transferencias de zonas, forwarders, etc.
+
+
+[1] https://oitibs.com/bind9-logs-on-debian-ubuntu/
+
+= referencias de la investigacion =
+
+http://stackoverflow.com/questions/21498832/in-docker-whats-the-difference-between-a-container-and-an-image
+ De aqui, como su nombre lo indica, se comprendio mejor
+ el significado entre una imagen y un contenedor en
+ docker, al mismo tiempo que se comprendio la dinamica
+ de uso de estos ultimos, su actualizacion via commit,
+ el uso de instancias detenidas, entre otras acciones.
+
+http://docs.ansible.com/ansible/playbooks_best_practices.html
+ De aqui se pudo comprender el uso del directorio files
+ en la estructura de directorios de ansible. tambien el
+ uso de vars y defaults para situar una variable.
+
+https://github.com/docker/docker/issues/7459
+ Esta documentacion nos permitio depurar un error
+ recurrente en la receta ansible-role-bind relacionado
+ con D-bus. El error se refiere a un soporte pobremente
+ manejado por ansible, soporte que muy probablemente
+ es incorporado en versiones superiores.
+
+ Frente a este error, es posible trabajar sobre dos
+ escenarios:
+  - corregir el error de systemd directamente desde
+    el host destino, incluyendo algunas tareas que nos
+    permitan dar un mejor sorpote.
+  - usar un modulo de ansible a fin de hacer llamadas
+    especialmente usando la herramiento init.d de los
+    sistemas gnu/linux.
+
+ Esta puede ser una de las razones por las cuales
+ servicios manejados via systemd no arrancan desde
+ sistemas docker: https://lists.alioth.debian.org/pipermail/pkg-systemd-maintainers/2014-September/003598.html
+
+https://github.com/ansible/ansible/issues/7284
+ Con esta documentación y su reorientación sobre cómo
+ arrancar servicios logré esquivar el problema asociado
+ a systemd con ansible. Sin embargo, el problema con
+ systemd merece revisarlo.
+ Dicho sea de paso, con esta fórmula es posible manejar
+ más directamente el demonio rndc, el asunto radicaría
+ en su configuración adecuada.
+
+http://docs.ansible.com/ansible/apt_module.html
+ Se supone que la forma más sencilla para desinstalar
+ software previamente gestionado vía apt es el mismo
+ apt. Por esa razón se explotará la capacidad del módulo
+ apt de ansible para cumplir dicha tarea en nuestras recetas.
+ Uno de los principales requerimientos es la exigencia de
+ tres paquetes previamente instalados en el host:
+        python-apt (python 2)
+        python3-apt (python 3)
+        aptitude
+ 
+http://docs.ansible.com/ansible/glossary.html
+ El manejo de los handlers según el glosario de ansible:
+
+ Handlers
+    Handlers are just like regular tasks in an Ansible playbook (see Tasks) but are only run if the Task contains a notify directive and also indicates that it changed something. For example, if a config file is changed, then the task referencing the config file templating operation may notify a service restart handler. This means services can be bounced only if they need to be restarted. Handlers can be used for things other than service restarts, but service restarts are the most common usage.
+
+ Esto sirve sobretodo para comprender la directiva 'notify' y el
+ papel que ésta juega al usarse con un handler.
+
+http://stackoverflow.com/questions/30328506/check-if-service-exists-with-ansible
+ Tareas ansible para detener un servicio previa evaluación de su existencia
+  - name: Check if Service Exists
+    stat: path=/etc/init.d/{{service_name}}
+    register: service_status
+
+  - name: Stop Service
+    service: name={{service_name}} state=stopped
+    when: service_status.stat.exists
+    register: service_stopped
+
+Problema: msg: line= is required with state=present
+Puede ser resuelto a traves de: 
+https://www.mail-archive.com/ansible-project@googlegroups.com/msg14378.html
+
+Problema relacionado con actualizar en el mismo task, de forma condicional, un par de lineas de un archivo usando inlinefile:
+https://relativkreativ.at/articles/how-to-use-ansibles-lineinfile-module-in-a-bulletproof-way (Tremendo hack mediante el uso de diccionario)
+
+ Sin embargo, de la implementación de este hack surgió otro
+ problema: 
+
+Error tipo A:
+failed: [172.17.0.2] => (item={'insertafter': u'; RR tipo MX$', 'line': u'@\t\t\tIN\tMX\tmail'}) => {"failed": true, "item": {"insertafter": "; RR tipo MX$", "line": "@\t\t\tIN\tMX\tmail"}}
+msg: this module requires key=value arguments (['dest=/var/lib/bind/zonas/maestras/institucion.gob.ve.bd', 'line=@', 'IN', 'MX', 'mail', 'insertafter=;', 'RR', 'tipo', 'MX$', 'state=present'])
+
+Error tipo B: 
+failed: [172.17.0.2] => (item={'insertafter': u'; RR tipo MX$', 'line': u'@\\t\\t\\tIN\\tMX\\tmail'}) => {"failed": true, "item": {"insertafter": "; RR tipo MX$", "line": "@\\t\\t\\tIN\\tMX\\tmail"}}
+msg: this module requires key=value arguments (['dest=/var/lib/bind/zonas/maestras/institucion.gob.ve.bd', 'line=@tttINtMXtmail', 'insertafter=;', 'RR', 'tipo', 'MX$', 'state=present'])
+
+Error tipo C:
+ failed: [172.17.0.2] => (item={'insertafter': u'; RR tipo MX$', 'line': u'@\t\t\tIN\tMX\tmail'}) => {"failed": true, "item": {"insertafter": "; RR tipo MX$", "line": "@\t\t\tIN\tMX\tmail"}}
+msg: this module requires key=value arguments (['dest=/var/lib/bind/zonas/maestras/institucion.gob.ve.bd', 'line=@', 'IN', 'MX', 'mail', 'insertafter=;', 'RR', 'tipo', 'MX$', 'state=present'])
+
+Pero este problema fue resuelto explotando la capacidad del carácter '\' para escapar caracteres que hacían al interpretador
+de ansible entender a @<TAB><TAB><TAB>{{clase}}<TAB>{{tipo}}<TAB>{{dato}} como elementos separados y no parte del mismo string.
+
+Problema relacionado con la directiva 'registry' y con el cambio del valor de una variable que atraviesa por una tarea saltada. Con base en el
+sentido común esto no debería suceder, es decir: una tarea 'skipped' no debería alterar una operación regitry sobre una variable.
+
+ - name: tarea 1
+   ...
+   registry: variable
+   when: condicion 1
+   
+ - name: tarea 2
+   ...
+   registry: variable
+   when: condicion 2
+   
+   Se supone que tarea 2 no debe atualizar la variable 'variable' si no se cumple condicion 2. Pero en nuestro caso sí es así y eso se explica
+   en un hilo de discusión del proyecto Ansible: https://github.com/ansible/ansible/issues/4297 (<- GRAN REFERENCIA)
+   
+   Y aquí hay otra referencia del mismo bug: https://github.com/ansible/ansible/issues/15710

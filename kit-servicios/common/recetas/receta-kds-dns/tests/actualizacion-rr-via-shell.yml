@@ -1,0 +1,16 @@
+- hosts: kds
+
+  vars:
+
+    dominio: {%dominio%}
+
+    nombre: {%nombre%}
+    clase: {%clase%}
+    tipo: {%tipo%}
+    dato: {%dato%}
+        
+    action: 'Actualizar'
+
+  roles:
+
+    - receta-kds-dns

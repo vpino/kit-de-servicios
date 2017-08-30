@@ -27,6 +27,30 @@ ManageDirectives.directive('compareTo', compareTo);
 
     }
 
+ManageDirectives.directive('ngConfirmClick', ngConfirmClick);
 
+    /* Funcion para confirmar acciones */
+    function ngConfirmClick() {
 
+        return {
+            priority: -1,
+            restrict: 'A',
+            link: function(scope, element, attrs){
+
+                element.bind('click', function(e){
+                var message = attrs.ngConfirmClick;
+
+                    // confirm() requires jQuery
+                    if(message && !confirm(message)){
+                        e.stopImmediatePropagation();
+                        e.preventDefault();
+                    }
+
+                });
+                    
+            }
+
+        }
+
+    }
 

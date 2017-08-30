@@ -1,0 +1,169 @@
+---
+################      #################
+## BLOQUE DE TAREAS DE INSTALACIÓN Y ##
+##  CONFIGURACIÓN DEL SERVICIO BIND  ## 
+################      #################
+
+- name: Instalación de software bind
+  apt: pkg={{ item }} state={{ bind_pkg_state }}
+  with_items: bind_pkgs
+  when: action == 'Instalar'
+
+- name: Configuración de directorios de zonas DNS
+  file: dest={{ ruta_zonas_dns }}/{{ item }} state=directory owner={{ usuario_bind }} group={{ grupo_bind }} mode=0755
+  with_items:
+  - maestras
+  - esclavas
+  when: action == 'Instalar'
+
+- name: Configuración de zona (maestra) DNS
+  template: src=named.conf.local.{{ item }}.j2 dest={{ ruta_configuracion_base_bind }}/named.conf.local.{{ item }} owner={{ usuario_bind }} group={{ grupo_bind }} mode=0600
+  with_items:
+  - maestra
+  notify: recargar bind
+  when: action == 'Instalar'
+
+- name: Configuración de bind
+  copy: src=named.conf dest={{ ruta_configuracion_base_bind }}/named.conf owner={{ usuario_bind }} group={{ grupo_bind }} mode=0600
+  notify: reiniciar bind
+  when: action == 'Instalar'
+
+- name: Configuración de opciones de bind
+  template: src=named.conf.options.j2 dest={{ ruta_configuracion_base_bind }}/named.conf.options owner={{ usuario_bind }} group={{ grupo_bind }} mode=0600
+  notify: reiniciar bind
+  when: action == 'Instalar'
+
+- name: Configuración del registro de eventos de bind
+  template: src=named.conf.log.j2 dest={{ ruta_configuracion_base_bind }}/named.conf.log owner={{ usuario_bind }} group={{ grupo_bind }} mode=0600
+  notify: reiniciar bind
+  when: action == 'Instalar'
+
+- name: Configuración para gestionar archivos de eventos de bind
+  template: src=logrotate.j2 dest=/etc/logrotate.d/bind
+  notify: reiniciar bind
+  when: action == 'Instalar'
+
+- name: Configuración de directorio de eventos de bind
+  file: dest={{ ruta_log_bind }} state=directory owner={{ usuario_bind }} group={{ grupo_bind }} mode=0755
+  notify: reiniciar bind
+  when: action == 'Instalar'
+
+- name: Creando primer serial de zona
+  debug: msg={{ serial }}
+  when: action == 'Instalar'
+
+- name: Recreación de base de datos bind esencial
+  template: src=bd.j2 dest={{ ruta_zonas_dns }}/{{ ruta_zonas_maestras }}/{{ dominio }}.bd owner={{ usuario_bind }} group={{ grupo_bind }}
+  notify: recargar bind
+  when: action == 'Instalar'
+
+- name: Arrancar el servicio bind
+  command: service {{ nombre_servicio }} start
+  when: action == 'Instalar'
+
+#################     #####################
+## BLOQUE DE TAREAS DE ACTUALIZACIÓN Y   ##
+## GESTION DE REGISTROS DE RECURSOS (RR) ## 
+#################     #####################
+
+- name: Inserta RR de tipos MX o NS si no existe en zona de DNS
+  lineinfile: 
+              dest={{ ruta_zonas_dns }}/{{ ruta_zonas_maestras }}/{{ dominio }}.bd
+              line={{ item.line }}
+              insertafter={{ item.insertafter }}
+              state=present
+  register: zonadns
+  with_items:
+              - { line: '@\\t\\t\\t{{ clase }}\\t{{ tipo }}\\t{{ nombre }}', insertafter: ';\ RR\ tipo\ {{ tipo }}$' }
+              - { line: '{{ nombre }}\\t\\t\\t{{ clase }}\\tA\\t{{ dato }}', insertafter: ';\ RR\ tipo\ A$' }
+  when: action == 'Actualizar' and ( '{{ tipo }}' == 'MX' or '{{ tipo }}' == 'NS' )
+  
+- name: 1. revisa contenido de la variable 'zonadns'
+  debug: var=zonadns
+  when: action == 'Actualizar'  
+  
+- name: Inserta otro tipo de RR (A, AAAA, CNAME) si no existe en zona de DNS
+  lineinfile: 
+              dest={{ ruta_zonas_dns }}/{{ ruta_zonas_maestras }}/{{ dominio }}.bd
+              line='{{ nombre }}\t\t\t{{ clase }}\t{{ tipo }}\t{{ dato }}'
+              insertafter='; RR tipo {{ tipo }}$'
+              state=present
+  register: zonadns
+  when: action == 'Actualizar' and ('{{ tipo }}' != 'MX' and '{{ tipo }}' != 'NS' )
+
+- name: 2. revisa contenido de la variable 'zonadns'
+  debug: var=zonadns
+  when: action == 'Actualizar'  
+
+- name: Consulta serial de zona actual
+  command: /bin/sed -nr 's/^.*([0-9]{8})([0-9]{2}).*$/\1\n\2/p' {{ ruta_zonas_dns }}/{{ ruta_zonas_maestras }}/{{ dominio }}.bd
+  register: soa
+  when: action == 'Actualizar'  
+  
+- name: Obteniendo fecha del serial existente en zona de DNS
+  set_fact: fechaserial="{{soa.stdout_lines[0]}}"
+  when: action == 'Actualizar'  
+  
+- name: Obteniendo version del serial existente en zona de DNS
+  set_fact: versionserial="{{soa.stdout_lines[1]}}"
+  when: action == 'Actualizar'  
+
+- name: Obteniendo fecha actual
+  set_fact: fechaactual="{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}"
+  when: action == 'Actualizar'  
+
+- name: Si fechaserial existente es distinto de fecha actual entonces actualiza serial completo
+  set_fact: nuevoserial='{{ fechaactual }}01'
+  when: action == 'Actualizar' and '{{ fechaserial }}' != '{{ fechaactual }}' and (zonadns.changed or zonadns.skipped)
+
+- name: Si no, si version es menor a 09 actualiza version de la forma 0[2-9]
+  set_fact: nuevoserial='{{ fechaactual }}0{{ versionserial | int + 1 }}'
+  when: action == 'Actualizar' and '{{ fechaserial }}' == '{{ fechaactual }}' and {{ versionserial }} < 9 and (zonadns.changed or zonadns.skipped)
+
+- name: Si no, actualiza version de la forma [1-9][0-9]
+  set_fact: nuevoserial='{{ fechaactual }}{{ versionserial | int + 1 }}'
+  when: action == 'Actualizar' and '{{ fechaserial }}' == '{{ fechaactual }}' and {{ versionserial }} >= 9 and (zonadns.changed or zonadns.skipped)
+
+- name: Imprimiendo serial resultante
+  debug: var={{ nuevoserial }}
+  when: action == 'Actualizar'
+
+- name: 3. revisa contenido de la variable 'zonadns'
+  debug: var=zonadns
+  when: action == 'Actualizar'  
+
+- name: Actualizando serial
+  replace:
+            dest={{ ruta_zonas_dns }}/{{ ruta_zonas_maestras }}/{{ dominio }}.bd
+            regexp='(^\s+)(\d\d\d\d\d\d\d\d\d\d)(.*$)'
+            replace='\g<1>{{ nuevoserial }}\g<3>'
+  when: action == 'Actualizar' and (zonadns.changed or zonadns.skipped)
+  notify: recargar zona
+
+#################     ##################
+## BLOQUE DE TAREAS DE DESINSTALACIÓN ##
+##           DEL SERVICIO             ## 
+#################     ##################
+
+- name: Desincorporación del directorio de zonas maestras
+  file: path={{ ruta_zonas_dns }} state=absent
+  when: action == 'Desinstalar'
+
+- name: Desinstalación de los paquetes Debian
+  apt: pkg={{ item }} state=absent
+  with_items: bind_pkgs
+  when: action == 'Desinstalar'
+
+- name: Desincorporación de función para rotación de log
+  file: path=/etc/logrotate.d/bind state=absent
+  when: action == 'Desinstalar'
+
+- name: desincorporación del directorio de log
+  file: path={{ ruta_log_bind }} state=absent
+  when: action == 'Desinstalar'
+
+#################     #################
+## BLOQUE DE TAREAS DE CONSULTA DEL  ##
+##             SERVICIO              ## 
+#################     #################
+

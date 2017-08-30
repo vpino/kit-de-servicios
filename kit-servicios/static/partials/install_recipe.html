@@ -1,0 +1,87 @@
+<div class="row">
+
+	<form class="col s12" name="kds">
+
+		<center> <h1> Parametros </h1> </center>
+		
+		<br>
+	
+		<div ng-show="!log">
+
+			<div class="row" data-ng-repeat="service in Params.campos">
+				
+				<div ng-if="service.type=='String'">
+
+					<div class="input-field col s10">
+							
+						<i class="material-icons prefix">description</i>
+						<input class="tooltipped" ng-model="service.default" id="service.name" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+">
+						<label class="active">{{service.label}}</label>
+
+					</div>
+
+					<div class="tooltip col s2">
+						<i class="medium material-icons prefix">live_help</i>
+						<span class="tooltiptext">{{service.tooltip}} </span>
+					</div>
+
+				</div>
+
+				<div ng-if="service.type=='list'">
+
+					<div class="input-field col s12" data-ng-repeat="item in service.default">
+
+						<p>
+							<input name="group1" type="radio" id="{{item}}" />
+							<label for="{{item}}">{{item}}</label>
+						  
+					    </p>
+
+				    </div>
+
+				</div>
+					
+			</div>
+
+		</div>
+
+		<ng-include src="'static/partials/operation_autho.html'"></ng-include>
+
+		<br><br><br>
+
+		<div class="row" ng-show="deploy" > 
+		
+			<div class="col s12 "> 
+
+				<div class="fixed-action-btn horizontal right-align" style="position: relative;">
+					
+					<a href="#!" class="btn-floating btn-large waves-light">
+						<i class="large material-icons">menu</i>
+					</a>
+
+					<ul>
+						
+						<li>
+
+							<button type="submit" class="btn-floating red" ng-click="deployService(Params, 'Instalar')" ng-disabled="!(kds.$valid)">
+								<i class="material-icons">
+								play_for_work
+								</i>
+							</button>
+							Instalar
+
+						</li>
+
+					</ul>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<ng-include src="'static/partials/deploy_service.html'"></ng-include>
+
+	</form>
+
+</div>

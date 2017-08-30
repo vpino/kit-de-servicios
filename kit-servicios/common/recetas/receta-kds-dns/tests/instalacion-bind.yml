@@ -1,0 +1,14 @@
+- hosts: kds
+
+  vars:
+
+    dominio: institucion.gob.ve
+    ns: ns
+    ipv4_ns: 192.168.1.53
+    ipv6_ns: 
+
+    action: 'Instalar'
+
+  roles:
+
+    - receta-kds-dns

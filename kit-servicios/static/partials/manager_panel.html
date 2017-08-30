@@ -1,0 +1,124 @@
+<div class="row">
+	
+	<center> <h3> Gestion del Servicio </h3> </center>
+
+	<br>
+
+	<div class="input-field col s10">
+						
+			<i class="material-icons prefix">dns</i>
+			<input ng-model="ip" name="ip" id="default" type="text" class="validate" required pattern="[ñáéíóúA-Za-z 0-9 .]+" ng-blur="" >
+			<label>IP donde desea instalar </label>
+
+	</div>
+
+	<div class="col s2">
+		
+		<i class="medium material-icons waves-effect waves-light teal lighten-2" ng-click="queryState(ip)">done</i>
+				
+	</div>
+
+	<br><br><br><br><br>
+
+	<div ng-show=confirm_status>
+
+		<h4> Confirmando estatus del cliente </h4>
+
+		<div class="preloader-wrapper small active">
+								
+			<div class="spinner-layer spinner-blue-only">
+				
+				<div class="circle-clipper left">
+					<div class="circle"></div>
+				</div>
+
+				<div class="gap-patch">
+					<div class="circle"></div>
+				</div>
+			
+				<div class="circle-clipper right">
+					<div class="circle"></div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+		
+	<div ng-if="!!servicioStatus.error">
+		
+		<div class="card-panel">
+			
+			<p> 
+				<i class="medium material-icons waves-effect waves-light">
+					report_problem
+				</i>
+				{{servicioStatus.error}}
+			 </p>
+
+		</div>
+		
+	</div>
+
+	<div ng-if="operations && servicioStatus.error == '' ">
+
+		<h3> Operaciones Disponibles </h3>
+
+		<hr>
+	
+		<div class="col s12" ng-show="!status_service">
+			
+			<div class="chip">
+			    Instalar
+			    <a ng-click="routeState('recipe', name, ip, 'install')">
+			    	<i class="material-icons" ng-disabled="status_service">add</i>
+			    </a>
+		  	</div>
+
+		</div>
+
+		<br><br>
+
+		<div class="col s12" ng-show="status_service">
+			
+			<div class="chip">
+		    Actualizar
+		    	<a ng-click="routeState('update', name, ip, 'update')">
+		    		<i class="material-icons" ng-disabled="!status_service">mode_edit</i>
+		    	</a>
+		  	</div>
+
+		</div>
+
+		<br><br>
+
+		<div class="col s12" ng-show="status_service">
+			
+			<div class="chip">
+		    	Consultar
+			    <a ng-click="routeState('query', name, ip, 'query')">
+						<i class="material-icons" ng-disabled="!status_service">search</i>
+				</a>
+		  	</div>
+
+		</div>
+
+		<br><br>
+
+		<div class="col s12" ng-show="status_service">
+			
+			<div class="chip">
+		    	Desintalar
+			    <a ng-click="routeState('delete', name, ip, 'delete')">
+						<i class="material-icons" ng-disabled="!status_service">delete</i>
+				</a>
+		  	</div>
+
+		</div>
+
+		<br><br>
+
+	</div>
+
+</div>

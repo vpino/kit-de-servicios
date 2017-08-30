@@ -1,0 +1,193 @@
+---
+## BLOQUE DE TAREAS DE INSTALACIÓN DEL SERVICIO
+
+- name: Instalación de software bind
+  apt: pkg={{ item }} state={{ bind_pkg_state }}
+  with_items: bind_pkgs
+  when: action == 'Instalar'
+
+- name: Configuración de directorios de zonas DNS
+  file: dest={{ ruta_zonas_dns }}/{{ item }} state=directory owner={{ usuario_bind }} group={{ grupo_bind }} mode=0755
+  with_items:
+  - maestras
+  - esclavas
+  when: action == 'Instalar'
+
+- name: Configuración de zona (maestra) DNS
+  template: src=named.conf.local.{{ item }}.j2 dest={{ ruta_configuracion_base_bind }}/named.conf.local.{{ item }} owner={{ usuario_bind }} group={{ grupo_bind }} mode=0600
+  with_items:
+  - maestra
+  notify: recargar bind
+  when: action == 'Instalar'
+
+- name: Configuración de bind
+  copy: src=named.conf dest={{ ruta_configuracion_base_bind }}/named.conf owner={{ usuario_bind }} group={{ grupo_bind }} mode=0600
+  notify: reiniciar bind
+  when: action == 'Instalar'
+
+- name: Configuración de opciones de bind
+  template: src=named.conf.options.j2 dest={{ ruta_configuracion_base_bind }}/named.conf.options owner={{ usuario_bind }} group={{ grupo_bind }} mode=0600
+  notify: reiniciar bind
+  when: action == 'Instalar'
+
+- name: Configuración del registro de eventos de bind
+  template: src=named.conf.log.j2 dest={{ ruta_configuracion_base_bind }}/named.conf.log owner={{ usuario_bind }} group={{ grupo_bind }} mode=0600
+  notify: reiniciar bind
+  when: action == 'Instalar'
+
+- name: Configuración para gestionar archivos de eventos de bind
+  template: src=logrotate.j2 dest=/etc/logrotate.d/bind
+  notify: reiniciar bind
+  when: action == 'Instalar'
+
+- name: Configuración de directorio de eventos de bind
+  file: dest={{ ruta_log_bind }} state=directory owner={{ usuario_bind }} group={{ grupo_bind }} mode=0755
+  notify: reiniciar bind
+  when: action == 'Instalar'
+
+- name: Creando primer serial de zona
+  debug: msg={{ serial }}
+  when: action == 'Instalar'
+
+- name: Recreación de base de datos bind esencial
+  template: src=bd.j2 dest={{ ruta_zonas_dns }}/{{ ruta_zonas_maestras }}/{{ dominio }}.bd owner={{ usuario_bind }} group={{ grupo_bind }}
+  notify: recargar bind
+  when: action == 'Instalar'
+
+- name: Arrancar el servicio bind
+  command: service {{ nombre_servicio }} start
+  when: action == 'Instalar'
+
+## BLOQUE DE TAREAS DE ACTUALIZACIÓN DEL SERVICIO
+  
+#regexp: "{{ ns.nombre }}\s+{{ ns.clase }}\s+{{ ns.tipo }}\s+{{ ns.dato }}"
+#dest={{ ruta_zonas_dns }}/{{ ruta_zonas_maestras }}/{{ dominio }}.bd
+#insertbefore='{{ ns.nombre }}\t\t{{ ns.clase }}\t.*$'
+#              insertbefore='{{ nombre }}\t\t{{ clase }}\t.*$'
+
+- name: Inserta RR si no existe en zona de DNS
+# Nota: mantiene organización del archivo de zona basado, en primer lugar, el tipo de RR, y luego, en la cercanía de las etiquetas
+  lineinfile: 
+              dest=/zona.test
+              line='{{ nombre }}\t\t{{ clase }}\t{{ tipo }}\t{{ dato }}'
+              insertafter='; RR tipo {{ tipo }}$'
+              state=present
+  register: zonadns
+  when: action == 'Actualizar'
+
+#- name: Actualizar serial de zona
+#  notify: soa
+#  meta: flush_handlers
+#  when: action == 'Actualizar' and zonadns.changed == true
+
+#- name: Incrementa version de la zona de DNS
+#  set_fact: version={{ version | int + 1 }}
+#  when: action == 'Actualizar' and zonadns.changed == true
+
+#- name: soa
+#  replace:
+#            dest=/zona.test
+#            regexp='(^\s+)\d\d\d\d\d\d\d\d(\d\d)(.*$)'
+#            replace='\g<1>{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}\g<2>\g<3>'
+#  when: action == 'Actualizar' and zonadns.changed == true
+
+#- name: Imprime serial de zona actual
+#  debug: var={{ serial }}
+#  when: action == 'Actualizar'  
+
+- name: Consulta serial de zona actual
+  command: /bin/sed -nr 's/^.*([0-9]{8})([0-9]{2}).*$/\1\n\2/p' /zona.test
+  register: soa
+  when: action == 'Actualizar'  
+
+- name: Imprimiendo toda la variable soa
+  debug: var="{{soa}}"
+  when: action == 'Actualizar'
+  
+#- name: Obteniendo fecha del serial presente en zona de DNS
+#  set_fact: fechaserial="{{soa.stdout_lines[0]}}"
+#  when: action == 'Actualizar'  
+  
+#- name: Obteniendo version del serial presente en zona de DNS
+#  set_fact: versionserial=soa.stdout_lines[1]
+#  when: action == 'Actualizar'  
+
+#- name: Imprimiendo fecha del serial presente en zona de DNS
+#  debug: var={{ fechaserial }}
+#  when: action == 'Actualizar'  
+
+- name: Imprimiendo fecha actual
+  debug: var={{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}
+  when: action == 'Actualizar'  
+
+#- name: Imprimiendo version del serial presente en zona de DNS
+#  debug: var={{ versionserial }}
+#  when: action == 'Actualizar'  
+
+- name: Imprimiendo fecha presente en serial
+  debug: var="{{soa.stdout_lines[0]}}{{soa.stdout_lines[1]}}"
+  when: action == 'Actualizar'
+
+- name: Si fechaserial existente es distinto de fecha actual entonces actualiza serial completo
+  set_fact: nuevoserial='{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}01'
+  when: action == 'Actualizar' and '{{fechaserial}}' != '{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}' and zonadns.changed == true
+
+- name: Si no entonces actualiza solo version en serial
+  set_fact: nuevoserial='{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}{{ version | int + 1 }}'
+  when: action == 'Actualizar' and '{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}' == '{{fechaserial}}' and zonadns.changed == true
+
+- name: Imprimiendo serial resultante
+  debug: var={{nuevoserial}}
+  when: action == 'Actualizar'
+
+# A. USAR LA ESTRATEGIA DE REEMPLAZAR EL PATRON CUANDO SEA CONSEGUIDO.
+# B. reflexion: esta estrategia no seria suficientemente buena, dado que
+# partiendo del principio que todas las actualizaciones son susceptibles
+# a un cambio de estado de la zona, entonces cada actualizacion generara
+# un serial de zona nuevo, y esto, no representa una solucion con calidad
+# Lo que si seria interesante es poder generar, en tiempo real, quiza con
+# una combinacion de angular y ansile, es la consulta por el registro que
+# se desea actualizar. En caso de estar presente en la zona, advertir al
+# usuario.
+
+#- name: Lo que tiene la variable 'existerr'
+#  debug: var=existerr.changed
+#  when: action == 'Actualizar'
+
+## BLOQUE DE TAREAS DE DESINSTALACION DEL SERVICIO
+
+- name: detener el servicio bind
+  command: service bind9 stop
+  when: action == 'Desinstalar'
+
+- name: eliminación de usuario y grupo bind
+  command: delgroup {{ bind_group }}
+  command: deluser {{ bind_user }}
+  when: action == 'NOOP'
+
+- name: desincorporación del directorio de zonas maestras
+  file: path={{ bind_base_zones_path }}/{{ item }} state=absent
+  with_items:
+  - masters
+  - slaves
+  when: action == 'Desinstalar'
+
+- name: desinstalación de los paquetes Debian
+  apt: pkg={{ item }} state=absent
+  with_items: bind_pkgs
+  when: action == 'Desinstalar'
+
+- name: desincorporacion del directorio principal de bind
+  file: path={{ bind_config_basepath }} state=absent
+  when: action == 'NOOP'
+
+- name: desincorporación de función para rotación de log
+  file: path=/etc/logrotate.d/bind state=absent
+  when: action == 'Desinstalar'
+
+- name: desincorporación del directorio de log
+  file: path={{ bind_log_basepath }} state=absent
+  when: action == 'Desinstalar'
+
+## BLOQUE DE TAREAS DE CONSULTA DEL SERVICIO
+

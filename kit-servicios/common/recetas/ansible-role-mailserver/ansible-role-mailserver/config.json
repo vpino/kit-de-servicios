@@ -1,0 +1,95 @@
+{
+  "install": 
+  [
+
+    {
+      "name": "mailserver_domain",
+      "label": "Dominio del Correo",
+      "default": "canaima.net.ve",
+      "tooltip": "Dominio a cual se hara referencia. ejemplo: gmail.com",
+      "type": "String"
+    },
+
+    {
+      "name": "mailserver_fqdn",
+      "label": "FQDN",
+      "default": "kmail.canaima.net.ve",
+      "tooltip": "Nombre dominio completo del servicio de correo",
+      "type": "String"
+    }
+
+  ],
+
+  "update": 
+
+    {
+      "modules": 
+      [
+
+        {
+          "Agregar-Usuario": 
+
+          [
+
+            {
+              "name": "user",
+              "label": "Direccion de correo",
+              "default": "",
+              "tooltip": "Nombre del correo",
+              "type": "String"
+            },
+
+            {
+              "name": "passwd",
+              "label": "Contraseña",
+              "default": "",
+              "tooltip": "Contraseña del correo",
+              "type": "Password"
+            }
+
+
+          ]
+          
+        },
+
+        {
+          "Eliminar-Usuario": [
+
+            {
+              "name": "user",
+              "label": "Direccion de correo",
+              "default": "",
+              "tooltip": "Nombre del correo",
+              "type": "String"
+            }
+
+          ]
+        }
+
+      ]
+
+    },
+
+  "query":
+
+  [
+    {
+      "service": "postfix",
+      "package": "postfix",
+      "description": "Es un servidor de correo"
+    },
+
+    {
+      "service": "dovecot",
+      "package": "dovecot-imapd",
+      "description": "Es un servidor de IMAP y POP3"
+    }
+
+  ],
+
+  "message_success": "Dirigirse a la siguiente ruta para verificar la instalacion del servico localhost/squirrelmail/ ",
+
+  "after_installing": "Debera crear un Usuario con el modulo de actualización de la aplicación"
+
+}
+

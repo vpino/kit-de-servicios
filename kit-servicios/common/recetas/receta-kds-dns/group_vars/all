@@ -1,0 +1,20 @@
+---
+#Variables para dns
+
+#Variable de los dominios de los servidores dns y servidor de correo
+server_domain: domain.com
+server_mail: mail.domain.com
+server_reverso: reverso
+
+#Variable de los nombres de los servidores dns, servidor de correo y tres servidores extra
+name_server_domain: domain
+name_server_mail: mail
+name_server1: caracas
+
+#Variable de las IP de los servidores dns, servidor de correo y tres servidores extra
+server_ip_ns: 127.0.0.1
+server_ip_mail: 127.0.0.4
+server_ip_1: 127.0.0.5
+
+#Variable action que permite realizar la tarea
+action: ""

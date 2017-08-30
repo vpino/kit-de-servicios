@@ -1,0 +1,9 @@
+---
+- name: reiniciar bind
+  command: service {{ nombre_servicio }} restart
+
+- name: recargar bind
+  command: service {{ nombre_servicio }} reload
+  
+- name: recargar zona
+  command: rndc reload

@@ -1,0 +1,163 @@
+<div class="row" ng-show="log">
+
+	<div class="card-panel">
+
+		<p> 
+			<i class="medium material-icons waves-effect waves-light">
+				repeat
+			</i>
+			Acciones a tiempo real del sistema 
+		</p>
+
+	</div>
+
+	<pre class=" language-markup">
+
+		<code class=" language-markup">{{logger}}</code>
+
+	</pre>
+
+</div>
+
+<div class="row" ng-show="finnish">
+    	
+	<ul class="collection col s12">
+	   
+	    <li class="collection-item avatar">
+			<i class="material-icons circle green">thumb_up</i>
+
+			<span class="title">Tareas Ejecutadas Correctamente:</span>
+
+			<p> {{ respuesta.ok }} </p>
+
+			<a href="#!" class="secondary-content">
+				
+				<i class="material-icons">grade</i>
+
+			</a>
+
+	    </li>
+
+	    <li class="collection-item avatar">
+			<i class="material-icons circle green">restore</i>
+
+			<span class="title">Tareas que generaron cambios:</span>
+
+			<p> {{ respuesta.changed }} </p>
+
+			<a href="#!" class="secondary-content">
+				
+				<i class="material-icons">grade</i>
+
+			</a>
+
+	    </li>
+
+	    <li class="collection-item avatar">
+			<i class="material-icons circle red">pause_circle_outline</i>
+
+			<span class="title">Tareas no ejecutadas:</span>
+
+			<p> {{ respuesta.unreachable }} </p>
+
+			<a href="#!" class="secondary-content">
+				
+				<i class="material-icons">grade</i>
+
+			</a>
+
+	    </li>
+
+	    <li class="collection-item avatar">
+			<i class="material-icons circle green">swap_calls</i>
+
+			<span class="title"> Tareas Saltadas: </span>
+
+			<p> {{ respuesta.skipped }} </p>
+
+			<a href="#!" class="secondary-content">
+				
+				<i class="material-icons">grade</i>
+
+			</a>
+
+	    </li>
+
+	    <li class="collection-item avatar">
+			<i class="material-icons circle red">error_outline</i>
+
+			<span class="title"> Tareas fallidas: </span>
+
+			<p> {{ respuesta.failures }} </p>
+
+			<a href="#!" class="secondary-content">
+				
+				<i class="material-icons">grade</i>
+
+			</a>
+
+	    </li>
+
+	 </ul>
+   
+</div>
+
+<div ng-if="datos.action == 'install'"> 
+
+	<div class="row" ng-show="finnish && respuesta.failures == 0 && respuesta.unreachable == 0">
+
+		<div class="card-panel">
+
+			<p> 
+				<i class="medium material-icons waves-effect waves-light">
+					info_outline
+				</i>
+				{{Params.message_success}}
+			</p>
+
+			<p>
+				{{Params.after_installing}}
+			</p>
+
+		</div>
+
+	</div>
+</div>
+
+<div ng-if="datos.action == 'update'"> 
+
+	<div  class="row" ng-show="finnish && respuesta.failures == 0 && respuesta.unreachable == 0">
+
+		<div class="card-panel">
+					
+			<p> 
+				<i class="medium material-icons waves-effect waves-light">
+					info_outline
+				</i>
+
+				Ha Finalizado la actualizacion del servicio. 
+
+			</p>
+
+		</div>
+
+	</div>
+
+</div>
+
+<div class="row" ng-show="finnish && respuesta.failures > 0 || respuesta.unreachable > 0">
+
+	<div class="card-panel">
+
+		<p> 
+			<i class="medium material-icons waves-effect waves-light">
+				info_outline
+			</i>
+
+			Ha Ocurrido un error, por favor intentelo mas tarde
+
+		</p>
+
+	</div>
+
+</div>

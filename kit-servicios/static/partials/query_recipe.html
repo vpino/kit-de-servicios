@@ -1,0 +1,131 @@
+<div class="row">
+
+	<center> <h2> Monitoreo </h2> </center>
+
+	<h3> {{data.recipe}} </h3>
+
+	<hr>
+	<br>
+
+	<form class="col s12" name="kds" novalidate>
+	
+		<div ng-show="execution">
+
+			<h4> Consultando el estado de los servicos </h4>
+
+			<div class="preloader-wrapper small active">
+									
+				<div class="spinner-layer spinner-blue-only">
+					
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+
+					<div class="gap-patch">
+						<div class="circle"></div>
+					</div>
+				
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ====================== MENSAJE EXITOSO ====================== -->
+		
+		<div ng-if="success && data.error == '' ">
+		
+			<div class="card-panel">
+				
+				<p> 
+					<i class="medium material-icons waves-effect waves-light">
+						info_outline
+					</i>
+					Servicios consultados correctamente
+				 </p>
+
+			</div>
+		
+		</div>
+		
+		<!-- ================================================================= -->
+
+		<!-- ====================== MENSAJE DE ERROR ====================== -->
+		
+		<div ng-if="data.error != '' ">
+		
+			<div class="card-panel">
+				
+				<p> 
+					<i class="medium material-icons waves-effect waves-light">
+						report_problem
+					</i>
+					{{data.error}}
+				 </p>
+
+			</div>
+		
+		</div>
+		
+		<!-- ================================================================= -->
+
+
+		<!-- ==================== SERVICIOS A CONSULTAR ===================== -->
+
+		<div ng-show="!execution">
+			
+			<div class="row" data-ng-repeat="dictionary in data.services">
+
+				
+				<h5> {{dictionary.service}}: </h5>
+
+				
+				<p ng-if="dictionary.run == 'Inactive' " class="col s12">
+
+					<input type="checkbox" class="filled-in" id="{{dictionary.service}}"  disabled="disabled"/>
+					<label for="{{dictionary.service}}">{{dictionary.run}}</label>
+
+				</p>
+
+				<p ng-if="dictionary.run == 'Active' " class="col s12">
+
+					<input type="checkbox" class="filled-in" id="{{dictionary.service}}" checked="checked"/>
+					<label for="{{dictionary.service}}">{{dictionary.run}}</label>
+
+				</p>
+		
+			</div>
+
+		</div>
+		
+		<!-- ================================================================= -->
+
+		<ng-include ng-show="!execution" src="'static/partials/operation_autho.html'"></ng-include>
+
+		<br><br>
+
+		<div class="row" ng-show="!execution">
+
+			<center> 
+
+				<button type="submit" class="waves-effect waves-light btn" ng-click="queryService()" ng-disabled="!(kds.$valid)">
+					<i class="material-icons">
+						cloud
+					</i>
+					Consultar los Servicios
+				</button>
+				
+				<a href="/" class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Cancelar</a>
+
+			</center>
+
+		</div>
+
+		
+
+	</form>
+
+</div>

@@ -1,22 +1,13 @@
-import nmap, shlex, netifaces, json, os, subprocess
-from django.shortcuts import render, render_to_response, get_object_or_404, redirect
-from django.http import Http404
+import nmap, shlex, netifaces, os, subprocess, json, paramiko
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.renderers import JSONRenderer
-from common.charms.repository import LocalCharmRepository
-from common.charms.directory import CharmDirectory
-from common.recipes.recipe import RecipeDir
-from common.utils import get_path
-from common.ansible_manage import Runner
-from tasks import add, tail_logger
-from common.tail_f import TailLog
+from tasks import add
 from common.yml_parse import parseYaml
+from config.base import BASE_DIR, SERVICEDIR, RECIPESDIR, SSHDIR, RECI_CONFIG
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SERVICEDIR = BASE_DIR + '/data/services'
 
 class ServiceObject(object):
     def __init__(self, initial=None):
@@ -42,8 +33,7 @@ def homepage(request):
 
 def get_active_hosts():
     """
-    List all pcs, conectados al servidor
-    """
+    List all pcs
     """
     default_gateway = netifaces.gateways().get('default').values()[0][0]
 
@@ -58,53 +48,30 @@ def get_active_hosts():
         active_hosts.remove(default_gateway)
 
     return active_hosts
-    """
-
-    return {"10.16.106.147"}
 
 class PcList(APIView):
     """
-    List all pcs, conectados al servidor
+    List all pcs
     """
 
     def get(self, request, format=None):
         
         pc = get_active_hosts()
 
-        #lists = json.dumps(pc)
+        #lists =dumps(pc)
 
         return Response(pc)
 
-class ServiceMetadataResource(APIView):
-    """
-    List all Recipes
-    """
-
-    def get(self, request, service_name, format=None):
-        
-        SERVICE = RecipeDir(get_path([SERVICEDIR, 'service_name']))
-        
-        return Response([ServiceObject({
-                    'name': SERVICE.metadata.name,
-                    'summary': SERVICE.metadata.summary,
-                    'maintainer': SERVICE.metadata.maintainer,
-                    'description': SERVICE.metadata.description,
-                    'components' : SERVICE.metadata.components.items()
-                })])
-
 class ServiceConfigResource(APIView):
     """
-    List all parametros para ejecutar el playbook
+    List all parameters to execute the playbook
     """
-    
     def get(self, request, format=None):
 
         service_name = request.query_params.get('name', None)
         action = request.query_params.get('action', None)
 
-        #tail = TailLog(BASE_DIR+"/", 'playbook-log')
-
-        if service_name != '':
+        if service_name is not None:
 
             try:
                     
@@ -114,65 +81,54 @@ class ServiceConfigResource(APIView):
 
                 if action == 'install':
 
-                    SERVICE = CharmDirectory(get_path([SERVICEDIR, service_name]))
+                    configdata = json.loads(open(os.path.join(RECIPESDIR, 
+                                                            service_name, 
+                                                            service_name,
+                                                            RECI_CONFIG
+                                                            )).read())
 
-                    for k, v in SERVICE.config._data.iteritems():
+                    for r in configdata[action]:
 
-                        d = {}
-                        d['field_name'] = k
-                        d['nombre'] = v.get('name', None)
-                        d['default'] = v.get('default', None)
-                        d['tipo'] = v.get('type', None)
-                        d['items'] = v.get('items', None)
-                        campos.append(d)
+                        campos.append(r)
 
-                    config['campos'] = campos
-                    config['ipadd'] = ''
-                    config['username'] = ''
-                    config['passwd'] = ''
-                    config['receta'] = service_name
-                    config['action'] = ''
+                    config['message_success'] = configdata['message_success']
+                    config['after_installing'] = configdata['after_installing']
 
-                if action == 'update':
+                elif action == 'update':
 
-                    SERVICE = parseYaml(SERVICEDIR + '/' + service_name , '/config.yaml' )
+                    configdata = json.loads(open(os.path.join(RECIPESDIR, 
+                                                            service_name, 
+                                                            service_name,
+                                                            RECI_CONFIG
+                                                            )).read())
 
-                    for k, v in SERVICE['update'].iteritems():
+                    campos.append(configdata[action])
+                    
 
-                        d = {}
-
-                        d['field_name'] = k
-                        d['nombre'] = v.get('name', None)
-                        d['default'] = v.get('default', None)
-                        d['tipo'] = v.get('type', None)
-                        d['items'] = v.get('items', None)
-                        campos.append(d)
-
-                    config['campos'] = campos
-                    config['username'] = ''
-                    config['passwd'] = ''
-                    config['receta'] = service_name
-                    config['action'] = ''
-
-                if action == 'delete':
-
-                    SERVICE = parseYaml(SERVICEDIR + '/' + service_name , '/config.yaml' )
+                elif action == 'delete':
                     
                     d = {}
                     d['nombre'] = 'delete'
                     campos.append(d)
 
-                    config['campos'] = campos
-                    config['username'] = ''
-                    config['passwd'] = ''
-                    config['receta'] = service_name
-                    config['action'] = ''
-
+                
+                config['campos'] = campos
+                config['receta'] = service_name
+                config['ipadd'] = ''
+                config['username'] = ''
+                config['passwd'] = ''
+                config['action'] = ''    
+                
                 return Response (config)
 
+            except ValueError as e:
+
+                return Response (e, status=status.HTTP_404_NOT_FOUND)
+        
             except:
                 
                return Response (status=status.HTTP_404_NOT_FOUND)
+
 
         return Response (status=status.HTTP_404_NOT_FOUND)
 
@@ -186,6 +142,8 @@ class ServiceConfigResource(APIView):
                request.data['config']['campos'], 
                4)
 
+        print(request.data['config']['campos'])
+        
         print 'Task playbook finished? ', result.ready()
         print 'Task result: ', result.get()
              
@@ -194,7 +152,7 @@ class ServiceConfigResource(APIView):
 
 class ServiceStatus(APIView):
     """
-    List Status of Services
+    List Status of the Services
     """
 
     def get(self, request, format=None):
@@ -209,10 +167,9 @@ class ServiceStatus(APIView):
         service_name = request.query_params.get('name', None)
         host = request.query_params.get('host', None)
         
-        #
         config = {}
 
-        #Diccionario que contiene toda la info de los servicios de la receta.
+        #Lista que contiene toda la info de los servicios de la receta.
         servicios = []
 
         config['error'] = ''
@@ -221,42 +178,67 @@ class ServiceStatus(APIView):
         if service_name and host != '':
 
             try:
-                #Guardamos en una variable la data del servicio contenida en un yaml
-                SERVICE = parseYaml(SERVICEDIR + '/' + service_name , '/config.yaml')
-                
+
+                configdata = json.loads(open(os.path.join(RECIPESDIR, 
+                                                            service_name, 
+                                                            service_name,
+                                                            RECI_CONFIG
+                                                            )).read())
+
                 #Procedemos a llenar la data del servicio.
-                for k, v in SERVICE['query'].iteritems():
-                    d = {}
-                    d['service'] = k
-                    d['package'] = v.get('package', None)
-                    d['description'] = v.get('description', None)
-                    d['status'] = 'Desintalado'
-                    d['run'] = 'Offline'
-
-                    #Comprobaremos si el servicio esta instalado.
-                    query = 'ssh kds@' + str(host) + ' dpkg -l ' + str(d['package']) + ' | grep ' + str(d['package']) + ' | cut -d " " -f1'
+                for servicio in configdata['query']:
                   
-                    command_install = subprocess.Popen(query, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    servicio['status'] = 'Uninstalled'
+                    servicio['run'] = 'Inactive'
+
+                    #===== Pasos para comprobar si la receta esta instalada ========
                     
-                    check_success, check_err = command_install.communicate()
+                    #Comando que verifica si el servicio esta instalado
+                    command = 'dpkg -l ' + str(servicio['package']) + ' | grep ' + str(servicio['package']) + ' | cut -d " " -f1'
+                    
+                    #Iniciamos un cliente SSH
+                    client = paramiko.SSHClient() 
 
-                    if check_success.strip('\n') == 'ii':
+                    #Agregamos el listado de host conocidos
+                    client.load_system_host_keys() 
 
-                        d['status'] = 'Instalado'
+                    #Si no encuentra el host, lo agrega automaticamente
+                    client.set_missing_host_key_policy(paramiko.AutoAddPolicy()) 
 
-                    if check_err != '':
+                    #Iniciamos la conexion.
+                    client.connect(str(host), username='victor')
 
-                        if check_err.split(':')[0] == 'ssh':
+                    #Ejecutamos el commando
+                    stdin, stdout, stderr = client.exec_command(command)
 
-                            config['error'] = "La ip digitada es incorrecta y/o presenta problemas."
+                    stdout = str(stdout.read())
 
-                    servicios.append(d)
+                    stderr = str(stderr.read())
+
+                    if stdout.strip('\n') == 'ii':
+
+                        servicio['status'] = 'Instalado'
+
+                    if stderr != '':
+
+                        config['error'] = ""
+
+                    #Cerramos la conexion ssh
+                    client.close()
+
+                    servicios.append(servicio)
 
                 config['services'] = servicios
 
             except IOError, e:
 
-                config['error'] = "El Servicio que intenta instalar no esta disponible."
+                config['error'] = "No pudo conectarse al host digitado."
+
+                return Response(config)
+
+            except Exception, e:
+
+                config['error'] = "No pudo conectarse al host digitado.."
 
                 return Response(config)
 
@@ -266,42 +248,58 @@ class ServiceStatus(APIView):
     def post(self, request, *args, **kwargs):
 
         config = {}
-        servicios = []
 
-        config['error'] = ''
+        servicios = []
 
         if request.data != '':
             
             try:
                 
-                for service in request.data['data']['services']:
-
-                    d = {}
-                    d['service'] = service['service']
-                    d['run'] = service['run']
-
+                for service in request.data['config']['services']:
+             
                     #Comprobaremos si el servicio esta corriendo.
-                    query = 'ssh kds@' + str(request.data['data']['ip']) + ' echo ' + str(request.data['data']['passwd']) + ' | sudo -S service ' +  str(service['service']) + ' status | grep active | cut -d " " -f5'
+                    command = 'sudo -S service ' +  str(service['service']) + ' status | grep active | cut -d " " -f5'
 
-                    command_running = subprocess.Popen(query, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                
-                    running_success, running_err = command_running.communicate()
-                
-                    if running_success.strip('\n') == 'active':
+                    #Iniciamos un cliente SSH
+                    client = paramiko.SSHClient() 
 
-                        service['run'] = 'Online'
+                    #Agregamos el listado de host conocidos
+                    client.load_system_host_keys() 
+
+                    #Si no encuentra el host, lo agrega automaticamente
+                    client.set_missing_host_key_policy(paramiko.AutoAddPolicy()) 
+
+                    #Iniciamos la conexion.
+                    client.connect(str(request.data['config']['ip']), username='kds')
+
+                    #Ejecutamos el commando
+                    stdin, stdout, stderr = client.exec_command(command, get_pty = True)
+                    
+                    if stdout.channel.closed is False: 
+
+                        stdin.write(str(request.data['config']['passwd']) + '\n')
+                        stdin.flush()
+
+                    stdout = str(stdout.read())
+
+                    stderr = str(stderr.read())
+
+                    if stdout.strip('\n') == 'active':
+
+                        service['run'] = 'Active'
 
                     else:
 
-                        service['run'] = 'Offline'
+                        service['run'] = 'Inactive'
 
-                        config['error'] = config['error'] + running_err
+                        config['error'] = stderr
 
-                    servicios.append(d)
+                    servicios.append(service)
 
+                config['recipe'] = request.data['config']['recipe']
+                config['ip'] = request.data['config']['ip']
+                config['action'] = request.data['config']['action']
                 config['services'] = servicios
-                config['ip'] = request.data['data']['ip']
-                config['recipe'] = request.data['data']['recipe']
 
             except IOError, e:
 
@@ -321,7 +319,6 @@ class ServiceStatus(APIView):
 
                 return Response(config)
 
-
         return Response(config)
 
 class ServiceKeyResource(APIView):
@@ -333,9 +330,40 @@ class ServiceKeyResource(APIView):
         
         key = {}
 
-        with open('/home/kds/.ssh/id_rsa.pub', 'r') as key_ssh:
+        with open(SSHDIR, 'r') as key_ssh:
             key['ssh'] = key_ssh.read().replace('\n', '')
        
         return Response(key)
 
+class ServiceRecipeResource(APIView):
+    """
+    List of All Recipes Available
+    """
+
+    def get(self, request, format=None):
         
+        recipes = {}
+
+        role = []
+
+        for rol in os.listdir(RECIPESDIR):
+            
+            r = {}
+             
+            ROLDIR = os.path.join(RECIPESDIR, rol)
+
+            DATADIR = os.path.join(ROLDIR, rol)
+
+            if os.path.isdir(ROLDIR) and os.path.isdir(DATADIR):
+
+                metadata = json.loads(open(DATADIR+'/metadata.json').read())
+
+                r['name'] = rol
+                r['summary'] = metadata[0]['summary']
+                r['description'] = metadata[0]['description']
+
+                role.append(r)
+
+        recipes['recipes'] = role
+
+        return Response(recipes)

@@ -1,0 +1,26 @@
+---
+ruta_configuracion_base_bind: /etc/bind
+usuario_bind: bind
+grupo_bind: bind
+nombre_servicio: bind9
+bind_pkgs:
+  - bind9
+  #- dnsutils
+  #- bind9-doc
+
+# Inicialización de variables necesarias a lo largo de los 'tasks'
+
+version: "01"
+serial: "{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}{{version}}"
+nuevoserial: "1970010101"
+fechaactual: "{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}"
+fechaserial: "19700101"
+versionserial: "00"
+
+nombre:
+clase:
+tipo:
+dato:
+
+action:
+subaction:

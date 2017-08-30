@@ -65,7 +65,7 @@ ManageServices.service('WSService', function($q) {
           var deferred = $q.defer();
 
           // Create the WebSocket client pointing to the correct API
-          var ws = new WebSocket("ws://localhost:80/ws/foobar?subscribe-broadcast&publish-broadcast&echo");
+          var ws = new WebSocket("ws://localhost:8000/ws/foobar?subscribe-broadcast&publish-broadcast&echo");
             
 
           // Map the messages to action
@@ -74,7 +74,6 @@ ManageServices.service('WSService', function($q) {
           };
           
           ws.onmessage = function (evt) { 
-              console.log("onmessage:" + evt.data);
               deferred.notify(evt.data);
 
           };
@@ -109,6 +108,25 @@ ManageServices.factory('Keyssh', ['$resource',
   function($resource){
     return $resource('/ServiceKeyResource/', {}, {
       
+      /* Funcion que consulta el vlaor de la llave ssh*/
+      query: {
+        params: {},
+        method:'GET',  
+        isArray:true,
+        transformResponse: function(data){
+               return angular.fromJson(data).objects;
+           }
+        }
+
+    });
+    
+  }]);
+
+/* Declaramos una factory que se encargara de retornar la lista de recetas */
+ManageServices.factory('Roles', ['$resource',
+  function($resource){
+    return $resource('/ServiceRecipeResource/', {}, {
+      
       /* Funcion que consulta si un servicio
          esta o no instalado */
       query: {
@@ -123,4 +141,3 @@ ManageServices.factory('Keyssh', ['$resource',
     });
     
   }]);
-

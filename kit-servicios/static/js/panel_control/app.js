@@ -18,23 +18,23 @@ panelApp.config(['$routeProvider', '$locationProvider',
 function($routeProvider, $locationProvider) {
   $routeProvider.
     when('/panel/:name', {
-      templateUrl: 'static/partials/panel.html',
+      templateUrl: 'static/partials/manager_panel.html',
       controller: 'statusServiceController'
     }).
     when('/recipe/', {
-      templateUrl: 'static/partials/recipe.html',
+      templateUrl: 'static/partials/install_recipe.html',
       controller: 'recipeController'
     }).
     when('/update/', {
-      templateUrl: 'static/partials/update.html',
-      controller: 'recipeController'
+      templateUrl: 'static/partials/update_recipe.html',
+      controller: 'recipeUpdateController'
     }).
     when('/query/', {
-      templateUrl: 'static/partials/query.html',
+      templateUrl: 'static/partials/query_recipe.html',
       controller: 'queryServiceController'
     }).
     when('/delete/', {
-      templateUrl: 'static/partials/delete.html',
+      templateUrl: 'static/partials/delete_recipe.html',
       controller: 'recipeController'
     }).
      when('/key/', {
@@ -50,18 +50,3 @@ function($routeProvider, $locationProvider) {
 
 }]);
 
-/*
-  panelApp.run(run);
-
-  run.$inject = ['$http'];
-
-  /**
-  * @name run
-  * @desc Update xsrf $http headers to align with Django's defaults
-  */
-  /*
-  function run($http) {
-    $http.defaults.xsrfHeaderName = 'X-CSRFToken';
-    $http.defaults.xsrfCookieName = 'csrftoken';
-  }
-*/

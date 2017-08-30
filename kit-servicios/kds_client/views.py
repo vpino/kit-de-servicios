@@ -1,13 +1,6 @@
-import psutil
-import json
-import platform
-import cpuinfo
-from django.shortcuts import render
-from django.http import Http404
-from django.template import RequestContext
+import psutil, json, platform, cpuinfo
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 
 def sizeof_fmt(num, suffix='B'):
@@ -68,17 +61,8 @@ class HardwareInformation(APIView):
 	Information of hardware
 	"""
 
-	#Especificamos como retornara la data, en este caso formato json
-	#renderer_classes = (JSONRenderer, )
-
 	def get(self, request, format=None):
 
 		hardware = hdInfo()
-
-		#content = {'hardware': hardware}
-
-		#hardware = json.dumps(hardware, ensure_ascii=False) 
-
-		#hardware = json.loads(hardware)
 
 		return Response(hardware)

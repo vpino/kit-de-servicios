@@ -110,9 +110,13 @@ REST_FRAMEWORK = {
     )
 }
 
-# Clery Config
+
+# Rabbit Config
 BROKER_URL = 'amqp://kds:11@localhost/kds_vhost'
 BROKER_HEARTBEAT = 10
+
+
+# Clery Config
 CELERY_RESULT_BACKEND = 'rpc://'
 CELERY_RESULT_PERSISTENT = False
 CELERYD_CONCURRENCY = 100

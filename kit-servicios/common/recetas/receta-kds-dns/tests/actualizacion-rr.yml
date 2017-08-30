@@ -1,0 +1,16 @@
+- hosts: kds
+
+  vars:
+
+    dominio: institucion.gob.ve
+
+    nombre: ju
+    clase: IN
+    tipo: CNAME
+    dato: juliette
+        
+    action: 'Actualizar'
+
+  roles:
+
+    - receta-kds-dns

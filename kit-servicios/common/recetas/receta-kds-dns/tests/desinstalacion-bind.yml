@@ -1,0 +1,11 @@
+- hosts: kds
+
+  vars:
+
+    dominio: institucion.gob.ve    
+    
+    action: 'Desinstalar'
+
+  roles:
+
+    - receta-kds-dns

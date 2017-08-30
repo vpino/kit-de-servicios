@@ -1,0 +1,6 @@
+## {{ ansible_managed }}
+
+zone "{{ dominio }}" {
+    type master;
+    file "{{ruta_zonas_dns}}/{{ruta_zonas_maestras}}/{{ dominio }}.bd";
+};

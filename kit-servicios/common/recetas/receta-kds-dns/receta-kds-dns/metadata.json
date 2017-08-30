@@ -1,0 +1,8 @@
+[
+	{
+	"name": "DNS",
+	"summary": "DNS",
+	"maintainer": "Joaquin Lucavechi <joaquin@gmail.com>",
+	"description": "Es un sistema de nomenclatura jerárquico descentralizado para dispositivos conectados a redes IP como Internet o una red privada. Este sistema asocia información variada con nombres de dominios asignado a cada uno de los participantes."
+	}
+]

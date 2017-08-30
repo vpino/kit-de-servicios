@@ -133,6 +133,15 @@ case "$1" in
         rm -rf /var/log/celery || true
         rm -rf /var/run/celery || true
 
+
+        IN=$(curl --header "PRIVATE-TOKEN:rKXbq_VZKz95B-UcuNMc" -sL 'http://gitlab.canaima.softwarelibre.gob.ve/api/v3/groups/82' | awk -F"," -v k="http_url_to_repo" '{ gsub(/{|}/,"") for(i=1;i<=NF;i++){ if ( $i ~ k ){ print $i } } }' )
+
+        for url in $IN
+        do
+             r=$(echo $url | cut -d ":" -f3 | cut -d "\"" -f1)
+             git clone http:$r
+        done
+
         echo "Reiniciando los servicios"
         serviceCommand apache2 stop || true
         serviceCommand nginx restart || true

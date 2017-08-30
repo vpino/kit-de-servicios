@@ -1,0 +1,21 @@
+---
+bind_service_state: started
+bind_service_enabled: yes
+bind_pkg_state: installed
+
+ruta_zonas_dns: "/var/lib/bind/zonas"
+ruta_log_bind: "/var/log/bind"
+ruta_zonas_maestras: "maestras"
+ruta_zonas_esclavas: "esclavas"
+
+configuracion_bind_listen_on: any
+configuracion_bind_allow_query: []
+configuracion_bind_recursion: "no"
+
+# Estas variables serán usadas en versiones ulteriores de la receta KDS
+bind_config_master_zones: []
+bind_config_master_allow_transfer: []
+bind_config_master_forwarders: []
+bind_config_slave_zones: []
+bind_config_forward_zones: []
+
